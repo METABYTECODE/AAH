@@ -1,0 +1,67 @@
+"DOTAUnits"
+{
+	"npc_arena_fountain"
+	{
+		"BaseClass"	"npc_dota_building"
+		"Model"	"models/development/invisiblebox.vmdl"
+		"AttackCapabilities"	"DOTA_UNIT_CAP_NO_ATTACK"
+		"Ability1"				"fountain_passive"
+
+		"BoundsHullName"	"DOTA_HULL_SIZE_SMALL"
+
+		"MovementCapabilities"	"DOTA_UNIT_CAP_MOVE_NONE"
+		"MovementSpeed"	"0"	// Speed
+		"MovementTurnRate"	"0"	// Turning rate.
+
+		// Status
+		//----------------------------------------------------------------
+		"StatusHealth"	"1"	// Base health.
+		"StatusHealthRegen"	"0"	// Health regeneration rate.
+		"StatusMana"	"0"	// Base mana.
+		"StatusManaRegen"	"0"	// Mana regeneration rate.
+
+		"TeamName"	"DOTA_TEAM_NEUTRALS"
+		"VisionDaytimeRange"		"1500"
+		"VisionNighttimeRange"		"1500"
+	}
+
+	"npc_arena_healer"
+	{
+		"BaseClass"					"npc_dota_healer"
+		"Model"						"models/props_structures/radiant_statue001.vmdl"
+		"SoundSet"					"Creep_Good_Melee"
+		"MinimapIcon"				"minimap_miscbuilding"
+
+		"Ability1"					"filler_ability"
+		"Ability2"					"healer_taste_of_armor"
+		"Ability3"					"healer_bottle_refill"
+		"ArmorPhysical"				"20"
+		"MagicalResistance"			"0"
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"AttackDamageMin"			"0"
+		"AttackDamageMax"			"0"
+		"AttackRange"				"0"
+
+		"BoundsHullName"			"DOTA_HULL_SIZE_FILLER"
+		"RingRadius"				"100"
+		"HealthBarOffset"			"260"
+		"MinimapIconSize"			"375"
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_NONE"
+		"MovementSpeed"				"0"
+		"MovementTurnRate"			"0"
+
+		"StatusHealth"				"1500"
+		"StatusHealthRegen"			"0.25"
+		"StatusMana"				"0"
+		"StatusManaRegen"			"0"
+
+		"CombatClassAttack"			"DOTA_COMBAT_CLASS_ATTACK_SIEGE"
+		"CombatClassDefend"			"DOTA_COMBAT_CLASS_DEFEND_STRUCTURE"
+		"UnitRelationshipClass"		"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
+
+		"VisionDaytimeRange"		"250"
+		"VisionNighttimeRange"		"250"
+	}
+}

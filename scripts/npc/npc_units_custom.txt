@@ -1,0 +1,8 @@
+#base "units/thinkers.txt"
+#base "units/map.txt"
+#base "units/neutrals.txt"
+#base "units/bosses.txt"
+#base "units/items.txt"
+#base "units/abilities.txt"
+#base "heroes/new.txt"
+"DOTAUnits" {}

@@ -1,0 +1,134 @@
+"DOTAAbilities"
+{
+	"slotmachine_passive"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+
+		"precache"
+		{
+			"soundfile" "soundevents/soundevents_conquest.vsndevts"
+		}
+
+		"OnCreated"
+		{
+			"RunScript"
+			{
+				"ScriptFile"	"kv.lua"
+				"Function"		"SetMaxLevel"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_slotmachine_passive"
+			{
+				"Passive"			"1"
+				"IsHidden"			"1"
+
+				"StatusEffectName" 		"particles/econ/items/effigies/status_fx_effigies/status_effect_effigy_gold_lvl2.vpcf"
+				"StatusEffectPriority"  "100"
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_MAGIC_IMMUNE"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_ATTACK_IMMUNE"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL" "1"
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL" "1"
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE" "1"
+					"MODIFIER_PROPERTY_MIN_HEALTH" "1"
+				}
+			}
+		}
+	}
+
+	"fountain_passive"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+
+		"OnCreated"
+		{
+			"RunScript"
+			{
+				"ScriptFile"	"kv.lua"
+				"Function"		"SetMaxLevel"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_arena_statue_passive"
+			{
+				"Passive"			"1"
+				"IsHidden"			"1"
+
+				"States"
+				{
+					"MODIFIER_STATE_UNSELECTABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NOT_ON_MINIMAP"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+	}
+
+	"healer_taste_of_armor"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"heroes/structures/healer_taste_of_armor.lua"
+		"AbilityTextureName"			"omniknight_degen_aura"
+		"MaxLevel" 						"1"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"aura_radius"				"700"
+			}
+			"02"
+			{
+				"var_type" 				"FIELD_INTEGER"
+				"aura_bonus_armor"			"4"
+			}
+		}
+	}
+
+	"healer_bottle_refill"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"heroes/structures/healer_bottle_refill.lua"
+		"AbilityTextureName"			"omniknight_repel"
+		"MaxLevel" 						"1"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"600"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"cooldown"				"60"
+			}
+		}
+	}
+}

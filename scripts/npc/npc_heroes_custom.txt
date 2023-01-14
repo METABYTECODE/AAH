@@ -1,0 +1,4 @@
+#base "heroes/modified.txt"
+#base "heroes/rewrites.txt"
+#base "heroes/unchanged.txt"
+"DOTAHeroes"{}

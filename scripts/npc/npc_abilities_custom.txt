@@ -1,0 +1,465 @@
+#base "abilities/map.txt"
+#base "abilities/bosses.txt"
+#base "abilities/rewrites.txt"
+#base "abilities/thinkers.txt"
+
+#base "abilities/bosses/kel_thuzad.txt"
+#base "abilities/bosses/cursed_zeld.txt"
+
+#base "abilities/heroes/hero_arthas.txt"
+#base "abilities/heroes/hero_stargazer.txt"
+#base "abilities/heroes/hero_cherub.txt"
+#base "abilities/heroes/hero_queenofblades.txt"
+#base "abilities/heroes/hero_kadash.txt"
+#base "abilities/heroes/hero_apocalypse.txt"
+#base "abilities/heroes/hero_shinobu.txt"
+#base "abilities/heroes/hero_zen_gehraz.txt"
+#base "abilities/heroes/hero_stegius.txt"
+#base "abilities/heroes/hero_mirratie.txt"
+#base "abilities/heroes/hero_freya.txt"
+#base "abilities/heroes/hero_zaken.txt"
+#base "abilities/heroes/hero_poseidon.txt"
+#base "abilities/heroes/hero_saber.txt"
+#base "abilities/heroes/hero_sara.txt"
+#base "abilities/heroes/hero_destroyer.txt"
+#base "abilities/heroes/hero_anakim.txt"
+#base "abilities/heroes/hero_sai.txt"
+#base "abilities/heroes/hero_saitama.txt"
+#base "abilities/heroes/hero_doppelganger.txt"
+
+#base "abilities/heroes/hero_pudge.txt"
+
+"DOTAAbilities"
+{
+	"ogre_magi_multicast_arena"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"heroes/hero_ogre_magi/multicast.lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityTextureName"			"ogre_magi_multicast"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ALLIES_YES"
+		"AbilityCastPoint"				"0.45"
+		"AbilityCooldown"				"55.0"
+		"MaxLevel"						"7"
+		"HasScepterUpgrade"				"1"
+		"AbilityCastRange"				"500"
+		"AbilityManaCost"				"75 100 125 150 175 200 225"
+
+		"precache"
+		{
+			"particle"		"particles/units/heroes/hero_ogre_magi/ogre_magi_multicast.vpcf"
+			"particle"		"particles/arena/units/heroes/hero_ogre_magi/multicast_aghanims_buff.vpcf"
+			"soundfile"		"soundevents/game_sounds_heroes/game_sounds_ogre_magi.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"multicast_2_times"		"15 25 35 45 55 65 75"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"multicast_3_times"		"0 20 25 30 35 40 45"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"multicast_4_times"		"0 0 12.5 14 16 18 20"
+			}
+			"04"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"duration_ally_scepter"		"30"
+			}
+			"05"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"multicast_delay"	"0.5"
+			}
+		}
+	}
+
+	"summoned_unit_return"
+	{
+		"AbilityBehavior"		 	"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"BaseClass"					"ability_datadriven"
+		"AbilityTextureName"		"lone_druid_spirit_bear_return"
+		"MaxLevel"					"1"
+		"AbilityCastPoint"			"0"
+		"AbilityCooldown"			"5.0"
+		"AbilityManaCost"			"0"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"return_damage_cooldown"		"3"
+			}
+		}
+
+		"OnCreated"
+		{
+			"RunScript"
+			{
+				"ScriptFile"	"kv.lua"
+				"Function"		"SetMaxLevel"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"	"items/item_summoned_unit.lua"
+				"Function"		"ReturnBack"
+			}
+
+			"FireEffect"
+			{
+				"EffectName"        "particles/items_fx/blink_dagger_end.vpcf"
+				"EffectAttachType"  "follow_origin"
+				"Target"            "CASTER"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_summoned_unit_return"
+			{
+				"Passive"			"1"
+				"IsHidden"			"1"
+
+				"OnTakeDamage"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"items/item_summoned_unit.lua"
+						"Function"		"ReturnDamage"
+						"Damage"		"%attack_damage"
+						"cooldown"		"%return_damage_cooldown"
+					}
+				}
+			}
+
+			"modifier_summoned_unit"
+			{
+				"Passive"			"1"
+				"IsHidden"			"1"
+
+				"OnDeath"
+				{
+					"FireEffect"
+					{
+						"Target"			"TARGET"
+						"EffectName"		"particles/units/heroes/hero_lone_druid/lone_druid_spirit_bear_death.vpcf"
+						"EffectAttachType"	"follow_origin"
+					}
+				}
+			}
+		}
+	}
+
+	"doom_bringer_devour_arena"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"				"ability_datadriven"
+		"AbilityBehavior"			"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
+		"AbilityUnitTargetTeam"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"		"DOTA_UNIT_TARGET_CREEP"
+		"AbilityUnitTargetFlags"	"DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO"
+		"AbilityTextureName"		"doom_bringer_devour"
+		"MaxLevel"					"7"
+		"AbilityCastPoint"			"0.3 0.3 0.3 0.3 0.3 0.2 0.1"
+		"AbilityCastRange"			"300"
+		"AbilityCooldown"			"70"
+		"AbilityManaCost"			"40 50 60 70 80 90 100"
+
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_doombringer.vsndevts"
+			"particle"			"particles/units/heroes/hero_doom_bringer/doom_bringer_devour.vpcf"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"min_bonus_gold"		"100 200 300 400 500 600 700"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_gold_pct"		"100 120 140 160 180 200 220"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"duration"				"15 20 25 30 35 40 45"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"stolen_health_pct"		"10 15 20 25 30 35 40"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"stolen_health_to_damage"		"0.05 0.1 0.15 0.2 0.25 0.3 0.35"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_DoomBringer.DevourCast"
+				"Target" 		"TARGET"
+			}
+
+			"FireEffect"
+			{
+				"EffectName"        "particles/units/heroes/hero_doom_bringer/doom_bringer_devour.vpcf"
+				"EffectAttachType"  "follow_origin"
+
+				"ControlPointEntities"
+				{
+					"TARGET"	"attach_origin"
+					"CASTER"	"attach_origin"
+				}
+			}
+
+			"RunScript"
+			{
+				"ScriptFile"	"heroes/hero_doom_bringer/devour.lua"
+				"Function"		"Devour"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_doom_bringer_devour_arena"
+			{
+				"IsHidden"			"0"
+				"IsPurgable"		"0"
+				"Duration"			"%duration"
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_HEALTH_BONUS" 			"1"
+					"MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE"	"%stolen_health_to_damage"
+				}
+			}
+		}
+	}
+
+	"huskar_burning_spear_arena"
+	{
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"huskar_burning_spear"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_AUTOCAST | DOTA_ABILITY_BEHAVIOR_ATTACK"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"400"
+		"MaxLevel"						"7"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"health_cost_pct"		"15"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"armor_reduction_per_stack"	"-0.0 -0.0 -0.1 -0.2 -0.3 -0.4 -0.5"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"magic_resist_per_stack"	"-0.0 -0.0 -0.1 -0.2 -0.3 -0.4 -0.5"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"aura_trigger_health_pct"	"25"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"aura_radius"			"400"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"aura_think_interval"	"1.6 1.5 1.4 1.3 1.2 1.1 1.0"
+			}
+			"07"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"aura_burn_chance_pct"	"100"
+			}
+			"08"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"duration"				"8"
+			}
+			"09"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"5 10 15 20 25 30 35"
+			}
+			"10"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"missing_hp_damage_pct"	"0.5"
+				"CalculateSpellDamageTooltip" "1"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_huskar.vsndevts"
+			"particle"	"particles/units/heroes/hero_huskar/huskar_burning_spear.vpcf"
+			"particle"	"particles/units/heroes/hero_huskar/huskar_burning_spear_debuff.vpcf"
+			"particle"	"particles/units/heroes/hero_ember_spirit/ember_spirit_flameguard.vpcf"
+		}
+
+		"Modifiers"
+		{
+			"modifier_huskar_burning_spear_arena"
+			{
+				"Passive"			"1"
+				"IsHidden"			"1"
+				"IsPurgable"		"0"
+
+				"Orb"
+				{
+					"Priority"			"DOTA_ORB_PRIORITY_ABILITY"
+					"ProjectileName"	"particles/units/heroes/hero_huskar/huskar_burning_spear.vpcf"
+					"CastAttack"		"1"
+				}
+
+				"OnOrbFire"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Huskar.Burning_Spear.Cast"
+						"Target"		"CASTER"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"heroes/hero_huskar/burning_spear.lua"
+						"Function"		"DoHealthCost"
+						"health_cost_pct"	"%health_cost_pct"
+						"damage"				"%damage"
+						"missing_hp_damage_pct"	"%missing_hp_damage_pct"
+					}
+				}
+
+				"OnOrbImpact"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Huskar.Burning_Spear"
+						"Target"		"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"kv.lua"
+						"Function"		"IncreaseStacks"
+						"modifier"		"modifier_huskar_burning_spear_arena_debuff"
+						"per_stack_duration"	"%duration"
+					}
+				}
+
+				"ThinkInterval"  "0.1"
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"heroes/hero_huskar/burning_spear.lua"
+						"Function"		"ThinkHealth"
+						"aura_trigger_health_pct"	"%aura_trigger_health_pct"
+					}
+				}
+			}
+
+			"modifier_huskar_burning_spear_arena_aura"
+			{
+				"IsPurgable"		"0"
+
+				"OnCreated"
+				{
+					"AttachEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_ember_spirit/ember_spirit_flameguard.vpcf"
+						"EffectAttachType"	"follow_origin"
+						"Target"			"TARGET"
+						"ControlPoints"
+						{
+							"03"	"%aura_radius 0 0"
+						}
+					}
+				}
+
+				"ThinkInterval"  "%aura_think_interval"
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"heroes/hero_huskar/burning_spear.lua"
+						"Function"		"ThinkAura"
+						"aura_radius"	"%aura_radius"
+						"aura_think_interval"	"%aura_think_interval"
+						"per_stack_duration"	"%duration"
+						"aura_burn_chance_pct"	"%aura_burn_chance_pct"
+					}
+				}
+			}
+
+			"modifier_huskar_burning_spear_arena_debuff"
+			{
+				"IsDebuff"			"1"
+				"IsPurgable"		"0"
+				"Duration"			"%duration"
+
+				"EffectName"		"particles/units/heroes/hero_huskar/huskar_burning_spear_debuff.vpcf"
+				"EffectAttachType"	"follow_origin"
+
+				"ThinkInterval"		"1.0"
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"heroes/hero_huskar/burning_spear.lua"
+						"Function"		"DealDamage"
+						"damage"				"%damage"
+						"missing_hp_damage_pct"	"%missing_hp_damage_pct"
+					}
+				}
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS"		"%armor_reduction_per_stack"
+					"MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS"	"%magic_resist_per_stack"
+				}
+			}
+		}
+	}
+}
