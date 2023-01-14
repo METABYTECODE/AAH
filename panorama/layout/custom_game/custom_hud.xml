@@ -1,0 +1,46 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+		<include src="file://{resources}/styles/keyframes.css" />
+		<include src="file://{resources}/styles/custom_hud.css" />
+		<include src="file://{resources}/styles/dynamic_minimap.css" />
+	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/arena_util.js" />
+		<include src="file://{resources}/scripts/chat_smiles.js" />
+		<include src="file://{resources}/scripts/customchat.js" />
+		<include src="file://{resources}/scripts/entity_tooltips.js" />
+		<include src="file://{resources}/scripts/custom_hud.js" />
+	</scripts>
+	<snippets>
+		<snippet name="ToastPanel">
+			<Panel class="ToastPanel">
+				<Panel id="SlashContainer" hittest="false" hittestchildren="false">
+					<Panel id="TeamColorBar" />
+				</Panel>
+				<Panel id="ToastElements" >
+					<Label id="ToastLabel" html="true" />
+				</Panel>
+			</Panel>
+		</snippet>
+	</snippets>
+	<Panel hittest="false" class="base">
+		<Panel id="PlayerControls" hittest="false">
+			<!-- <Label id="PlayerControls_1x1" class="PlayerControlsButton" text="1x1" onactivate="GameEvents.SendCustomGameEventToServer('hud_buttons_show_duel1x1call', {})"/> -->
+			<!-- <Label class="PlayerControlsButton" text="?" onactivate="GameEvents.SendCustomGameEventToServer('hud_buttons_show_custom_game_info', {playerid: Game.GetLocalPlayerID()})"/> -->
+		</Panel>
+		<Panel id="DynamicMinimapRoot" hittest="false" hittestchildren="false" />
+		<Panel id="CustomToastManager" hittest="false" hittestchildren="false" />
+		<Panel id="CustomModifiersList" />
+		<Panel id="AbandonedPanel">
+			<Label id="AbandonedTitle" text="#abaddoned_panel_title" />
+			<Label id="AbandonedReason" text="#abaddoned_panel_reason" /> 
+			<Label id="AbandonedRedistribution" text="#abaddoned_panel_redistribution" />
+			<Label id="AbandonedRanked" text="#abaddoned_panel_ranked" />
+		</Panel>
+		<Panel id="ButtonSwapMana" class="SwapManaBar" hittest="false">
+			<Image id="Stamina" src="s2r://panorama/images/primary_attribute_icons/primary_attribute_icon_agility_psd.vtex" onactivate="ToggleOnStaminaBar()" hittest="true"/>
+			<Image id="Mana" src="s2r://panorama/images/primary_attribute_icons/primary_attribute_icon_intelligence_psd.vtex" onactivate="ToggleOnManaBar()" hittest="true"/>
+		</Panel >
+	</Panel>
+</root>

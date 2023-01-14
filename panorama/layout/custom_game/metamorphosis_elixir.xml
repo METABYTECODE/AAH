@@ -1,0 +1,125 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+		<include src="file://{resources}/styles/hero_selection_shared.css" />
+		<include src="file://{resources}/styles/hero_selection.css" />
+		<include src="file://{resources}/styles/hero_selection_hero_card.css" />
+		<include src="file://{resources}/styles/metamorphosis_elixir.css" />
+	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/arena_util.js" />
+		<include src="file://{resources}/scripts/shared_hero_selection_script.js" />
+		<include src="file://{resources}/scripts/metamorphosis_elixir.js" />
+	</scripts>
+	<snippets>
+		<snippet name="HeroesPanel">
+			<Panel class="HeroesPanelPage">
+				<Panel class="HeroesPanelElement" id="HeroesByAttributes_0" />
+				<Panel class="HeroesPanelElement" id="HeroesByAttributes_1" />
+				<Panel class="HeroesPanelElement" id="HeroesByAttributes_2" />
+			</Panel>
+		</snippet>
+		<snippet name="HeroCard">
+			<Panel class="HeroCard Showing" hittest="false">
+				<Panel id="Contents" hittest="false">
+					<Image id="HeroImage" hittest="false" />
+					<DOTAHeroMovie id="HeroMovie" hittest="false" />
+					<Label id="HeroName" hittest="false" />
+					<Image id="LockedIcon" hittest="false" />
+					<Panel id="HeroChangedBurstRoot" hittest="false" />
+					<Panel id="LinkedHeroesGroupRow" hittest="false" />
+				</Panel>
+				<Panel id="BannedOverlay" hittest="false" />
+				<!-- <Panel id="SuggestedOverlay" class="CardStatusOverlay" hittest="false">
+					<Label text="#DOTA_HeroCard_Suggested"/>
+				</Panel>
+				<Panel id="SuggestedBanOverlay" class="CardStatusOverlay" hittest="false">
+					<Label text="#DOTA_HeroCard_SuggestedBan"/>
+				</Panel>
+				<Panel id="AllHeroChallengeOverlay" class="CardStatusOverlay" hittest="false">
+					<Label text="#DOTA_HeroCard_AllHeroChallenge"/>
+				</Panel>
+				<Panel id="DailyHeroChallengeOverlay" class="CardStatusOverlay" hittest="false">
+					<Panel id="BattlePassIcon"/>
+					<Label text="#DOTA_HeroCard_DailyQuest"/>
+				</Panel> -->
+				<Panel id="HitTarget" acceptsinput="true" hittest="true" />
+				<Panel id="HitBlocker" hittest="true"/>
+			</Panel>
+		</snippet>
+	</snippets>
+	<Panel hittest="false" class="base">
+		<Panel hittest="false" id="MainBox">
+			<Panel id="HeroListBasePanel">
+				<Panel id="HeroListControls">
+					<Panel id="HeroListControlsGroup1" class="HeroListControlsGroup">
+						<Button id="SwitchHeroesButton" class="PickButton" onactivate="SwitchTab()" >
+							<Label text="#hero_selection_heroes_default" id="SwitchHeroesDefault" />
+							<Panel />
+							<Label text="#hero_selection_heroes_new" id="SwitchHeroesNew" />
+						</Button>
+						<Label id="SelectedHeroOverview" />
+					</Panel>
+					<Panel id="HeroListControlsGroup2" class="HeroListControlsGroup">
+						<Button id="SelectedHeroSelectButton" onactivate="SelectHero()" hittestchildren="false">
+							<Label id="SelectedHeroSelectLabel" text="#hero_selection_button_select_hero" />
+							<Label id="SelectedHeroLockLabel" text="#hero_selection_lock" />
+							<Label id="SelectedHeroUnlockLabel" text="#hero_selection_unlock" />
+							<Label id="SelectedHeroBanLabel" text="#DOTA_Hero_Selection_BanTitle" />
+							<Label id="SelectedHeroSelectHeroName" />
+							<Label id="SelectedHeroDisabledReason" />
+							<Panel id="SelectedHeroLinkedHeroPanel" >
+								<Label id="SelectedHeroLinkedLabel" text="#hero_selection_linked_hero" />
+								<Label id="SelectedHeroLinkedHero" />
+							</Panel>
+						</Button>
+					</Panel>
+					<Panel id="HeroListControlsGroup3" class="HeroListControlsGroup">
+						<Panel id="SelectedHeroAttributesPanel">
+							<Panel class="SelectedHeroAttributesElement" style="flow-children: down; height: fit-children; width: fit-children; vertical-align: center; margin-right: 12px;">
+								<Image src="s2r://panorama/images/hud/reborn/icon_damage_psd.vtex" style="horizontal-align: center;"/>
+								<Label id="HeroAttributes_damage" class="AttributeValueText" style="horizontal-align: center;" text="0 - 0" />
+							</Panel>
+							<Panel style="height: 100%; flow-children: down;">
+								<Panel class="SelectedHeroAttributesElement">
+									<Image src="s2r://panorama/images/hud/reborn/icon_speed_psd.vtex"/>
+									<Label id="HeroAttributes_speed" class="AttributeValueText" text="0" />
+								</Panel>
+								<Panel class="SelectedHeroAttributesElement">
+									<Image src="s2r://panorama/images/hud/reborn/icon_attack_speed_psd.vtex" style="color: white; margin-left: -2px;" />
+									<Label id="HeroAttributes_bat" class="AttributeValueText" text="0" />
+								</Panel>
+								<Panel class="SelectedHeroAttributesElement">
+									<Image src="s2r://panorama/images/hud/reborn/icon_armor_psd.vtex" />
+									<Label id="HeroAttributes_armor" style="margin-left: 5px;" class="AttributeValueText" text="0" />
+								</Panel>
+							</Panel>
+							<Panel style="width: 128px; height: 100%; flow-children: down;">
+								<Panel class="SelectedHeroAttributesElement">
+									<Panel class="DotaAttributePic" id="DotaAttributePic_1" />
+									<Label id="HeroAttributes_1" class="AttributeValueText" text="0 + 0.0" />
+								</Panel>
+								<Panel class="SelectedHeroAttributesElement">
+									<Panel class="DotaAttributePic" id="DotaAttributePic_2" />
+									<Label id="HeroAttributes_2" class="AttributeValueText" text="0 + 0.0" />
+								</Panel>
+								<Panel class="SelectedHeroAttributesElement">
+									<Panel class="DotaAttributePic" id="DotaAttributePic_3" />
+									<Label id="HeroAttributes_3" class="AttributeValueText" text="0 + 0.0" />
+								</Panel>
+							</Panel>
+						</Panel>
+						<Button id="ExitButton" onactivate="CloseMenu();" />
+					</Panel>
+				</Panel>
+				<Panel id="AbilitiesPanel">
+					<Panel class="AbilitiesLineSplitter" />
+					<Panel class="AbilitiesLineSplitter" style="horizontal-align: right;" />
+					<TextEntry id="HeroSearchTextEntry" oncancel="ClearSearch()" oninputsubmit="DropInputFocus()" placeholder="#hero_selection_button_search"/>
+					<Panel id="SelectedHeroAbilitiesPanelInner" />
+				</Panel>
+				<Panel id="HeroListPanel" />
+			</Panel>
+		</Panel>
+	</Panel>
+</root>

@@ -1,0 +1,60 @@
+<root>
+	<styles>
+ 		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+		<include src="file://{resources}/styles/hero_selection_shared.css" />
+		<include src="file://{resources}/styles/ability_shop.css" />
+	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/arena_util.js" />
+		<include src="file://{resources}/scripts/ability_shop.js" />
+	</scripts>
+	<snippets>
+		<snippet name="Ability">
+			<Panel class="Ability">
+				<DOTAAbilityImage id="AbilityImage" />
+				<Label id="PointCost" hittest="false" text="1" />
+				<Label id="AbilityLevel" hittest="false" text="x1" />
+				<Label id="SellReturn" hittest="false" text="+1" />
+				<Label id="SellCost" hittest="false" text="-100" />
+				<Image id="BannedOverlay" src="file://{images}/custom_game/ability_shop/banned.png" hittest="false" />
+			</Panel>
+		</snippet>
+		<snippet name="HeroesPanel">
+			<Panel class="HeroesPanelPage">
+				<Panel class="HeroesPanelElement" id="HeroesByAttributes_0" />
+				<Panel class="HeroesPanelElement" id="HeroesByAttributes_1" />
+				<Panel class="HeroesPanelElement" id="HeroesByAttributes_2" />
+			</Panel>
+		</snippet>
+	</snippets>
+	<Panel class="base MainHidden" hittest="false">
+		<Panel id="AbilityShopBase" hittest="false">
+			<Button id="InfoContainer" onactivate="$.GetContextPanel().ToggleClass('MainHidden');">
+				<Label id="InfoContainerMainLabel" hittest="false" text="Ability Shop"/>
+				<Label id="InfoContainerPointsLabel" hittest="false" text="+1"/>
+			</Button>
+			<Panel id="MainContainer">
+				<Panel id="InfoToolbar">
+					<TextEntry id="SearchBar" placeholder="#ability_shop_search_placeholder"/>
+					<ToggleButton id="PurchasedAbilitiesToggle" text="#ability_shop_purchased_only" />
+					<Label id="ShiftStateLabel" text="#ability_shop_shift_no" />
+					<Button class="CloseButton" id="CloseButton" onactivate="$.GetContextPanel().AddClass('MainHidden');"/>
+				</Panel>
+				<Panel id="MainRoot">
+					<Panel id="MainHeroesRoot">
+						<Panel id="MainHeroesList" />
+						<Panel id="HeroesToolbar">
+							<Button id="SwitchHeroesButton" class="PickButton" onactivate="SwitchTab()" >
+								<Label text="#hero_selection_heroes_default" id="SwitchHeroesDefault" />
+								<Panel />
+								<Label text="#hero_selection_heroes_new" id="SwitchHeroesNew" />
+							</Button>
+							<Panel id="HeroAbilitiesRoot" />
+						</Panel>
+					</Panel>
+					<Panel id="MainSearchRoot" />
+				</Panel>
+			</Panel>
+		</Panel>
+	</Panel>
+</root>
