@@ -67,14 +67,14 @@ height: 100%;
 flow-children: down; }
 
 #MainHeroesList {
-width: 100%;
+width: 90%;
 height: 80%; }
 
 #HeroesToolbar {
 width: 100%;
-height: 20%;
+height: 100%;
 margin: 7px;
-margin-top: 0; }
+margin-top: 0px; }
 
 #MainSearchRoot {
 width: 100%;
@@ -175,12 +175,12 @@ visibility: collapse; }
 visibility: visible; }
 
 .HeroListElement {
-width: 96px;
-height: 54px;
+width: 76.296px;
+height: 42.9165px;
 margin-top: 10px;
-margin-right: -8px;
+margin-right: -10px;
 margin-bottom: 0;
-margin-left: 18px;
+margin-left: 15px;
 transition-duration: .1s;
 transition-property: pre-transform-scale2d; }
 .HeroListElement:hover {
@@ -200,7 +200,7 @@ flow-children: down; }
 
 .HeroesPanelElement {
 width: 100%;
-height: 33.3%;
+height: 20.0%;
 padding-left: 20px;
 flow-children: right-wrap; }
 

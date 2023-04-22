@@ -15,7 +15,7 @@ item_skadi_8 = class(item_skadi_baseclass)
 
 modifier_item_skadi_arena = class({
 	IsHidden      = function() return true end,
-	GetAttributes = function() return MODIFIER_ATTRIBUTE_MULTIPLE end,
+	GetAttributes = function() return MODIFIER_ATTRIBUTE_PERMAMENT end,
 	IsPurgable    = function() return false end,
 })
 

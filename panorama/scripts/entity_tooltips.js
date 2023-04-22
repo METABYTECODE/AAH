@@ -8,7 +8,7 @@ var Check = function() {
 		CursorTargetEnts.push(ent);
 		var entTooltipInfo = GameUI.CustomUIConfig().custom_entity_values[ent];
 		if (entTooltipInfo != null && entTooltipInfo.custom_tooltip != null && CurrentEntityHoveredPanel == null) {
-			$.Msg(entTooltipInfo.custom_tooltip.title)
+			//$.Msg(entTooltipInfo.custom_tooltip.title)
 			CurrentEntityHoveredIndex = ent;
 			CurrentEntityHoveredPanel = $.CreatePanel('Panel', $.GetContextPanel(), '');
 			var abs = Entities.GetAbsOrigin(ent);

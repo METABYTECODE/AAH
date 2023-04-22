@@ -138,7 +138,7 @@ function HeroSelection:ChangeHero(playerId, newHeroName, keepExp, duration, item
 			local fountatin = FindFountain(PlayerResource:GetTeam(playerId))
 			if not location and fountatin then location = fountatin:GetAbsOrigin() end
 
-			for i = DOTA_ITEM_SLOT_1, DOTA_STASH_SLOT_6 do
+			for i = DOTA_ITEM_SLOT_1, DOTA_ITEM_NEUTRAL_SLOT do
 				local citem  = hero:GetItemInSlot(i)
 				if citem and citem ~= item then
 					local newItem = CreateItem(citem:GetName(), nil, nil)
@@ -156,6 +156,7 @@ function HeroSelection:ChangeHero(playerId, newHeroName, keepExp, duration, item
 					table.insert(items, CreateItem("item_dummy", hero, hero))
 				end
 			end
+
 
 			duelData.StatusBeforeArena = hero.StatusBeforeArena
 			duelData.OnDuel = hero.OnDuel

@@ -5,6 +5,7 @@
 		"containers_lua",
 		"custom_entity_values",
 		"shared_modifiers",
-		"attributes_helper",
+		"ability_damage_subtypes",
+		"units_subtypes_resistance"
 	]
 }

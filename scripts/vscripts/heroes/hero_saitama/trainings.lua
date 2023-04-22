@@ -3,7 +3,10 @@ LinkLuaModifier("modifier_saitama_trainings_invulnerability", "heroes/hero_saita
 saitama_training = class({})
 
 modifier_saitama_trainings_invulnerability = class({
-    CheckState    = function() return {[MODIFIER_STATE_INVULNERABLE] = true} end,
+    CheckState    = function() return {
+        [MODIFIER_STATE_INVULNERABLE] = true,
+        [MODIFIER_STATE_NO_UNIT_COLLISION] = true,
+    } end,
     IsDebuff      = function() return false end
 })
 

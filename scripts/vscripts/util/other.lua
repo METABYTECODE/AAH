@@ -239,6 +239,7 @@ function RefreshAbilities(unit, tExceptions)
 		local ability = unit:GetAbilityByIndex(i)
 		if ability and (not tExceptions or not tExceptions[ability:GetAbilityName()]) then
 			ability:EndCooldown()
+			ability.ManaSpendCooldown = false
 		end
 	end
 end
@@ -248,7 +249,12 @@ function RefreshItems(unit, tExceptions)
 		local item = unit:GetItemInSlot(i)
 		if item and (not tExceptions or not tExceptions[item:GetAbilityName()]) then
 			item:EndCooldown()
+			item.ManaSpendCooldown = false
 		end
+	end
+	local teleport = unit:GetItemInSlot(DOTA_ITEM_TP_SCROLL)
+	if teleport then
+		teleport:EndCooldown()
 	end
 end
 
@@ -384,7 +390,14 @@ function GetTrueItemCost(name)
 end
 
 function GetNotScaledDamage(damage, unit)
-	return damage / (1 + unit:GetSpellAmplification(false))
+	local intSpellDamage = unit:GetSpellAmplification(false)
+	--[[if unit.DamageAmpPerAgility then
+		local int = unit:GetIntellect()
+		intSpellDamage = int * unit.DamageAmpPerAgility * 0.01
+	end]]
+	damage = damage / (1 + (unit:GetSpellAmplification(false) or 0))
+	--print(damage)
+	return damage
 end
 
 function IsUltimateAbility(ability)
@@ -431,7 +444,7 @@ function CreateGlobalParticle(name, callback, pattach)
 		local f = FindFountain(team)
 		if f then
 			local p = ParticleManager:CreateParticleForTeam(name, pattach or PATTACH_WORLDORIGIN, f, team)
-			callback(p)
+			if callback then callback(p) end
 			table.insert(ps, p)
 		end
 	end
@@ -481,6 +494,7 @@ function GetConnectionState(playerId)
 end
 
 function DebugCallFunction(fun)
+	--print("debug")
 	local status, nextCall = xpcall(fun, function (msg)
 		return msg..'\n'..debug.traceback()..'\n'
 	end)
@@ -546,8 +560,10 @@ function GetPreMitigationDamage(value, victim, attacker, damagetype)
 end
 
 function SimpleDamageReflect(victim, attacker, damage, flags, ability, damage_type)
-	if victim:IsAlive() and not HasDamageFlag(flags, DOTA_DAMAGE_FLAG_REFLECTION) and attacker:GetTeamNumber() ~= victim:GetTeamNumber() then
+	if --[[victim:IsAlive() and]] not HasDamageFlag(flags, DOTA_DAMAGE_FLAG_REFLECTION) and attacker:GetTeamNumber() ~= victim:GetTeamNumber() then
 		--print("Reflected " .. damage .. " damage from " .. victim:GetUnitName() .. " to " .. attacker:GetUnitName())
+		
+		ability.NoDamageAmp = true
 		ApplyDamage({
 			victim = attacker,
 			attacker = victim,
@@ -630,8 +646,8 @@ function VectorOnBoxPerimeter(vec, min, max)
 	if m == dt then return Vector(x, t) end
 end
 
-function CalculateBaseArmor(intellect)
-	return intellect * 0.1
+function CalculateBaseArmor(agility)
+	return agility * AGILITY_ARMOR_BASE_COEFF
 end
 
 function __toFixed(num, x)
@@ -643,8 +659,8 @@ end
 function DamageSubtypes(inflictor, victim, damage)
 	if inflictor and inflictor:GetKeyValue("AbilityUnitDamageSubType") then
 		local subtype = inflictor:GetKeyValue("AbilityUnitDamageSubType")
-		if victim and victim:GetKeyValue("DamgeSubTypeResistance") then
-			local resist = victim:GetKeyValue("DamgeSubTypeResistance")
+		if victim and victim:GetKeyValue("DamageSubtypeResistance") then
+			local resist = victim:GetKeyValue("DamageSubtypeResistance")
 			if resist[subtype] and not victim:IsHexed() then
 				if resist[subtype] > 100 then resist[subtype] = 100 end
 				damage = damage - damage * resist[subtype] * 0.01
@@ -665,4 +681,325 @@ end
 
 function extended (child, parent)
     setmetatable(child,{__index = parent}) 
+end
+
+function CalculateStatForLevel(parent, stat, level_limit)
+	local stat_per_level = 0
+	if stat == DOTA_ATTRIBUTE_STRENGTH then
+		if parent.CustomGain_Strength then
+			if parent:GetLevel() <= level_limit then
+				stat_per_level = parent:GetLevel() * parent.CustomGain_Strength
+			else
+				stat_per_level = level_limit * parent.CustomGain_Strength
+			end
+		else
+			if parent:GetLevel() <= level_limit then
+				stat_per_level = parent:GetLevel() * (parent.Gain_Strength or 0)
+			else
+				stat_per_level = level_limit * (parent.Gain_Strength or 0)
+			end
+		end
+		return stat_per_level
+	end
+	if stat == DOTA_ATTRIBUTE_AGILITY then
+		if parent.CustomGain_Agility then
+			if parent:GetLevel() <= level_limit then
+				stat_per_level = parent:GetLevel() * parent.CustomGain_Agility
+			else
+				stat_per_level = level_limit * parent.CustomGain_Agility
+			end
+		else
+			if parent:GetLevel() <= level_limit then
+				stat_per_level = parent:GetLevel() * (parent.Gain_Agility or 0)
+			else
+				stat_per_level = level_limit * (parent.Gain_Agility or 0)
+			end
+		end
+		return stat_per_level
+	end
+	if stat == DOTA_ATTRIBUTE_INTELLECT then
+		if parent.CustomGain_Intelligence then
+			if parent:GetLevel() <= level_limit then
+				stat_per_level = parent:GetLevel() * parent.CustomGain_Intelligence
+			else
+				stat_per_level = level_limit * parent.CustomGain_Intelligence
+			end
+		else
+			if parent:GetLevel() <= level_limit then
+				stat_per_level = parent:GetLevel() * (parent.Gain_Intellect or 0)
+			else
+				stat_per_level = level_limit * (parent.Gain_Intellect or 0)
+			end
+		end
+		return stat_per_level
+	end
+end
+
+function FilterDamageSpellAmpCondition(inflictor, inflictorname, attacker)
+	return (attacker.DamageMultiplier and not SPELL_AMPLIFY_NOT_SCALABLE_MODIFIERS[inflictorname] and inflictorname ~= "necrolyte_heartstopper_aura" and not inflictor.NoDamageAmp)
+end
+function DamageAmpCondition(inflictor, unit)
+	return (not inflictor or ((IsValidEntity(inflictor) and inflictor.GetAbilityName) and FilterDamageSpellAmpCondition--[[(inflictor, inflictor:GetAbilityName(), unit)]]))
+end
+
+function StaminaThreshouldForDebuff(stamina)
+	return stamina:GetStackCount() <= STAMINA_THRESHOLD_FOR_DEBUFF
+end
+
+function CheckBackpack(unit, backpack)
+	local update = false
+	if not backpack then
+		backpack = {}
+	end
+	
+	local index = 0
+	for slot = DOTA_ITEM_SLOT_7, DOTA_ITEM_SLOT_9  do
+		index = index + 1
+		local item = unit:GetItemInSlot(slot)
+		if item ~= backpack[index] then
+			backpack[index] = item
+			update = true
+		end
+	end
+
+	if update then
+		--print("yes")
+		Attributes:UpdateAll(unit)
+	end
+
+	return backpack
+end
+
+function DamageHasInflictor(inflictor, damage, attacker, victim, damagetype_const)
+	local inflictorname = inflictor:GetAbilityName()
+
+			--if (SPELL_AMPLIFY_NOT_SCALABLE_MODIFIERS[inflictorname] --[[or inflictor.NoDamageAmp]]) and attacker:IsHero() then
+				--damage = GetNotScaledDamage(damage, attacker)
+			--end
+			--print(inflictor.NoDamageAmp)
+
+			local jungle_bears_damage_mult = inflictor:GetAbilitySpecial("jungle_bears_damage_multiplier")
+			if victim and jungle_bears_damage_mult and victim:GetFullName() == "npc_dota_neutral_jungle_variant1" then
+				inflictor.jungle_bears_damage_mult = jungle_bears_damage_mult
+				damage = damage * jungle_bears_damage_mult
+			end
+
+			if FilterDamageSpellAmpCondition(inflictor, inflictorname, attacker) then
+				local amp = attacker.DamageMultiplier
+				damage = damage * (amp)
+			end
+
+			if IsValidEntity(inflictor.originalInflictor) then
+				inflictorname = inflictor.originalInflictor:GetAbilityName()
+			end
+			if BOSS_DAMAGE_ABILITY_MODIFIERS[inflictorname] and victim:IsBoss() then
+				damage = damage * BOSS_DAMAGE_ABILITY_MODIFIERS[inflictorname] * 0.01
+			end
+
+			damage = DamageSubtypesFilter(inflictorname, attacker, victim, damage) or damage
+
+			--magic splash
+			--[[if
+			--victim:IsCreep() and
+			not inflictor.NoSplash and
+			not ABILITIES_NO_SPLASH[inflictorname] and
+			not inflictor.SplashCooldown then
+				inflictor.SplashCooldown = true
+				Timers:CreateTimer(1, function()
+					inflictor.SplashCooldown = false
+				end)
+				local targets = FindUnitsInRadius(
+					attacker:GetTeam(),
+					victim:GetAbsOrigin(),
+					nil,
+					250, --radius
+					DOTA_UNIT_TARGET_TEAM_ENEMY,
+					DOTA_UNIT_TARGET_CREEP,
+					0,
+					FIND_CLOSEST,
+					false
+				)
+				local function DealDamageWithTimer(timer, table)
+					Timers:CreateTimer(timer, function()
+						ApplyDamage(table)
+					end)
+				end
+				local function createDamageTable(index)
+					return {
+						attacker = attacker,
+						victim = targets[index],
+						damage = damage * MAGIC_SPLASH * 0.01,
+						damage_type = damagetype_const,
+						damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
+						ability = inflictor
+					}
+				end
+				for i = 1, MAGIC_SPLASH_COUNT do
+					DealDamageWithTimer(i / 10, createDamageTable(i))
+				end
+			end]]
+
+		if attacker:IsHero() and
+		attacker:GetLevel() >= START_SPEND_MANA_LEVEL and
+		damagetype_const ~= DAMAGE_TYPE_PHYSICAL and
+		inflictor.GetManaCost and
+		inflictor:GetManaCost(inflictor:GetLevel()) > 0 and
+		inflictor.GetCooldown and
+		inflictor:GetCooldown(inflictor:GetLevel()) > 0 and
+		--inflictor.GetAbilityName and
+		FilterDamageSpellAmpCondition(inflictor, inflictor:GetAbilityName(), attacker) and
+		ABILITIES_LIST[inflictorname].AbilityUnitDamageSubType and
+		--ABILITIES_LIST[inflictor:GetAbilityName()].AbilityUnitDamageSubType ~= "DAMAGE_SUBTYPE_TECH" and
+		not MANA_SPEND_SPELLS_EXEPTIONS[inflictorname] then
+			local mana_spend = (damage) * SPEND_MANA_PER_DAMAGE * 0.01
+			if victim:GetFullName() == "npc_dota_neutral_jungle_variant1" and inflictor.jungle_bears_damage_mult then
+				mana_spend = mana_spend / inflictor.jungle_bears_damage_mult
+			end
+			if --[[manacost > 0 and mana_spend > manacost * 3 and]] not inflictor.ManaSpendCooldown then
+				--inflictor.ManaSpend = math.max(mana_spend * 15, inflictor.ManaSpend or 0)
+				attacker:SpendMana(mana_spend, inflictor)
+
+				if (attacker:GetMana() / attacker:GetMaxMana() * 100) <= MANA_SPEND_THRESHOULD then
+					damage = damage - damage * MANA_SPEND_ABILITY_DAMAGE_DECREASE * 0.01
+					if not attacker.arena_hud_error_no_mana then
+						attacker.arena_hud_error_no_mana = true
+						Containers:DisplayError(attacker:GetPlayerID(), "#arena_hud_error_no_mana")
+						Timers:CreateTimer(1, function()
+							attacker.arena_hud_error_no_mana = false
+						end)
+					end
+				end
+
+				inflictor.ManaSpendCooldown = true
+				Timers:NextTick(function()
+					inflictor.ManaSpendCooldown = false
+				end)
+			end
+		end
+	return damage
+end
+
+function ProcessDamageModifier(v, attacker, victim, inflictor, damage_, damagetype_const)
+	local multiplier
+	if type(v) == "function" then
+		multiplier = v(attacker, victim, inflictor, damage_, damagetype_const)
+	elseif type(v) == "table" then
+		if v.multiplier then
+			if type(v.multiplier) == "function" then
+				multiplier = v.multiplier(attacker, victim, inflictor, damage_, damagetype_const)
+			else
+				multiplier = v.multiplier
+			end
+		else
+			multiplier = v
+		end
+	end
+	if multiplier ~= nil then
+		if type(multiplier) == "table" then
+			if type(multiplier.reject) == "boolean" and not multiplier.reject then
+				damage_ = 0
+				return 0
+			end
+			if multiplier.BlockedDamage then
+				BlockedDamage = math.max(BlockedDamage, multiplier.BlockedDamage)
+			end
+			--[[if multiplier.LifestealPercentage then
+				LifestealPercentage = LifestealPercentage + multiplier.LifestealPercentage
+			end
+			if multiplier.SpellLifestealPercentage and not multiplier.SpellLifestealStackable then
+				SpellLifestealPercentage = math.max(SpellLifestealPercentage, multiplier.SpellLifestealPercentage)
+				DontShowParticleAndHealNumber = multiplier.DontShowParticleAndHealNumber
+				
+			elseif multiplier.SpellLifestealPercentage then
+				SpellLifestealPercentage = SpellLifestealPercentage + multiplier.SpellLifestealPercentage
+				DontShowParticleAndHealNumber = multiplier.DontShowParticleAndHealNumber
+			end]]
+			if multiplier.damage then
+				if type(multiplier.damage) == "function" then
+					local _damage = multiplier.damage(attacker, victim, inflictor, damage_, damagetype_const)
+					if _damage then
+						damage_ = _damage
+						return damage_
+					end
+				else
+					damage_ = multiplier.damage
+					return damage_
+				end
+			end
+			if multiplier.multiplier then
+				multiplier = multiplier.multiplier
+			end
+		end
+		--print("Raw damage: " .. damage .. ", after " .. k .. ": " .. damage * multiplier .. " (multiplier: " .. multiplier .. ")")
+		if type(multiplier) == "boolean" and not multiplier then
+			damage_ = 0
+			return 0
+		elseif type(multiplier) == "number" then
+			damage_ = damage_ * multiplier
+		end
+	end
+	return damage_
+end
+
+function SplashTimer(parent, usedAbility)
+	local name = usedAbility:GetAbilityName()
+
+	if ABILITIES_TRIGGERS_ATTACKS[name] then
+			local v = ABILITIES_TRIGGERS_ATTACKS[name]
+			local duration
+			if type(v) == "number" then
+				duration = v
+			else
+				duration = (GetKeyValue(name, "AbilityCastPoint", usedAbility:GetLevel()) or 0) + (GetKeyValue(name, "AbilityChannelTime", usedAbility:GetLevel()) or 0) + 0.2
+			end
+			--print(duration)
+			parent:AddNewModifier(parent, nil, "modifier_splash_timer", {duration = duration})
+		end
+end
+
+function InitHero(parent)
+		--print("debug1")
+		local index = parent:GetEntityIndex()
+		Attributes.Heroes[index] = {}
+		local parent_info = Attributes.Heroes[index]
+
+		parent_info.ManaPerInt = BASE_MANA_PER_INT
+		--parent:SetNetworkableEntityInfo("ManaPerInt", BASE_MANA_PER_INT)
+
+		parent_info.HealthPerStrength = BASE_HP_PER_STRENGTH
+		parent_info.DamageAmpPerAgility = AGILITY_DAMAGE_AMPLIFY
+		parent_info.BaseDamagePerStrength = BASE_DAMAGE_PER_STRENGTH
+		parent_info.ManaRegAmpPerInt = MANA_REGEN_AMPLIFY
+		parent_info.AgilityArmorMultiplier = AGILITY_ARMOR_MULTIPLIER
+		parent_info.HpRegenAmp = STRENGTH_REGEN_AMPLIFY
+		parent_info.primary_base_damage = 0
+		parent_info.BaseHealthRegen = parent:GetBaseHealthRegen()
+		parent_info._BaseDamageMin = parent.Custom_AttackDamageMin or parent:GetKeyValue("AttackDamageMin")
+		parent_info._BaseDamageMax = parent.Custom_AttackDamageMax or parent:GetKeyValue("AttackDamageMax")
+
+		parent_info._splash = 0
+		parent_info._splitshot = 0
+
+		parent:SetNetworkableEntityInfo("IntellectPrimaryBonusMultiplier", INTELLECT_PRIMARY_BONUS_MAX_BONUS)
+		parent:SetNetworkableEntityInfo("IntellectPrimaryBonusDifference", INTELLECT_PRIMARY_BONUS_DIFF_FOR_MAX_MULT)
+
+		parent:SetNetworkableEntityInfo("AttributeAgilityGain", parent:GetNetworkableEntityInfo("AttributeAgilityGain") or parent:GetAgilityGain())
+		parent:SetNetworkableEntityInfo("AttributeStrengthGain", parent:GetNetworkableEntityInfo("AttributeStrengthGain") or parent:GetStrengthGain())
+		parent:SetNetworkableEntityInfo("AttributeIntelligenceGain", parent:GetNetworkableEntityInfo("AttributeIntelligenceGain") or parent:GetIntellectGain())
+
+		if UNITS_LIST[parent:GetFullName()] and UNITS_LIST[parent:GetFullName()].DamageSubtypeResistance then
+			parent:SetNetworkableEntityInfo("DamageSubtypesResistance", UNITS_LIST[parent:GetFullName()].DamageSubtypeResistance)
+		end
+
+		parent_info.Gain_Strength = parent:GetStrengthGain()
+		parent_info.Gain_Agility = parent:GetAgilityGain()
+		parent_info.Gain_Intellect = parent:GetIntellectGain()
+
+		if parent.ArenaHero then
+			parent:SetNetworkableEntityInfo("PrimaryAttribute", tostring(_G[NPC_HEROES_CUSTOM[parent:GetFullName()]["AttributePrimary"]]))
+			return
+		end
+		parent:SetNetworkableEntityInfo("PrimaryAttribute", tostring(parent:GetPrimaryAttribute()))
+
+
 end

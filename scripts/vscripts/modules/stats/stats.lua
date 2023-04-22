@@ -72,10 +72,10 @@ function StatsClient:AssignTeams(callback)
 end
 
 function StatsClient:OnGameEnd(winner)
-	local status, nextCall = xpcall(function()
+	--local status, nextCall = xpcall(function()
 		if GameMode.Broken then
-			PlayerTables:CreateTable("stats_game_result", {error = GameMode.Broken}, AllPlayersInterval)
-			return
+			--PlayerTables:CreateTable("stats_game_result", {error = GameMode.Broken}, AllPlayersInterval)
+			--return
 		end
 		if not IsInToolsMode() and StatsClient.GameEndScheduled then return end
 		StatsClient.GameEndScheduled = true
@@ -159,13 +159,19 @@ function StatsClient:OnGameEnd(winner)
 
 		local clientData = {players = {}}
 
-		StatsClient:Send("endMatch", data, function(response)
-			if not response.players then
+		--StatsClient:Send("endMatch", data, function(response)
+			--[[if not response.players then
 				local err = response.error and ("Server error: " .. response.error) or "Unknown server error"
 				PlayerTables:CreateTable("stats_game_result", { error = err }, AllPlayersInterval)
-			else
-				for playerId, receivedData in pairs(response.players) do
-					playerId = tonumber(playerId)
+			else]]
+				--for playerId, receivedData in pairs(response.players) do
+				for i,_ in pairs(data.players) do
+					local playerId = i
+					--[[if PlayerResource:IsValidPlayerID(i) then
+						playerId = i
+					else
+						return print("error load screen")
+					end]]
 					local sentData = data.players[playerId]
 					clientData.players[playerId] = {
 						hero = sentData.heroName,
@@ -179,22 +185,22 @@ function StatsClient:OnGameEnd(winner)
 						bonus_int = sentData.bonus_int,
 						items = sentData.items,
 
-						ratingNew = receivedData.ratingNew,
-						ratingOld = receivedData.ratingOld,
-						ratingGamesRemaining = receivedData.ratingGamesRemaining or 10,
-						experienceNew = receivedData.experienceNew or 0,
-						experienceOld = receivedData.experienceOld or 0,
+						--ratingNew = receivedData.ratingNew,
+						--ratingOld = receivedData.ratingOld,
+						--ratingGamesRemaining = receivedData.ratingGamesRemaining or 10,
+						--experienceNew = receivedData.experienceNew or 0,
+						--experienceOld = receivedData.experienceOld or 0,
 					}
 				end
 				PlayerTables:CreateTable("stats_game_result", clientData, AllPlayersInterval)
-			end
-		end, math.huge, nil, true)
-	end, function(msg)
-		return msg..'\n'..debug.traceback()..'\n'
-	end)
-	if not status then
-		PlayerTables:CreateTable("stats_game_result", {error = nextCall}, AllPlayersInterval)
-	end
+			--end
+		--end, math.huge, nil, true)
+	--end, function(msg)
+		--return msg..'\n'..debug.traceback()..'\n'
+	--end)
+	--if not status then
+		--PlayerTables:CreateTable("stats_game_result", {error = nextCall}, AllPlayersInterval)
+	--end
 end
 
 function StatsClient:HandleError(err)

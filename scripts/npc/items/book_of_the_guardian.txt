@@ -90,8 +90,8 @@
 			"09"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"blast_damage_int_mult"	"2 3"
-				"CalculateSpellDamageTooltip"	"0"
+				"blast_damage_int_mult"	"1 2"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"10"
 			{
@@ -121,7 +121,13 @@
 			"15"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"aura_heal_reduce"		"-25 -30"
+				"aura_heal_reduce"		"-30 -50"
+			}
+			"99"
+			{
+				"var_type" "FIELD_FLOAT"
+				"jungle_bears_damage_multiplier" "1 2"
+				"CalculateSpellDamageTooltip" "0"
 			}
 		}
 	}
@@ -188,8 +194,8 @@
 			"09"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"blast_damage_int_mult"	"2 3"
-				"CalculateSpellDamageTooltip"	"0"
+				"blast_damage_int_mult"	"1 2"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"10"
 			{
@@ -219,7 +225,13 @@
 			"15"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"aura_heal_reduce"		"-25 -30"
+				"aura_heal_reduce"		"-30 -50"
+			}
+			"99"
+			{
+				"var_type" "FIELD_FLOAT"
+				"jungle_bears_damage_multiplier" "1 2"
+				"CalculateSpellDamageTooltip" "0"
 			}
 		}
 	}

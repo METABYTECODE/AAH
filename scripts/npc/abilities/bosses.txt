@@ -47,7 +47,7 @@
 					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"			"%bonus_attack_speed"
 				}
 
-				"ThinkInterval"  "0.1"
+				"ThinkInterval"  "1"
 				"OnIntervalThink"
 				{
 					"RunScript"

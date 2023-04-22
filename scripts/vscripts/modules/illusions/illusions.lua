@@ -71,20 +71,22 @@ function Illusions:_copyShards(unit, illusion)
 end
 
 function Illusions:_copyLevel(unit, illusion)
-	local level = unit:GetLevel()
-	--[[if unit.CustomGain_Agility and unit.CustomGain_Strength and unit.CustomGain_Intelligence then
+	local level = unit:GetLevel() - 1
+	if unit.CustomGain_Agility and unit.CustomGain_Strength and unit.CustomGain_Intelligence then
+		illusion:SetBaseStrength(unit:GetKeyValue("AttributeBaseStrength"))
+		illusion:SetBaseAgility(unit:GetKeyValue("AttributeBaseAgility"))
+		illusion:SetBaseIntellect(unit:GetKeyValue("AttributeBaseIntelligence"))
 		illusion:ModifyStrength(unit.CustomGain_Strength * level)
 		illusion:ModifyAgility(unit.CustomGain_Agility * level)
 		illusion:ModifyIntellect(unit.CustomGain_Intelligence * level)
 	else
+		illusion:SetBaseStrength(unit:GetKeyValue("AttributeBaseStrength"))
+		illusion:SetBaseAgility(unit:GetKeyValue("AttributeBaseAgility"))
+		illusion:SetBaseIntellect(unit:GetKeyValue("AttributeBaseIntelligence"))
 		illusion:ModifyStrength(unit:GetStrengthGain() * level)
 		illusion:ModifyAgility(unit:GetAgilityGain() * level)
 		illusion:ModifyIntellect(unit:GetIntellectGain() * level)
-	end]]
-	illusion:ModifyStrength(unit:GetStrength())
-	illusion:ModifyAgility(unit:GetAgility())
-	illusion:ModifyIntellect(unit:GetIntellect())
-	illusion.Additional_attackspeed = unit:GetAttackSpeed()
+	end
 	illusion.GetLevel = function()
 		return level
 	end
@@ -108,13 +110,14 @@ function Illusions:_copyEverything(unit, illusion)
 	Illusions:_copyAbilities(unit, illusion)
 	Illusions:_copyItems(unit, illusion)
 	Illusions:_copyAppearance(unit, illusion)
+	Illusions:_copyLevel(unit, illusion)
 	illusion.UnitName = unit.UnitName
 	local heroName = unit:GetFullName()
 	if not NPC_HEROES[heroName] and NPC_HEROES_CUSTOM[heroName] then
 		TransformUnitClass(illusion, NPC_HEROES_CUSTOM[heroName], true)
 	end
 
-	--Illusions:_copyShards(unit, illusion)
+	Illusions:_copyShards(unit, illusion)
 	illusion:SetNetworkableEntityInfo("unit_name", illusion:GetFullName())
 
 	illusion:SetHealth(unit:GetHealth())
@@ -147,7 +150,7 @@ function Illusions:create(info)
 	FindClearSpaceForUnit(illusion, origin, true)
 	illusion:SetForwardVector(unit:GetForwardVector())
 
-	Illusions:_copyLevel(unit, illusion)
+	Illusions:_copyEverything(unit, illusion)
 
 	illusion.isCustomIllusion = true
 	illusion:AddNewModifier(unit, ability, "modifier_illusion", {
@@ -156,6 +159,10 @@ function Illusions:create(info)
 		incoming_damage = info.damageIncoming - 100,
 	})
 	illusion:MakeIllusion()
+
+	Timers:CreateTimer(info.duration, function()
+		Attributes.Heroes[illusion:GetEntityIndex()] = nil
+	end)
 
 	return illusion
 end

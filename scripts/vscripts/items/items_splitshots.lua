@@ -5,13 +5,13 @@ item_nagascale_bow = {
 	GetIntrinsicModifierName = function() return "modifier_item_nagascale_bow" end,
 }
 
-if IsServer() then
-	function item_nagascale_bow:OnProjectileHit(hTarget)
+	--[[function item_nagascale_bow:OnProjectileHit(hTarget)
 		if not hTarget then return end
 		local caster = self:GetCaster()
 		if caster:IsIllusion() then return end
 		local number = #caster:FindAllModifiersByName(self:GetIntrinsicModifierName())
 
+		--self.NoDamageAmp = true
 		ApplyDamage({
 			attacker = caster,
 			victim = hTarget,
@@ -22,8 +22,8 @@ if IsServer() then
 		})
 
 		hTarget:EmitSound("Hero_Medusa.AttackSplit")
-	end
-end
+	end]]
+--end
 
 item_splitshot_ultimate = {
 	GetIntrinsicModifierName = function() return "modifier_item_splitshot_ultimate" end,
@@ -44,7 +44,7 @@ function modifier_item_nagascale_bow:DeclareFunctions()
 		MODIFIER_PROPERTY_STATS_STRENGTH_BONUS,
 		MODIFIER_PROPERTY_STATS_AGILITY_BONUS,
 		MODIFIER_PROPERTY_STATS_INTELLECT_BONUS,
-		MODIFIER_EVENT_ON_ATTACK,
+		--MODIFIER_EVENT_ON_ATTACK,
 	}
 end
 function modifier_item_nagascale_bow:GetModifierPreAttack_BonusDamage()
@@ -60,22 +60,43 @@ function modifier_item_nagascale_bow:GetModifierBonusStats_Intellect()
 	return self:GetAbility():GetSpecialValueFor("bonus_all")
 end
 
+if IsServer() then
+	function modifier_item_nagascale_bow:OnCreated()
+		Timers:NextTick(function()
+			self:GetParent()._splitshot = self:GetParent()._splitshot + self:GetAbility():GetSpecialValueFor("split_damage_pct")
+		end)
+	end
+	function modifier_item_nagascale_bow:OnDestroy()
+		Timers:NextTick(function()
+			self:GetParent()._splitshot = self:GetParent()._splitshot - self:GetAbility():GetSpecialValueFor("split_damage_pct")
+		end)
+	end
+end
+
 local modifier_item_nagascale_bow_projectiles = fireSplitshotProjectilesFactory(
 	"modifier_item_nagascale_bow",
 	"split_radius"
 )
-function modifier_item_nagascale_bow:OnAttack(keys)
+
+--[[function modifier_item_nagascale_bow:OnAttack(keys)
 	local target = keys.target
 	local attacker = keys.attacker
 	local ability = self:GetAbility()
 	if attacker ~= self:GetParent() then return end
-	modifier_item_nagascale_bow_projectiles(attacker, target, ability)
-end
+
+	if attacker:FindModifierByName("modifier_splash_timer") then
+		return
+	end
+	--modifier_item_nagascale_bow_projectiles(attacker, target, ability)
+end]]
 
 LinkLuaModifier("modifier_item_splitshot_ultimate", "items/items_splitshots.lua", LUA_MODIFIER_MOTION_NONE)
 modifier_item_splitshot_ultimate = factorySYK(
 	{ sange = true, yasha = true, kaya = true },
-	{ MODIFIER_EVENT_ON_ATTACK }
+	{
+		--MODIFIER_EVENT_ON_ATTACK,
+		MODIFIER_EVENT_ON_ABILITY_START
+	}
 )
 
 local modifier_item_splitshot_ultimate_projectiles = fireSplitshotProjectilesFactory(
@@ -88,9 +109,13 @@ function modifier_item_splitshot_ultimate:OnAttack(keys)
 	local ability = self:GetAbility()
 	if attacker ~= self:GetParent() then return end
 
-	modifier_item_splitshot_ultimate_projectiles(attacker, target, ability)
+	if attacker:FindModifierByName("modifier_splash_timer") then
+		return
+	end
 
-	if RollPercentage(ability:GetSpecialValueFor("global_attack_chance_pct")) then
+	--modifier_item_splitshot_ultimate_projectiles(attacker, target, ability)
+
+	--[[if RollPercentage(ability:GetSpecialValueFor("global_attack_chance_pct")) then
 		local units = FindUnitsInRadius(
 			attacker:GetTeamNumber(),
 			Vector(0, 0, 0),
@@ -110,5 +135,5 @@ function modifier_item_splitshot_ultimate:OnAttack(keys)
 		projectile_info.iVisionRadius = 50
 		projectile_info.iVisionTeamNumber = attacker:GetTeamNumber()
 		ProjectileManager:CreateTrackingProjectile(projectile_info)
-	end
+	end]]
 end

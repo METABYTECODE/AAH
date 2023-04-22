@@ -161,7 +161,7 @@ if IsServer() then
 
         local value = ability:GetAbilitySpecial("health_decrease") * stacks
 
-        if bonus then bonus:SetStackCount(math.ceil((bonus:GetStackCount() or 0) + value * ability:GetAbilitySpecial("health_in_energy_pct") * 0.01)) end
+        if bonus and bonus.GetStackCount then bonus:SetStackCount(math.ceil((bonus:GetStackCount() or 0) + value * ability:GetAbilitySpecial("health_in_energy_pct") * 0.01)) end
         if debuff then
             debuff:SetStackCount((debuff:GetStackCount() or 0) + value)
             if ability:CheckEvolution() >= 2 then

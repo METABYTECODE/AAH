@@ -41,7 +41,7 @@ function Snippet_Player(playerId, rootPanel, index) {
 
 	panel.FindChildTraverse('HeroIcon').SetImage(TransformTextureToPath(playerData.hero));
 	panel.SetDialogVariableInt('hero_level', Players.GetLevel(playerId));
-	panel.SetDialogVariable('hero_name', $.Localize(playerData.hero));
+	panel.SetDialogVariable('hero_name', $.Localize("#"+playerData.hero));
 	panel.SetDialogVariableInt('kills', Players.GetKills(playerId));
 	panel.SetDialogVariableInt('deaths', Players.GetDeaths(playerId));
 	panel.SetDialogVariableInt('assists', Players.GetAssists(playerId));
@@ -103,15 +103,15 @@ function Snippet_Team(team) {
 
 function OnGameResult(gameResult) {
 	if (gameResult.error === 1) {
-		Game.FinishGame();
-		return;
+		//Game.FinishGame();
+		//return;
 	}
 
-	if (!gameResult.players) {
-		$('#LoadingPanel').visible = false;
-		$('#ErrorPanel').visible = true;
-		$('#ErrorMessage').text = $.Localize(gameResult.error);
-	} else {
+	//if (!gameResult.players) {
+		//$('#LoadingPanel').visible = false;
+		//$('#ErrorPanel').visible = true;
+		//$('#ErrorMessage').text = $.Localize(gameResult.error);
+	//} else {
 		$('#LoadingPanel').visible = false;
 		$('#EndScreenWindow').visible = true;
 		gameResult.winner = Game.GetGameWinner();
@@ -124,14 +124,14 @@ function OnGameResult(gameResult) {
 		var experienceOld = localData.experienceOld || 0;
 		SetPagePlayerLevel($('#ProfileBadge'), Math.floor(experienceNew / 100) + 1);
 		$('#EndScreenVictory').text = $.Localize(Players.GetTeam(Game.GetLocalPlayerID()) === gameResult.winner ? '#arena_end_screen_victory' : '#arena_end_screen_defeat');
-		$('#LevelProgressValue').text = Math.floor(experienceNew % 100) + ' / 100 XP';
-		$('#LevelProgressChange').text = '+' + Math.floor(experienceNew - experienceOld) + ' XP';
-		$('#LevelProgress').value = experienceOld % 100;
-		$.Schedule(.5, function() {
-			$('#LevelProgress').value = experienceNew % 100;
-			$('#LevelProgressChange').style.opacity = 1;
-		});
-	}
+		//$('#LevelProgressValue').text = Math.floor(experienceNew % 100) + ' / 100 XP';
+		//$('#LevelProgressChange').text = '+' + Math.floor(experienceNew - experienceOld) + ' XP';
+		//$('#LevelProgress').value = experienceOld % 100;
+		//$.Schedule(.5, function() {
+			//$('#LevelProgress').value = experienceNew % 100;
+			//$('#LevelProgressChange').style.opacity = 1;
+		//});
+	//}
 }
 
 (function() {
@@ -139,7 +139,7 @@ function OnGameResult(gameResult) {
 	GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ENDGAME_CHAT, false);
 	FindDotaHudElement('GameEndContainer').visible = false;
 
-	$.GetContextPanel().SetHasClass('ShowMMR', Options.IsEquals('EnableRatingAffection'));
+	//$.GetContextPanel().SetHasClass('ShowMMR', Options.IsEquals('EnableRatingAffection'));
 	$.GetContextPanel().RemoveClass('FadeOut');
 	$('#LoadingPanel').visible = true;
 	$('#ErrorPanel').visible = false;

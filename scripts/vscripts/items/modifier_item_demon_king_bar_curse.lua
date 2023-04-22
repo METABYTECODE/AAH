@@ -1,5 +1,7 @@
 modifier_item_demon_king_bar_curse = class({})
 function modifier_item_demon_king_bar_curse:IsDebuff() return true end
+function modifier_item_demon_king_bar_curse:IsPurgable() return false end
+function modifier_item_demon_king_bar_curse:IsPurgeException() return true end
 
 function modifier_item_demon_king_bar_curse:GetEffectName()
 	return "particles/arena/items_fx/demon_king_bar_curse_mark.vpcf"
@@ -23,14 +25,22 @@ if IsServer() then
 	function modifier_item_demon_king_bar_curse:OnIntervalThink()
 		local parent = self:GetParent()
 		local ability = self:GetAbility()
+
+		local damage = self:OnTooltip() * 0.5
+		if damage < parent:GetHealth() then
+			parent:SetHealth(parent:GetHealth() - (self:OnTooltip() * 0.5))
+		else
+			parent:TrueKill(ability, self:GetCaster())
+		end
+		--[[ability.NoDamageAmp = true
 		ApplyDamage({
 			attacker = self:GetCaster(),
 			victim = parent,
 			damage = self:OnTooltip() * 0.5,
 			damage_type = DAMAGE_TYPE_PURE,
-			damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
+			damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION + DOTA_DAMAGE_FLAG_HPLOSS + DOTA_DAMAGE_FLAG_BYPASSES_INVULNERABILITY,
 			ability = ability,
-		})
+		})]]
 		if not parent:IsAlive() then
 			parent:EmitSound("Hero_VengefulSpirit.MagicMissileImpact")
 		end

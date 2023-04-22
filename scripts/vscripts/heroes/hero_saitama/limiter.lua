@@ -92,7 +92,8 @@ end
 
 modifier_saitama_limiter_uncontrollability = class({
 	IsHidden = function() return false end,
-	IsPurgable = function() return false end
+	IsPurgable = function() return false end,
+	GetPriority = function() return { MODIFIER_PRIORITY_HIGH } end,
 })
 
 function modifier_saitama_limiter_uncontrollability:DeclareFunctions()

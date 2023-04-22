@@ -21,6 +21,7 @@ if IsServer() then
 			caster:EmitSound("Hero_Necrolyte.ReapersScythe.Cast")
 			target:EmitSound("Hero_Necrolyte.ReapersScythe.Target")
 
+			self.NoDamageAmp = true
 			ApplyDamage({
 				attacker = caster,
 				victim = target,
@@ -133,7 +134,7 @@ if IsServer() then
 	end
 
 	function modifier_item_scythe_of_the_ancients_passive:OnTakeDamage(keys)
-		local parent = self:GetParent()
+		--[[local parent = self:GetParent()
 		local damage = keys.original_damage
 		local ability = self:GetAbility()
 		if keys.attacker == parent and not keys.unit:IsMagicImmune() and keys.damage_type == 2 and not (keys.inflictor and keys.inflictor:GetAbilityName() == "batrider_sticky_napalm") then
@@ -146,7 +147,7 @@ if IsServer() then
 				damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
 				ability = ability
 			})
-		end
+		end]]
 	end
 end
 
@@ -170,6 +171,8 @@ if IsServer() then
 		local team = caster:GetTeamNumber()
 		ParticleManager:DestroyParticle(self.particle, false)
 		local damage = (target:GetMaxHealth() - target:GetHealth()) * ability:GetSpecialValueFor("delayed_damage_per_health")
+
+		ability.NoDamageAmp = true
 		ApplyDamage({
 			attacker = caster,
 			victim = target,

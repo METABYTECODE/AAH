@@ -18,7 +18,7 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"armor_reduction"		"-15"
+				"armor_reduction"		"-10"
 			}
 			"02"
 			{

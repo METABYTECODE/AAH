@@ -107,6 +107,11 @@
 				"var_type"				"FIELD_FLOAT"
 				"aura_heal_reduce"			"0"
 			}
+			"99"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"1.0 2.0 3.0"
+			}
 		}
 	}
 
@@ -161,6 +166,11 @@
 			{
 				"var_type"				"FIELD_FLOAT"
 				"aura_heal_reduce"			"0"
+			}
+			"99"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"1.0 2.0 3.0"
 			}
 		}
 	}
@@ -217,6 +227,11 @@
 				"var_type"				"FIELD_FLOAT"
 				"aura_heal_reduce"			"0"
 			}
+			"99"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"1.0 2.0 3.0"
+			}
 		}
 	}
 
@@ -229,7 +244,7 @@
 		"ItemShopTags"					"damage"
 		"ItemQuality"					"epic"
 		"ItemAliases"					"frozen radiance"
-		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ICE"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ENERGY"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
 
 		"AbilitySpecial"
@@ -237,7 +252,7 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_all_stats"		"225"
+				"bonus_all_stats"		"200"
 			}
 			"02"
 			{
@@ -287,7 +302,12 @@
 			"10"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"aura_heal_reduce"			"-50"
+				"aura_heal_reduce"			"-70"
+			}
+			"99"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"4.0"
 			}
 		}
 	}

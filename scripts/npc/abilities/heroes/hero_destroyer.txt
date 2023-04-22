@@ -20,7 +20,7 @@
 			{
 				"var_type"			"FIELD_INTEGER"
 				"damage"			"100 150 200 250 300 350 400"
-				"CalculateSpellDamageTooltip"	"0"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"02"
 			{
@@ -31,6 +31,12 @@
 			{
 				"var_type"			"FIELD_FLOAT"
 				"duration"			"1 1.2 1.4 1.6 1.8 2.0 2.2"
+			}
+			"99"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"10.0"
+				"CalculateSpellDamageTooltip"		"0"
 			}
 		}
 

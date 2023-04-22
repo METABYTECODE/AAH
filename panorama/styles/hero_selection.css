@@ -77,7 +77,7 @@
     margin-top: -1px;
     margin-right: 6px;
     margin-left: 6px;
-    flow-children: down; }
+    flow-children: right-wrap; }
     
     #SelectionStatusPanel {
     width: 100%;
@@ -345,7 +345,7 @@
     height: 960px;
     horizontal-align: right;
     align: right bottom;
-    flow-children: down; }
+    flow-children: right-wrap; }
     
     .HeroListControlsGroup {
     height: 100%; }
@@ -353,11 +353,11 @@
     .HeroesPanelPage {
     width: 100%;
     height: 100%;
-    flow-children: down; }
+    flow-children: right-wrap; }
     
     .HeroesPanelElement {
     width: 100%;
-    height: 33.3%;
+    height: 25.0%;
     flow-children: right-wrap; }
     
     #AbilitiesPanel {

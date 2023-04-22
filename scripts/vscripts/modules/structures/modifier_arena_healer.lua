@@ -9,6 +9,7 @@ if IsServer() then
 		self:StartIntervalThink(0.1)
 		self:SetDuration(60, true)
 		self.filler_ability = healer:FindAbilityByName("filler_ability")
+		--self.filler_ability:StartCooldown(120)
 		self.teamNumber = healer:GetTeamNumber()
 
 		healer:SetBaseMaxHealth(HEALER_HEALTH_BASE)

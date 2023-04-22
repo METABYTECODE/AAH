@@ -56,18 +56,29 @@ if IsServer() then
 		return self.Health or 0
 	end
 
-	modifier_sara_evolution.think_interval = 1/30
+	modifier_sara_evolution.think_interval = 1/20
 	function modifier_sara_evolution:OnCreated()
 		local parent = self:GetParent()
 		local ability = self:GetAbility()
 
+
+		parent.ManaPerInt = 0
 		if ability:GetLevel() == 0 then
 			ability:SetLevel(1)
 		end
 
+		Timers:NextTick(function()
+			local parent_info = Attributes.Heroes[parent:GetEntityIndex()]
+if not parent_info then return end
+			parent_info.HealthPerStrength = ability:GetSpecialValueFor("health_for_strength")
+			parent_info.AgilityArmorMultiplier = ability:GetSpecialValueFor("armor_per_agility")
+		end)
+
 		self.AbilityUpdate = 200
 		self.soul_particle = "particles/units/heroes/hero_nevermore/nevermore_necro_souls.vpcf"
 		self.Energy = 1
+		self.energy_limit_boost_pct = 1
+		self.energy_growth_boost_pct = 1
 		self.radius = ability:GetAbilitySpecial("energy_increase_radius")
 		self.projectile_speed = 300
 		self.ConceptualReflection = false
@@ -104,18 +115,17 @@ if IsServer() then
 		end
 
 		parent.ModifyEnergy = function(_, value, bShowMessage)
-			if value > 0 and parent:HasModifier("modifier_sara_fragment_of_logic_debuff") then
-				return self.Energy
-			end
 			if bShowMessage then
 				--print("Call: modify mana by " .. value  .. ", result: old mana: " .. self.Energy .. " new mana: " .. math.min(math.max(self.Energy + value, 0), self.MaxEnergy))
 				SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, parent, value, nil)
 			end
-			local int_multiplier = ability:GetAbilitySpecial("int_in_growth_mult_pct") * parent:GetIntellect() * value * 0.01 * 0.01
-			if value > 0 then value = value + int_multiplier * 0.01 end
-			self.Energy = math.min(math.max(self.Energy + value, 1), self.EnergyLimit)
-			parent:SetNetworkableEntityInfo("Energy", self.Energy)
-			return self.Energy
+			local int_multiplier = ability:GetAbilitySpecial("int_in_growth_mult_pct") * parent:GetIntellect() * 0.01 * value * 0.01
+			if value > 0 then value = (value + int_multiplier) end
+			local returned_value = value
+			value = math.min(math.max(self.Energy + value, 1), self.EnergyLimit)
+			self.Energy = value
+			parent:SetNetworkableEntityInfo("Energy", __toFixed(self.Energy, 0))
+			return returned_value
 		end
 		parent.BonusEnergy = 0
 		self:StartIntervalThink(self.think_interval)
@@ -129,6 +139,11 @@ if IsServer() then
 		local parent = self:GetParent()
 		local ability = self:GetAbility()
 
+		if self._ManaPerInt ~= parent.ManaPerInt then
+			self._ManaPerInt = 0
+			parent.ManaPerInt = 0
+		end
+
 		for i = 2, parent:GetLevel() do
 			if i % self.AbilityUpdate == 0 then
 				ability:SetLevel(ability:GetLevel() + 1)
@@ -141,7 +156,7 @@ if IsServer() then
 		if ability:GetLevel() >= 4 then
 			self.EnergyLimit = 999999999
 		else
-			self.EnergyLimit = ability:GetSpecialValueFor("energy_limit") + ability:GetSpecialValueFor("energy_limit_per_lvl") * parent:GetLevel() + parent.BonusEnergy
+			self.EnergyLimit = (ability:GetSpecialValueFor("energy_limit") + ability:GetSpecialValueFor("energy_limit_per_lvl") * parent:GetLevel() + parent.BonusEnergy) * self.energy_limit_boost_pct
 		end
 		self.EnergyGrowth = ability:GetSpecialValueFor("energy_growth_sec") + ability:GetSpecialValueFor("energy_growth_sec_per_lvl") * parent:GetLevel()
 
@@ -156,12 +171,15 @@ if IsServer() then
 
 		parent:SetMaxMana(self.Energy)
 		parent:SetMana(self.Energy)
-		parent:SetBaseManaRegen(self.EnergyGrowth)
-		parent:ModifyEnergy(self.EnergyGrowth * self.think_interval)
-	
-		parent:SetNetworkableEntityInfo("CurrentMana", __toFixed(self.Energy, 0))
+		--parent:SetBaseManaRegen(self.EnergyGrowth)
+		local growth = 0
+		if parent:IsAlive() then
+			growth = parent:ModifyEnergy((self.EnergyGrowth * self.energy_growth_boost_pct) * self.think_interval)
+		end
+
+		--parent:SetNetworkableEntityInfo("CurrentMana", __toFixed(self.Energy, 0))
 		parent:SetNetworkableEntityInfo("MaxMana", __toFixed(self.Energy, 0))
-		parent:SetNetworkableEntityInfo("ManaRegen", tostring(__toFixed(self.EnergyGrowth, 1)))
+		parent:SetNetworkableEntityInfo("ManaRegen", (__toFixed((growth / self.think_interval), 1)))
 	end
 
 	function modifier_sara_evolution:OnDestroy()
@@ -177,15 +195,22 @@ if IsServer() then
 
 	function modifier_sara_evolution:OnDeath(keys)
 		local parent = self:GetParent()
+
+		if keys.unit == parent and not parent:IsIllusion() and parent:IsTrueHero() and not parent:IsTempestDouble() then
+            parent:DropItemAtPositionImmediate(self:GetAbility(), parent:GetAbsOrigin())
+        end
+		
 		local ability = self:GetAbility()
 		local attacker = keys.attacker
 		local unit = keys.unit
 		if attacker == parent then
 			if unit:IsRealCreep() then
 				local energy = ability:GetSpecialValueFor("creeps_max_health_in_energy_pct") * unit:GetMaxHealth() * 0.01
-				attacker:ModifyEnergy(energy)
-				--print(energy)
-				ProjectileManager:CreateTrackingProjectile(self:CreateProjectileTable(parent, unit, ability))
+				if parent:GetEnergy() < ability:GetSpecialValueFor("thresould") * 1000000 and unit:GetFullName() ~= "npc_dota_neutral_jungle_variant1" then
+					attacker:ModifyEnergy(energy)
+					--print(energy)
+					ProjectileManager:CreateTrackingProjectile(self:CreateProjectileTable(parent, unit, ability))
+				end
 			end
 			if unit:IsHero() then
 				local energy = ability:GetSpecialValueFor("heroes_max_health_in_energy_pct") * unit:GetMaxHealth() * 0.01
@@ -212,9 +237,11 @@ if IsServer() then
 
 			if unit:IsRealCreep() then
 				local energy = ability:GetSpecialValueFor("creeps_max_health_in_energy_pct") * unit:GetMaxHealth() * 0.01 * energy_gain_in_radius * 0.01
-				parent:ModifyEnergy(energy)
-				--print(energy)
-				ProjectileManager:CreateTrackingProjectile(self:CreateProjectileTable(parent, unit, ability))
+				if parent:GetEnergy() < ability:GetSpecialValueFor("thresould") * 1000000 and unit:GetFullName() ~= "npc_dota_neutral_jungle_variant1" then
+					parent:ModifyEnergy(energy)
+					--print(energy)
+					ProjectileManager:CreateTrackingProjectile(self:CreateProjectileTable(parent, unit, ability))
+				end
 			end
 			if unit:IsHero() then
 				local energy = ability:GetSpecialValueFor("heroes_max_health_in_energy_pct") * unit:GetMaxHealth() * 0.01 * energy_gain_in_radius * 0.01

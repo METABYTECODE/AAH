@@ -63,6 +63,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_TECH"
 		"MaxLevel"						"7"
 		"AbilityCooldown"				"30"
 		"AbilityManaCost"				"50"

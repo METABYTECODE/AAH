@@ -62,5 +62,10 @@
 		"Ability15"	""
 		"Ability16"	""
 		"AttackRate"	"1.6"
+
+		"DamageSubtypeResistance"
+		{
+			"DAMAGE_SUBTYPE_POISON" "50"
+		}
 	}
 }

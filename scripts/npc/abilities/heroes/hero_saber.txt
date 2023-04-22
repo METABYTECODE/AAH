@@ -108,12 +108,13 @@
 			{
 				"var_type"			"FIELD_INTEGER"
 				"damage_per_second"	"15 20 25 30 35 40 45"
-				"CalculateSpellDamageTooltip"	"0"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"02"
 			{
 				"var_type"			"FIELD_INTEGER"
 				"damage_max"		"120 200 280 360 440 520 600"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"03"
 			{
@@ -129,6 +130,12 @@
 			{
 				"var_type"			"FIELD_INTEGER"
 				"forward_offset"	"100"
+			}
+			"99"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"5.0"
+				"CalculateSpellDamageTooltip"		"0"
 			}
 		}
 
@@ -197,13 +204,13 @@
 			{
 				"var_type"			"FIELD_FLOAT"
 				"damage_per_mana"	"2.0"
-				"CalculateSpellDamageTooltip"	"0"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"03"
 			{
 				"var_type"			"FIELD_FLOAT"
 				"damage_per_mana_scepter"	"4.0"
-				"CalculateSpellDamageTooltip"	"0"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"04"
 			{

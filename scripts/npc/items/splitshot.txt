@@ -79,17 +79,17 @@
 			"02"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"bonus_strength"				"40"
+				"bonus_strength"				"30"
 			}
 			"03"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"bonus_agility"					"40"
+				"bonus_agility"					"30"
 			}
 			"04"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"bonus_intellect"				"40"
+				"bonus_intellect"				"30"
 			}
 			"05"
 			{
@@ -124,17 +124,17 @@
 			"11"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_heal_and_lifesteal"	"32"
+				"bonus_heal_and_lifesteal"	"22"
 			}
 			"12"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_status_resist"		"32"
+				"bonus_status_resist"		"20"
 			}
 			"13"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_mana_regen_pct"		"150"
+				"bonus_mana_regen_pct"		"50"
 			}
 			"14"
 			{

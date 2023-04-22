@@ -24,6 +24,7 @@ end
 function DropItem(keys)
 	local caster = keys.caster
 	if not caster:IsIllusion() and not caster:IsTempestDouble() then
+		print(keys.ability)
 		caster:DropItemAtPositionImmediate(keys.ability, caster:GetAbsOrigin())
 	end
 end
@@ -234,12 +235,22 @@ function PercentDamage(keys)
 		if keys.MaxHealthPercent then damage = damage + (keys.MaxHealthPercent*0.01*target:GetMaxHealth()) end
 		if keys.CurrnetHealthPercent then damage = damage + (keys.CurrnetHealthPercent*0.01*target:GetHealth()) end
 		if keys.multiplier then damage = damage * keys.multiplier end
+		
+		local CalculateSpellDamageTooltip = keys.CalculateSpellDamageTooltip == 0 and DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION or DOTA_DAMAGE_FLAG_NONE
+
+		if CalculateSpellDamageTooltip == DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION then
+			CalculateSpellDamageTooltip = DOTA_DAMAGE_FLAG_NONE
+			ability.NoDamageAmp = true
+		else
+			ability.NoDamageAmp = false
+		end
+		
 		ApplyDamage({
 			victim = target,
 			attacker = keys.caster,
 			damage = damage,
 			damage_type = ability:GetAbilityDamageType(),
-			damage_flags = keys.CalculateSpellDamageTooltip == 0 and DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION or DOTA_DAMAGE_FLAG_NONE,
+			damage_flags = CalculateSpellDamageTooltip,
 			ability = ability
 		})
 	end
@@ -265,6 +276,7 @@ function ModifyCreepDamage(keys)
 			(keys.damage * (damage_bonus * 0.01 - 1)) or
 			damage_bonus
 
+		ability.NoDamageAmp = true
 		ApplyDamage({
 			attacker = caster,
 			victim = target,

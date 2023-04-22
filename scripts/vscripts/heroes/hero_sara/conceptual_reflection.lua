@@ -12,7 +12,7 @@ end
 
 if IsClient() then
 	function sara_conceptual_reflection:GetManaCost()
-		return self:GetSpecialValueFor("energy_cost")
+		return self:GetSpecialValueFor("energy_cost") + self:GetCaster():GetMana() * self:GetSpecialValueFor("cost_percent") * 0.01
 	end
 end
 
@@ -52,19 +52,24 @@ if IsServer() then
         if not ability:IsActivated() and not ability:GetAutoCastState() then ability:ToggleAutoCast() end
         if not ability:GetAutoCastState() then return end
 
-        if keys.unit == parent and keys.damage > parent:GetMaxHealth() * ability:GetSpecialValueFor("max_health_damage_proc") * 0.01 then
+        if keys.unit ~= parent then return end
+
+        local damage = keys.damage
+
+        if damage > parent:GetMaxHealth() * ability:GetSpecialValueFor("max_health_damage_proc") * 0.01 and self:GetStackCount() then
             if (keys.attacker:GetAbsOrigin() - parent:GetAbsOrigin()):Length2D() > ability:GetSpecialValueFor("reflect_radius") then return end
-            if not keys.attacker:IsAlive() or not parent:IsAlive() or keys.attacker:IsMagicImmune() or parent:PassivesDisabled() then return end
+            if not keys.attacker:IsAlive() --[[or not parent:IsAlive()]] or keys.attacker:IsMagicImmune() or parent:PassivesDisabled() then return end
 
             Timers:CreateTimer(0.8, function()
                 parent:EmitSound("Ability.LagunaBlade")
                 keys.attacker:EmitSound("Ability.LagunaBladeImpact")
-                
+
+                ability.NoDamageAmp = true
                 ApplyDamage({
                     attacker = parent,
                     victim = keys.attacker,
                     damage_type = keys.damage_type,
-                    damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
+                    damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION + DOTA_DAMAGE_FLAG_BYPASSES_INVULNERABILITY,
                     damage = keys.original_damage * ability:GetSpecialValueFor("reflected_damage") * 0.01,
                     ability = ability
                 })

@@ -5,7 +5,24 @@ Events:Register("activate", function ()
 	CustomGameEventManager:RegisterListener("team_select_host_set_player_team", Dynamic_Wrap(GameMode, "TeamSelectHostSetPlayerTeam"))
 	CustomGameEventManager:RegisterListener("set_help_disabled", Dynamic_Wrap(GameMode, "SetHelpDisabled"))
 	CustomGameEventManager:RegisterListener("on_ads_clicked", Dynamic_Wrap(GameMode, "OnAdsClicked"))
+	CustomGameEventManager:RegisterListener("modifier_universal_attribute_clicked", Dynamic_Wrap(GameMode, "ChangePrimaryBonus"))
 end)
+
+function GameMode:ChangePrimaryBonus(data)
+	if data.PlayerID and data.unit and data.modifier then
+		local ent = EntIndexToHScript(data.unit)
+		if IsValidEntity(ent) and
+			ent:IsAlive() and
+			ent:GetPlayerOwner() == PlayerResource:GetPlayer(data.PlayerID) and
+			table.includes(ONCLICK_PURGABLE_MODIFIERS, data.modifier) and
+			not ent:IsStunned() and
+			not ent:IsChanneling() then
+				local mod = ent:FindModifierByName(data.modifier)
+                ent:RemoveModifierByName(mod.PrimaryBonuses[mod.CurrentPrimaryBonus])
+                mod:ChangePrimaryBonus(mod.CurrentPrimaryBonus + 1)
+		end
+	end
+end
 
 function GameMode:MetamorphosisElixirCast(data)
 	local hero = PlayerResource:GetSelectedHeroEntity(data.PlayerID)

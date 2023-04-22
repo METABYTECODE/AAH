@@ -82,8 +82,20 @@ REFRESH_LIST_IGNORE_REFRESHER = {
 	item_refresher_arena = true,
 	item_refresher_core = true,
 	saitama_push_ups = true,
-	saitama_squats = true, 
+	saitama_squats = true,
 	saitama_sit_ups = true,
+
+	faceless_void_chronosphere = true,
+	enigma_black_hole = true,
+	tidehunter_ravage = true,
+
+	item_scythe_of_sun = true,
+	item_scythe_of_the_ancients = true,
+	item_edge_of_vyse = true,
+	item_abyssal_blade = true,
+	item_sheepstick = true,
+	item_demon_king_bar = true,
+	item_titanium_bar = true,
 }
 
 REFRESH_LIST_IGNORE_BODY_RECONSTRUCTION = {
@@ -93,8 +105,18 @@ REFRESH_LIST_IGNORE_BODY_RECONSTRUCTION = {
 	item_black_king_bar = true,
 	item_titanium_bar = true,
 	item_coffee_bean = true,
+	item_demon_king_bar = true,
+
+	faceless_void_chronosphere = true,
+	enigma_black_hole = true,
 
 	destroyer_body_reconstruction = true,
+
+	item_scythe_of_sun = true,
+	item_scythe_of_the_ancients = true,
+	item_edge_of_vyse = true,
+	item_abyssal_blade = true,
+	item_sheepstick = true,
 }
 
 REFRESH_LIST_IGNORE_REARM = {
@@ -135,6 +157,12 @@ REFRESH_LIST_IGNORE_REARM = {
 	silencer_global_silence = true,
 	naga_siren_song_of_the_siren = true,
 	slark_shadow_dance = true,
+
+	item_scythe_of_sun = true,
+	item_scythe_of_the_ancients = true,
+	item_edge_of_vyse = true,
+	item_abyssal_blade = true,
+	item_sheepstick = true,
 }
 
 COFFEE_BEAN_NOT_REFRESHABLE = {
@@ -152,6 +180,44 @@ DUEL_NOT_REFRESHABLE = {
 	saitama_push_ups = true,
 	saitama_squats = true,
 	saitama_sit_ups = true,
+	item_demon_king_bar = true,
+}
+
+ABILITIES_NO_SPLASH = {
+	item_radiance_arena = true,
+	item_radiance_2 = true,
+	item_radiance_3 = true,
+	item_radiance_frozen = true,
+
+	item_maelstrom = true,
+	item_mjollnir = true,
+	item_gungir = true,
+	item_thunder_musket = true,
+
+	item_essential_orb_fire_1 = true,
+	item_essential_orb_fire_2 = true,
+	item_essential_orb_fire_3 = true,
+	item_essential_orb_fire_4 = true,
+	item_essential_orb_fire_5 = true,
+	item_essential_orb_fire_6 = true,
+
+	zuus_arc_lightning = true,
+
+	leshrac_diabolic_edict = true,
+	leshrac_lightning_storm = true,
+	leshrac_pulse_nova = true,
+	leshrac_split_earth = true,
+
+	spectre_dispersion = true,
+
+	batrider_sticky_napalm = true,
+}
+
+SPELL_CRIT_EXEPTIONS = {
+	item_battlefury_arena = true,
+	item_quelling_fury = true,
+	item_elemental_fury = true,
+	item_ultimate_splash = true,
 }
 
 
@@ -161,14 +227,13 @@ BOSS_BANNED_ABILITIES = {
 	item_urn_of_demons = true,
 	razor_static_link = true,
 	tusk_walrus_kick = true,
-	death_prophet_spirit_siphon = true,
+	--death_prophet_spirit_siphon = true,
 	item_force_staff = true,
 	item_hurricane_pike = true,
 	rubick_telekinesis = true,
 	item_demon_king_bar = true,
 	morphling_adaptive_strike_str = true,
 	item_spirit_helix = true,
-	pugna_life_drain = true,
 	silencer_last_word = true,
 }
 
@@ -183,6 +248,7 @@ SPELL_AMPLIFY_NOT_SCALABLE_MODIFIERS = {
 	zaken_stitching_strikes = true,
 	morphling_adaptive_strike_agi = true,
 	nyx_assassin_mana_burn = true,
+	nyx_assassin_spiked_carapace = true,
 	elder_titan_earth_splitter = true,
 	necrolyte_reapers_scythe = true,
 	doom_bringer_infernal_blade = true,
@@ -190,17 +256,27 @@ SPELL_AMPLIFY_NOT_SCALABLE_MODIFIERS = {
 	silencer_glaives_of_wisdom = true,
 	winter_wyvern_arctic_burn = true,
 	obsidian_destroyer_sanity_eclipse = true,
-	centaur_stampede = true,
 	obsidian_destroyer_arcane_orb = true,
+	centaur_stampede = true,
 	spectre_dispersion = true,
 	skywrath_mage_arcane_bolt = true,
 	centaur_return = true,
 	huskar_life_break = true,
-	death_prophet_spirit_siphon = true,
+	--death_prophet_spirit_siphon = true,
 	witch_doctor_maledict = true,
 	silencer_last_word = true,
 	riki_backstab = true,
+	bloodseeker_rupture = true,
+	bloodseeker_blood_mist = true,
+	jakiro_liquid_ice = true,
+	witch_doctor_voodoo_restoration = true,
+	sandking_caustic_finale = true,
+	antimage_counterspell = true,
+	bloodseeker_bloodrage = true,
+	muerta_pierce_the_veil = true,
+	muerta_gunslinger = true,
 
+	item_lotus_sphere = true,
 	item_spirit_helix = true,
 	item_ethereal_blade = true,
 	item_revenants_brooch = true,
@@ -209,11 +285,28 @@ SPELL_AMPLIFY_NOT_SCALABLE_MODIFIERS = {
 	item_overwhelming_blink = true,
 	item_orchid = true,
 	item_bloodthorn = true,
+
+	item_book_of_the_guardian = true,
+	item_book_of_the_guardian_2 = true,
+	--item_unstable_quasar = true,
+}
+
+MANA_SPEND_SPELLS_EXEPTIONS = {
+	obsidian_destroyer_sanity_eclipse = true,
+	storm_spirit_ball_lightning = true,
+	saber_excalibur = true,
+	ogre_magi_unrefined_fireblast = true,
+	muerta_gunslinger = true,
+	muerta_pierce_the_veil = true,
 }
 
 OCTARINE_NOT_LIFESTALABLE_ABILITIES = {
 	["freya_pain_reflection"] = true,
 	["spectre_dispersion"] = true,
+	["modifier_item_blade_mail_arena_active"] = true,
+	["modifier_item_sacred_blade_mail_active"] = true,
+	["modififer_sara_conceptual_reflection"] = true,
+	["muerta_gunslinger"] = true
 }
 
 ARENA_NOT_CASTABLE_ABILITIES = {
@@ -248,7 +341,7 @@ REGEN_EXEPTIONS = {
 	{"modifier_arthas_vikared", "health_regen_percent"},
 	{"modifier_huskar_berserkers_blood", "maximum_health_regen"},
 	{"modifier_juggernaut_healing_ward_heal", "healing_ward_heal_amount"},
-	{"modifier_filler_heal_aura", "hp_heal_pct"}
+	{"modifier_filler_heal", "hp_heal_pct"}
 }
 
 HP_REGEN_AMP = {
@@ -257,5 +350,38 @@ HP_REGEN_AMP = {
 	{"item_sange_and_yasha", "hp_regen_amp"},
 	{"item_heavens_halberd", "hp_regen_amp"},
 	{"item_grandmasters_glaive", "sange_hp_regen_amp"},
-	{"item_trident", "hp_regen_amp"}
+	{"item_trident", "hp_regen_amp"},
+}
+
+ABILITIES_TRIGGERS_ATTACKS = {
+	["nevermore_shadowraze1"] = true,
+	["nevermore_shadowraze2"] = true,
+	["nevermore_shadowraze3"] = true,
+	["clinkz_strafe"] = true,
+	["morphling_waveform"] = 1,
+
+	["mars_gods_rebuke"] = true,
+	["tidehunter_anchor_smash"] = true,
+	["monkey_king_boundless_strike"] = true,
+	["dawnbreaker_fire_wreath"] = 3,
+	["pangolier_swashbuckle"] = 1.4,
+}
+
+DAMAGE_REFLECT_MODIFIERS = {
+	["modifier_freya_pain_reflection"] = "freya_pain_reflection",
+	["modifier_item_blade_mail_arena_active"] = "item_blade_mail_arena",
+	["modifier_item_sacred_blade_mail_active"] = "item_sacred_blade_mail",
+}
+
+STAMINA_DAMAGE_BONUS_EXEPTIONS = {
+	{"item_desolator4", "bonus_damage"},
+	{"item_desolator5", "bonus_damage"},
+	{"item_desolator6", "bonus_damage"},
+	{"item_soulcutter", "bonus_damage"},
+	{"item_demon_king_bar", "bonus_damage"},
+	{"item_bloodthorn_2", "bonus_damage"},
+	{"item_ultimate_splash", "bonus_damage"}
+}
+
+HAS_DAMAGE_MULTIPLIER_TO_JUNGLE_BEARS_ABILITIES = {
 }

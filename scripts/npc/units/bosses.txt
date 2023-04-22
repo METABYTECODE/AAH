@@ -3,7 +3,7 @@
 	"npc_arena_boss_l1_v1"
 	{
 		//Bosses
-		"Bosses_GoldToAll"			"7500"
+		"Bosses_GoldToAll"			"15000"
 		"Bosses_RespawnDuration"	"300"
 
 		// General
@@ -17,8 +17,8 @@
 		//----------------------------------------------------------------
 		"Ability1"					"boss_armor"
 
-		"ArmorPhysical"				"55"
-		"MagicalResistance"			"30"
+		"ArmorPhysical"				"60"
+		"MagicalResistance"			"-75"
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"ProjectileModel"			"particles/units/heroes/hero_terrorblade/terrorblade_metamorphosis_base_attack.vpcf"
@@ -37,7 +37,7 @@
 
 		"MovementSpeed"				"420"
 
-		"StatusHealth"				"400000"
+		"StatusHealth"				"600000"
 		"StatusHealthRegen"			"1000"
 		"StatusMana"				"50000"
 		"StatusManaRegen"			"200"
@@ -61,7 +61,7 @@
 	"npc_arena_boss_l1_v2"
 	{
 		//Bosses
-		"Bosses_GoldToAll"			"7500"
+		"Bosses_GoldToAll"			"15000"
 		"Bosses_RespawnDuration"	"300"
 
 		// General
@@ -75,8 +75,8 @@
 		//----------------------------------------------------------------
 		"Ability1"					"boss_armor"
 
-		"ArmorPhysical"				"55"
-		"MagicalResistance"			"30"
+		"ArmorPhysical"				"60"
+		"MagicalResistance"			"-75"
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"			"3500"
@@ -93,7 +93,7 @@
 
 		"MovementSpeed"				"522"
 
-		"StatusHealth"				"400000"
+		"StatusHealth"				"600000"
 		"StatusHealthRegen"			"1000"
 		"StatusMana"				"50000"
 		"StatusManaRegen"			"200"
@@ -117,7 +117,7 @@
 	"npc_arena_boss_l2_v1"
 	{
 		//Bosses
-		"Bosses_GoldToAll"			"15000"
+		"Bosses_GoldToAll"			"30000"
 		"Bosses_RespawnDuration"	"300"
 
 		// General
@@ -131,8 +131,8 @@
 		//----------------------------------------------------------------
 		"Ability1"					"boss_armor"
 
-		"ArmorPhysical"				"70"
-		"MagicalResistance"			"45"
+		"ArmorPhysical"				"100"
+		"MagicalResistance"			"-25"
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"ProjectileModel"			"particles/units/heroes/hero_terrorblade/terrorblade_metamorphosis_base_attack.vpcf"
@@ -151,8 +151,8 @@
 
 		"MovementSpeed"				"422"
 
-		"StatusHealth"				"500000"
-		"StatusHealthRegen"			"1000"
+		"StatusHealth"				"800000"
+		"StatusHealthRegen"			"2000"
 		"StatusMana"				"50000"
 		"StatusManaRegen"			"200"
 
@@ -175,7 +175,7 @@
 	"npc_arena_boss_l2_v2"
 	{
 		//Bosses
-		"Bosses_GoldToAll"			"15000"
+		"Bosses_GoldToAll"			"30000"
 		"Bosses_RespawnDuration"	"300"
 
 		// General
@@ -189,8 +189,8 @@
 		//----------------------------------------------------------------
 		"Ability1"					"boss_armor"
 
-		"ArmorPhysical"				"80"
-		"MagicalResistance"			"45"
+		"ArmorPhysical"				"100"
+		"MagicalResistance"			"-25"
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"			"4200"
@@ -207,8 +207,8 @@
 
 		"MovementSpeed"				"522"
 
-		"StatusHealth"				"600000"
-		"StatusHealthRegen"			"1000"
+		"StatusHealth"				"800000"
+		"StatusHealthRegen"			"2000"
 		"StatusMana"				"50000"
 		"StatusManaRegen"			"250"
 
@@ -231,7 +231,7 @@
 	"npc_arena_boss_freya"
 	{
 		//Bosses
-		"Bosses_GoldToAll"			"20000"
+		"Bosses_GoldToAll"			"60000"
 		"Bosses_RespawnDuration"	"300"
 
 		// General
@@ -246,8 +246,8 @@
 		"Ability1"					"boss_freya_sharp_ice_shards"
 		"Ability5"					"boss_armor"
 
-		"ArmorPhysical"				"145"
-		"MagicalResistance"			"60"
+		"ArmorPhysical"				"150"
+		"MagicalResistance"			"0"
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"			"8500"
@@ -264,8 +264,8 @@
 
 		"MovementSpeed"				"550"
 
-		"StatusHealth"				"800000"
-		"StatusHealthRegen"			"1000"
+		"StatusHealth"				"2000000"
+		"StatusHealthRegen"			"3000"
 		"StatusMana"				"50000"
 		"StatusManaRegen"			"200"
 
@@ -288,7 +288,7 @@
 	"npc_arena_boss_zaken"
 	{
 		//Bosses
-		"Bosses_GoldToAll"			"20000"
+		"Bosses_GoldToAll"			"60000"
 		"Bosses_RespawnDuration"	"300"
 
 		// General
@@ -303,8 +303,8 @@
 		"Ability1"					""//"boss_zaken_"
 		"Ability5"					"boss_armor"
 
-		"ArmorPhysical"				"145"
-		"MagicalResistance"			"60"
+		"ArmorPhysical"				"150"
+		"MagicalResistance"			"0"
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttackDamageMin"			"8500"
@@ -321,8 +321,8 @@
 
 		"MovementSpeed"				"550"
 
-		"StatusHealth"				"800000"
-		"StatusHealthRegen"			"1000"
+		"StatusHealth"				"2000000"
+		"StatusHealthRegen"			"3000"
 		"StatusMana"				"50000"
 		"StatusManaRegen"			"500"
 
@@ -421,7 +421,7 @@
 		"Ability5"	"boss_kel_thuzad_summon_undead"
 		"Ability6"	"boss_kel_thuzad_erebus"
 
-		"ArmorPhysical"				"180"
+		"ArmorPhysical"				"120"
 		"MagicalResistance"			"40"
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
@@ -498,7 +498,7 @@
 
 	"npc_arena_boss_cursed_zeld"
 	{
-		"Bosses_GoldToAll"			"250000"
+		"Bosses_GoldToAll"			"300000"
 		"Bosses_RespawnDuration"	"900"
 
 		"BaseClass"					"npc_dota_creature"
@@ -511,8 +511,8 @@
 		"Ability3"					"boss_cursed_zeld_three_cores"
 		"Ability4"					"boss_armor"
 
-		"ArmorPhysical"				"80"
-		"MagicalResistance"			"70"
+		"ArmorPhysical"				"200"
+		"MagicalResistance"			"50"
 
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"ProjectileModel"			"particles/base_attacks/generic_projectile.vpcf"

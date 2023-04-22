@@ -22,6 +22,7 @@ local modifiers = {
 	"mana",
 	"mana_regen",
 	"lifesteal",
+	"bonus_all_stats",
 	--rune multiplier
 }
 
@@ -40,7 +41,7 @@ function CustomTalents:Init()
 		if not talentList[t.group] then talentList[t.group] = {} end
 		t.name = k
 		t.effect = nil
-		if t.special_values then
+		if t.special_values and type(t.special_values) == "table" then
 			for key,value in pairs(t.special_values) do
 				if type(value) == "table" then
 					t.special_values[key] = {}
@@ -49,8 +50,14 @@ function CustomTalents:Init()
 					end
 				else
 					t.special_values[key] = tostring(value)
+				--[[elseif type(value) == "string" then
+					t.special_values[key] = value
+				else
+					t.special_values[key] = 0]]
 				end
 			end
+		--elseif t.special_values then
+			--t.special_values = {value = t.special_values}
 		end
 		table.insert(talentList[t.group], t)
 	end

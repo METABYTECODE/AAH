@@ -92,6 +92,7 @@ function FillHeroesTable(heroList, panel, big) {
 	_.each(heroList, function(heroName) {
 		var heroData = HeroesData[heroName];
 		var StatPanel = panel.FindChildTraverse('HeroesByAttributes_' + heroData.attributes.attribute_primary);
+		//$.Msg(StatPanel)
 
 		var HeroCard = $.CreatePanel('Panel', StatPanel, 'HeroListPanel_element_' + heroName);
 		HeroCard.BLoadLayoutSnippet('HeroCard');
@@ -130,6 +131,43 @@ function FillHeroesTable(heroList, panel, big) {
 		HeroCard.SelectHeroAction = SelectHeroAction;
 		HeroesPanels.push(HeroCard);
 	});
+
+	/*var attributes_panel = rootPanel.FindChildTraverse('SelectedHeroAttributesPanel');
+	attributes_panel.ClearPanelEvent('onmouseover');
+	attributes_panel.ClearPanelEvent('onmouseout');
+
+	var ability_damage_subtypes_tooltip = $.CreatePanel('Panel', $.GetContextPanel(), '');
+	
+	attributes_panel.SetPanelEvent('onmouseover', function() {
+		var unit_ = heroName
+		//$.Msg(unit_)
+		var units_subtypes_resistance = GameUI.CustomUIConfig().units_subtypes_resistance[unit_];
+
+		var cursor_position = {x: GameUI.GetCursorPosition()[0], y: GameUI.GetCursorPosition()[1]};
+		$.Msg(GameUI.GetCursorPosition())
+		ability_damage_subtypes_tooltip.style.position = (cursor_position.x) + "px 0 " + (cursor_position.y) + "px"
+		ability_damage_subtypes_tooltip.style.tooltipPosition = 'bottom';
+		ability_damage_subtypes_tooltip.visible = true;
+
+		for (var keys in DAMAGE_SUBTYPES) {
+			ability_damage_subtypes_tooltip.SetDialogVariable(DAMAGE_SUBTYPES[keys], "0%");
+		}
+		if (units_subtypes_resistance) {
+			for (var keys in units_subtypes_resistance) {
+				var damsubres = units_subtypes_resistance[keys]
+				//$.Msg(keys + ", " + damsubres)
+				ability_damage_subtypes_tooltip.SetDialogVariable(DAMAGE_SUBTYPES[keys], damsubres + "%");
+			}
+		}
+		$.DispatchEvent("DOTAShowTitleTextTooltip", ability_damage_subtypes_tooltip, "#damage_subtype_resistance", "#damage_subtype_resistance_list")
+		//$.Msg("1")
+	});
+	attributes_panel.SetPanelEvent('onmouseout', function() {
+		if (ability_damage_subtypes_tooltip) {
+			$.DispatchEvent("DOTAHideTitleTextTooltip");
+			ability_damage_subtypes_tooltip.visible = false;
+		}
+	});*/
 }
 
 function SelectFirstHeroPanel() {
@@ -153,7 +191,12 @@ function ChooseHeroUpdatePanels() {
 	UpdateSelectionButton();
 	var context = $.GetContextPanel();
 	$('#SelectedHeroSelectHeroName').text = $.Localize('#' + SelectedHeroName);
-	$('#SelectedHeroOverview').text = $.Localize('#' + SelectedHeroName + '_hype');
+	var hype = $.Localize('#' + SelectedHeroName + '_hype');
+	//$.Msg(hype)
+	hype = hype.replace(/<b>/g, '')
+	hype = hype.replace(/<\/b>/g, '')
+	//$.Msg(hype)
+	$('#SelectedHeroOverview').text = hype
 	context.SetHasClass('HoveredHeroHasLinked', selectedHeroData.linked_heroes != null);
 	if (selectedHeroData.linked_heroes != null) {
 		var linked = [];
@@ -168,7 +211,44 @@ function ChooseHeroUpdatePanels() {
 		$.Localize('#' + 'hero_selection_disabled_reason_unreleased') : IsHeroDisabledInRanked(SelectedHeroName) ?
 			$.Localize('#' + 'hero_selection_disabled_reason_disabled_in_ranked') : '';
 	FillAbilitiesUI($('#SelectedHeroAbilitiesPanelInner'), selectedHeroData.abilities, 'SelectedHeroAbility');
-	FillAttributeUI($('#HeroListControlsGroup3'), selectedHeroData.attributes);
+	FillAttributeUI($('#HeroListControlsGroup3'), selectedHeroData.attributes, SelectedHeroName);
+
+	//var abilities = FindDotaHudElement('SelectedHeroAbilitiesPanelInner').Children()
+		//$.Msg(abilities)
+		/*if (abilities) {
+			for (var i = 0; i < abilities.length; i++){
+			var ability_image = abilities[i]
+			ability_image.SetPanelEvent('onmouseover', function() {
+				var ability_tooltip =  FindDotaHudElement('DOTAAbilityTooltip')
+				if (!ability_tooltip) return
+				$.Msg(ability_tooltip)
+				var description = ability_tooltip.FindChildTraverse('AbilityDescriptionContainer').Children()[0]
+				//$.Msg(description)
+				description.visible = false
+				var ability_name = ability_tooltip.FindChildTraverse("AbilityName").text
+				var ability_damage_subtypes = GameUI.CustomUIConfig().ability_damage_subtypes
+				var subtype
+				for (var keys in ability_damage_subtypes){
+					//$.Msg($.Localize("#DOTA_Tooltip_ability_"+keys).toLowerCase())
+					if ($.Localize("#DOTA_Tooltip_ability_"+keys).toLowerCase() == ability_name.toLowerCase()) {
+						subtype = $.Localize('#'+ability_damage_subtypes[keys]._)
+						//$.Msg('#'+subtype)
+						$.Msg(ability_name)
+						break;
+					}
+				}
+				if (subtype) {
+					//$.DispatchEvent('DOTAHideAbilityTooltip', "");
+					if (description) {
+						var text = description.text
+						var _subtype_localization = $.Localize('#damage_subtype')
+						description.text = text + '\n'+_subtype_localization + subtype
+						//$.Msg(ability_tooltip.FindChildTraverse('AbilityDescriptionContainer').FindChildrenWithClassTraverse('Active')[0].text)
+					}
+				}
+				description.visible = true
+			});
+		}}*/
 }
 
 function FillAbilitiesUI(rootPanel, abilities, className) {
@@ -185,7 +265,8 @@ function FillAbilitiesUI(rootPanel, abilities, className) {
 	});
 }
 
-function FillAttributeUI(rootPanel, attributesData) {
+function FillAttributeUI(rootPanel, attributesData, heroName) {
+	$.Msg("1")
 	for (var i = 2; i >= 0; i--) {
 		rootPanel.FindChildTraverse('DotaAttributePic_' + (i + 1)).SetHasClass('PrimaryAttribute', Number(attributesData.attribute_primary) === i);
 		rootPanel.FindChildTraverse('HeroAttributes_' + (i + 1)).text = attributesData['attribute_base_' + i] + ' + ' + Number(attributesData['attribute_gain_' + i]).toFixed(1);

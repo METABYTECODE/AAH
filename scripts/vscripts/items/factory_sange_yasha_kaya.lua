@@ -10,8 +10,24 @@ return function(parts, funcs)
     GetAttributes = function() return MODIFIER_ATTRIBUTE_MULTIPLE end,
   }
 
+  function modifier:CheckAbilityName()
+    local abilityName = self:GetAbility():GetAbilityName()
+    return (abilityName == "item_ultimate_splash" or abilityName == "item_splitshot_ultimate" or abilityName == "item_elemental_fury")
+  end
+
   function modifier:OnCreated()
     self:StoreAbilitySpecials(storedSpecials)
+    if IsServer() and self:CheckAbilityName() then
+		  self:GetParent()._splash = self:GetParent()._splash + (self:GetAbility():GetSpecialValueFor("cleave_damage_percent") or 0)
+      self:GetParent()._splitshot = self:GetParent()._splitshot + (self:GetAbility():GetSpecialValueFor("split_damage_pct") or 0)
+    end
+  end
+  function modifier:OnDestroy()
+    self:StoreAbilitySpecials(storedSpecials)
+    if IsServer() then
+		  self:GetParent()._splash = self:GetParent()._splash - (self:GetAbility():GetSpecialValueFor("cleave_damage_percent") or 0)
+      self:GetParent()._splitshot = self:GetParent()._splitshot - (self:GetAbility():GetSpecialValueFor("split_damage_pct") or 0)
+    end
   end
 
   if parts.sange then
@@ -30,9 +46,14 @@ return function(parts, funcs)
     function modifier:GetModifierLifestealRegenAmplify_Percentage()
       return self:GetSpecialValueFor("bonus_heal_and_lifesteal")
     end
-    table.insert(funcs, MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_TARGET)
+    --[[table.insert(funcs,   HEAL_AMPLIFY_PERCENTAGE_TARGET)
     table.insert(storedSpecials, "bonus_heal_and_lifesteal")
     function modifier:GetModifierHealAmplify_PercentageTarget()
+      return self:GetSpecialValueFor("bonus_heal_and_lifesteal")
+    end]]
+    table.insert(funcs, MODIFIER_PROPERTY_HP_REGEN_AMPLIFY_PERCENTAGE )
+    table.insert(storedSpecials, "bonus_heal_and_lifesteal")
+    function modifier:GetModifierHPRegenAmplify_Percentage()
       return self:GetSpecialValueFor("bonus_heal_and_lifesteal")
     end
     table.insert(funcs, MODIFIER_PROPERTY_STATS_STRENGTH_BONUS)
@@ -89,9 +110,9 @@ return function(parts, funcs)
       return self:GetSpecialValueFor("bonus_intellect")
     end
 
-    table.insert(funcs, MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE)
+    table.insert(funcs, MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_UNIQUE )
     table.insert(storedSpecials, "spell_amp_pct")
-    function modifier:GetModifierSpellAmplify_Percentage()
+    function modifier:GetModifierSpellAmplify_PercentageUnique()
       return self:GetSpecialValueFor("spell_amp_pct")
     end
 

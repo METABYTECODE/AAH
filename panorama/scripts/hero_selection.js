@@ -219,6 +219,10 @@ function OnLocalPlayerPicked() {
 	var bio = $.Localize('#' + heroName + '_bio');
 	$('#HeroPreviewLore').text = bio !== heroName + '_bio' ? bio : '';
 	var hype = $.Localize('#' + heroName + '_hype');
+	//$.Msg(hype)
+	hype = hype.replace('<b>', '')
+	hype = hype.replace('</b>', '')
+	//$.Msg(hype)
 	$('#HeroPreviewOverview').text = hype !== heroName + '_hype' ? hype : '';
 
 	var model = localHeroData.model

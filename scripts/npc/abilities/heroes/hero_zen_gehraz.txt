@@ -55,7 +55,7 @@
 			}
 		}
 
-		"OnChannelInterrupted"
+		"OnChannelFinish"
 		{
 			"RunScript"
 			{
@@ -167,6 +167,12 @@
 				"var_type"			"FIELD_FLOAT"
 				"damage_interval"	"0.1"
 			}
+			"99"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"3.0"
+				"CalculateSpellDamageTooltip"		"0"
+			}
 		}
 
 		"precache"
@@ -200,7 +206,7 @@
 			}
 		}
 
-		"OnChannelInterrupted"
+		"OnChannelFinish"
 		{
 			"RunScript"
 			{
@@ -315,7 +321,7 @@
 			}
 		}
 
-		"OnChannelInterrupted"
+		"OnChannelFinish"
 		{
 			"RunScript"
 			{

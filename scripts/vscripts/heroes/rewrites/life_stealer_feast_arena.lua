@@ -20,7 +20,7 @@ end
 if IsServer() then
 	function modifier_life_stealer_feast_arena:GetModifierPreAttack_BonusDamage()
 		if IsValidEntity(self.BonusDamageTarget) then
-			return self.BonusDamageTarget:GetHealth() * self:GetAbility():GetSpecialValueFor("hp_leech_percent") * 0.01
+			return self.BonusDamageTarget:GetHealth() * self:GetAbility():GetSpecialValueFor("hp_leech_percent") * 0.01 / self:GetParent().DamageMultiplier
 		end
 	end
 

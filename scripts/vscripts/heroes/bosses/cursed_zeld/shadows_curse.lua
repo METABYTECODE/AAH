@@ -37,7 +37,7 @@ if IsServer() then
 
 		ability:SetActivated(false)
 		parent:SetDeathXP(0)
-		parent:TrueKill(parent, ability)
+		parent:TrueKill(ability, parent)
 
 		local direction = RandomVector(150)
 		for i = -1, 1, 2 do

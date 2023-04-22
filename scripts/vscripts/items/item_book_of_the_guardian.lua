@@ -31,12 +31,14 @@ if IsServer() then
 			for _,v in ipairs(FindUnitsInRadius(caster:GetTeamNumber(), abs, nil, elapsed * blast_speed, DOTA_UNIT_TARGET_TEAM_ENEMY, DOTA_UNIT_TARGET_BASIC + DOTA_UNIT_TARGET_HERO, DOTA_UNIT_TARGET_FLAG_NONE, FIND_ANY_ORDER, false)) do
 				if not affectedUnits[v] then
 					affectedUnits[v] = true
+
+					--self.NoDamageAmp = true
 					ApplyDamage({
 						attacker = caster,
 						victim = v,
 						damage = caster:GetIntellect() * blast_damage_int_mult,
 						damage_type = self:GetAbilityDamageType(),
-						damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
+						--damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
 						ability = self
 					})
 

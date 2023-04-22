@@ -77,19 +77,38 @@ if Timers == nil then
 end
 
 function Timers:start()
-	self.started = true
+	--self.started = true
 	Timers = self
 	self:InitializeTimers()
 	self.nextTickCallbacks = {}
 	
 	local ent = SpawnEntityFromTableSynchronous("info_target", {targetname="timers_lua_thinker"})
 	ent:SetThink("Think", self, "timers", TIMERS_THINK)
+	--Dynamic_Wrap(self, "Think")
+	--self:Think()
+
+	--print(GameRules)
+	--GameRules:GetGameModeEntity():SetThink( "Think", self, "timers", TIMERS_THINK)
 end
 
 function Timers:Think()
-	local nextTickCallbacks = table.merge({}, Timers.nextTickCallbacks)
+
+	--print("think")
+	--print(Time())
+	--[[if Time() % TIMERS_THINK == 0 then
+		self:Think()
+		self.can = true
+		return TIMERS_THINK
+	else
+		self:Think()
+		self.can = false
+		return TIMERS_THINK
+	end
+	if not self.can then return TIMERS_THINK end]]
+
+	local nextTickCallbacks = Timers.nextTickCallbacks
 	Timers.nextTickCallbacks = {}
-	for _, cb in ipairs(nextTickCallbacks) do
+	for _, cb in pairs(nextTickCallbacks) do
 		DebugCallFunction(cb)
 	end
 	if GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
@@ -103,6 +122,7 @@ function Timers:Think()
 	self:ExecuteTimers(self.realTimeHeap, Time())
 	self:ExecuteTimers(self.gameTimeHeap, GameRules:GetGameTime())
 
+	--self:Think()
 	return TIMERS_THINK
 end
 
@@ -236,9 +256,8 @@ end
 
 function Timers:InitializeTimers()
 	self.realTimeHeap = BinaryHeap("endTime")
+	print(self.realTimeHeap)
 	self.gameTimeHeap = BinaryHeap("endTime")
 end
-
-if not Timers.started then Timers:start() end
 
 GameRules.Timers = Timers

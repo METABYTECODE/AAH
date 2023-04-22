@@ -183,10 +183,10 @@ function CDOTA_BaseNPC_Hero:CalculateRespawnTime()
 		time = time + self.talent_keys.respawn_time_reduction
 	end
 
-	local bloodstone = self:FindItemInInventory("item_bloodstone")
+	--[[local bloodstone = self:FindItemInInventory("item_bloodstone")
 	if bloodstone then
 		time = time - bloodstone:GetCurrentCharges() * bloodstone:GetSpecialValueFor("respawn_time_reduction")
-	end
+	end]]
 
 	return math.max(time, 3)
 end
@@ -198,11 +198,15 @@ function CDOTA_BaseNPC_Hero:GetTotalHealthReduction()
 		pct = pct + mod:GetAbility():GetAbilitySpecial("health_decrease_pct")
 	end
 
-	local sara_evolution = self:FindAbilityByName("sara_evolution")
+	--[[local sara_evolution = self:FindAbilityByName("sara_evolution")
 	if sara_evolution then
 		local dec = sara_evolution:GetSpecialValueFor("health_reduction_pct")
 		return dec + ((100-dec) * pct * 0.01)
-	end
+	end]]
+	--[[local space_st = self:FindModifierByName("modifier_space_stone"):GetAbility()
+	if space_st then
+		pct = pct - space_st:GetAbilitySpecial("all_energies_bonus_pct")
+	end]]
 	return pct
 end
 
@@ -223,5 +227,13 @@ function CDOTA_BaseNPC_Hero:GetAttribute(attribute)
 		return self:GetAgility()
 	elseif attribute == DOTA_ATTRIBUTE_INTELLECT then
 		return self:GetIntellect()
+	end
+end
+
+function CDOTA_BaseNPC_Hero:GetUniversalAttribute()
+	if self:HasModifier("modifier_universal_attribute") then
+		return (self:GetStrength() + self:GetAgility() + self:GetIntellect()) * 0.5
+	else
+		return nil
 	end
 end

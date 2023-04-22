@@ -24,7 +24,7 @@
 		"AbilityManaCost"				"100 150 200 250 300 350 400"
 		"AOERadius"						"%radius"
 
-		"AbilityUnitDamageSubType"	"DAMAGE_SUBTYPE_ICE"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ICE"
 
 		"AbilitySpecial"
 		{
@@ -160,6 +160,7 @@
 		"AbilityCooldown"				"22"
 
 		"AbilityManaCost"				"115 125 140 150 160 170 180"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ICE"
 
 
 		// Special
@@ -174,8 +175,8 @@
 			"02"
 			{
 				"var_type"			"FIELD_FLOAT"
-				"damage_per_second_pct"		"5"
-				"CalculateSpellDamageTooltip"	"0"
+				"damage_per_second_pct"		"3"
+				"CalculateSpellDamageTooltip"	"1"
 			}
 			"03"
 			{
@@ -269,7 +270,7 @@
 						"Function"		"PercentDamage"
 						"MaxHealthPercent"	"%damage_per_second_pct"
 						"multiplier"		"%damage_interval"
-						"CalculateSpellDamageTooltip"	"0"
+						"CalculateSpellDamageTooltip"	"1"
 					}
 				}
 

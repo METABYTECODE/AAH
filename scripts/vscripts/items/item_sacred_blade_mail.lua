@@ -27,9 +27,9 @@ function modifier_item_sacred_blade_mail:DeclareFunctions()
 		MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS,
 		MODIFIER_PROPERTY_STATS_INTELLECT_BONUS,
 		MODIFIER_PROPERTY_STATS_STRENGTH_BONUS,
-		MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS,
+		--MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS,
 		MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE,
-		MODIFIER_EVENT_ON_TAKEDAMAGE
+		--MODIFIER_EVENT_ON_TAKEDAMAGE
 	}
 end
 
@@ -57,18 +57,6 @@ function modifier_item_sacred_blade_mail:GetModifierHealthRegenPercentage()
 	return self:GetAbility():GetSpecialValueFor("bonus_hp_regen_pct")
 end
 
-if IsServer() then
-	function modifier_item_sacred_blade_mail:OnTakeDamage(keys)
-		local unit = self:GetParent()
-		local ability = self:GetAbility()
-		if unit == keys.unit and IsValidEntity(ability) and IsValidEntity(keys.inflictor) and RollPercentage(ability:GetSpecialValueFor("buff_chance")) and not unit:HasModifier("modifier_item_sacred_blade_mail_buff_cooldown") then
-			unit:AddNewModifier(unit, ability, "modifier_item_sacred_blade_mail_buff", {duration = ability:GetSpecialValueFor("buff_duration")})
-			unit:AddNewModifier(unit, ability, "modifier_item_sacred_blade_mail_buff_cooldown", {duration = ability:GetSpecialValueFor("buff_cooldown")})
-
-		end
-	end
-end
-
 
 modifier_item_sacred_blade_mail_active = class({
 	IsPurgable    = 		function() return false end,
@@ -91,33 +79,3 @@ if IsServer() then
 		end
 	end
 end
-
-
-modifier_item_sacred_blade_mail_buff = class({})
-function modifier_item_sacred_blade_mail_buff:CheckState()
-	return {
-		[MODIFIER_STATE_MAGIC_IMMUNE] = true
-	}
-end
-function modifier_item_sacred_blade_mail_buff:DeclareFunctions()
-	return { MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS }
-end
-function modifier_item_sacred_blade_mail_buff:GetModifierMagicalResistanceBonus()
-	return 100
-end
-
-if IsServer() then
-	function modifier_item_sacred_blade_mail_buff:OnCreated()
-		local parent = self:GetParent()
-		parent:EmitSound("DOTA_Item.BlackKingBar.Activate")
-		parent:Purge(false, true, false, false, false)
-		local pfx = ParticleManager:CreateParticle("particles/arena/items_fx/holy_knight_shield_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, parent)
-		ParticleManager:SetParticleControlEnt(pfx, 0, parent, PATTACH_ABSORIGIN_FOLLOW, "attach_hitloc", parent:GetAbsOrigin(), true)
-		self:AddParticle(pfx, false, false, -1, true, false)
-	end
-end
-
-modifier_item_sacred_blade_mail_buff_cooldown = class({
-	IsPurgable = function() return false end,
-	IsDebuff = function() return true end,
-})

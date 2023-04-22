@@ -80,7 +80,8 @@ margin-right: 5px;
 margin-left: 0; }
 
 #CustomModifiersList {
-height: 32px; }
+height: 32px;
+flow-children: right-wrap; }
 
 #CustomToastManager {
 height: 400px;

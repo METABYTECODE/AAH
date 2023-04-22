@@ -48,11 +48,24 @@ modifier_item_battlefury_arena = class({
 
 function modifier_item_battlefury_arena:DeclareFunctions()
 	return {
-		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
 		MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT,
 		MODIFIER_PROPERTY_MANA_REGEN_CONSTANT,
 		MODIFIER_EVENT_ON_ATTACK_LANDED,
+		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
 	}
+end
+
+if IsServer() then
+	function modifier_item_battlefury_arena:OnCreated()
+		Timers:NextTick(function()
+			self:GetParent()._splash = self:GetParent()._splash + self:GetAbility():GetSpecialValueFor("cleave_damage_percent")
+		end)
+	end
+	function modifier_item_battlefury_arena:OnDestroy()
+		Timers:NextTick(function()
+			self:GetParent()._splash = self:GetParent()._splash - self:GetAbility():GetSpecialValueFor("cleave_damage_percent")
+		end)
+	end
 end
 
 function modifier_item_battlefury_arena:GetModifierPreAttack_BonusDamage()
@@ -75,6 +88,9 @@ if IsServer() then
 			local ability = self:GetAbility()
 			local target = keys.target
 			if target:IsRealCreep() then
+
+				ability.NoDamageAmp = true
+				ability.NoSplash = true
 				ApplyDamage({
 					attacker = attacker,
 					victim = target,
@@ -84,7 +100,7 @@ if IsServer() then
 					ability = ability
 				})
 			end
-			if not attacker:IsRangedUnit() then
+			--[[if not attacker:IsRangedUnit() and not attacker:FindModifierByName("modifier_splash_timer") then
 				DoCleaveAttack(
 					attacker,
 					target,
@@ -95,7 +111,7 @@ if IsServer() then
 					ability:GetSpecialValueFor("cleave_ending_width"),
 					self:GetAbility().cleave_pfx
 				)
-			end
+			end]]
 		end
 	end
 end
@@ -108,18 +124,20 @@ modifier_item_ultimate_splash = factorySYK(
 		MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT,
 		MODIFIER_PROPERTY_MANA_REGEN_CONSTANT,
 		MODIFIER_EVENT_ON_ATTACK_LANDED,
-		MODIFIER_EVENT_ON_ATTACK,
+		--MODIFIER_EVENT_ON_ATTACK,
 	}
 )
---[[function modifier_item_ultimate_splash:GetAttributes()
+
+function modifier_item_ultimate_splash:GetAttributes()
 	return MODIFIER_ATTRIBUTE_PERMANENT
-end]]
+end
 
 local modifier_item_ultimate_splash_projectiles = fireSplitshotProjectilesFactory(
 	"modifier_item_ultimate_splash",
 	"split_radius"
 )
 
+modifier_item_ultimate_splash.GetModifierPreAttack_BonusDamage = modifier_item_battlefury_arena.GetModifierPreAttack_BonusDamage
 modifier_item_ultimate_splash.GetModifierConstantHealthRegen = modifier_item_battlefury_arena.GetModifierConstantHealthRegen
 modifier_item_ultimate_splash.GetModifierConstantManaRegen = modifier_item_battlefury_arena.GetModifierConstantManaRegen
 modifier_item_ultimate_splash.OnAttackLanded = function(self, keys)
@@ -127,12 +145,13 @@ modifier_item_ultimate_splash.OnAttackLanded = function(self, keys)
 end
 
 if IsServer() then
-	function item_ultimate_splash:OnProjectileHit(hTarget)
+	--[[function item_ultimate_splash:OnProjectileHit(hTarget)
 		if not hTarget then return end
 		local caster = self:GetCaster()
 		if caster:IsIllusion() then return end
 		local number = #caster:FindAllModifiersByName(self:GetIntrinsicModifierName())
 
+		self.NoDamageAmp = true
 		ApplyDamage({
 			attacker = caster,
 			victim = hTarget,
@@ -143,7 +162,7 @@ if IsServer() then
 		})
 
 		hTarget:EmitSound("Hero_Medusa.AttackSplit")
-	end
+	end]]
 end
 
 function modifier_item_ultimate_splash:OnAttack(keys)
@@ -152,9 +171,9 @@ function modifier_item_ultimate_splash:OnAttack(keys)
 	local ability = self:GetAbility()
 	if attacker ~= self:GetParent() then return end
 
-	modifier_item_ultimate_splash_projectiles(attacker, target, ability)
+	--modifier_item_ultimate_splash_projectiles(attacker, target, ability)
 
-	if attacker:IsRangedUnit() and RollPercentage(ability:GetSpecialValueFor("global_attack_chance_pct")) then
+	--[[if attacker:IsRangedUnit() and not attacker:FindModifierByName("modifier_splash_timer") and RollPercentage(ability:GetSpecialValueFor("global_attack_chance_pct")) then
 		local units = FindUnitsInRadius(
 			attacker:GetTeamNumber(),
 			Vector(0, 0, 0),
@@ -174,7 +193,7 @@ function modifier_item_ultimate_splash:OnAttack(keys)
 		projectile_info.iVisionRadius = 50
 		projectile_info.iVisionTeamNumber = attacker:GetTeamNumber()
 		ProjectileManager:CreateTrackingProjectile(projectile_info)
-	end
+	end]]
 end
 
 
@@ -190,9 +209,12 @@ modifier_item_elemental_fury = factorySYK(
 	{
 		MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT,
 		MODIFIER_PROPERTY_MANA_REGEN_CONSTANT,
-		MODIFIER_EVENT_ON_ATTACK_LANDED
+		MODIFIER_EVENT_ON_ATTACK_LANDED,
+		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE 
 	}
 )
+
+modifier_item_elemental_fury.GetModifierPreAttack_BonusDamage = modifier_item_battlefury_arena.GetModifierPreAttack_BonusDamage
 modifier_item_elemental_fury.GetModifierConstantHealthRegen = modifier_item_battlefury_arena.GetModifierConstantHealthRegen
 modifier_item_elemental_fury.GetModifierConstantManaRegen = modifier_item_battlefury_arena.GetModifierConstantManaRegen
 modifier_item_elemental_fury.OnAttackLanded = function(self, keys)

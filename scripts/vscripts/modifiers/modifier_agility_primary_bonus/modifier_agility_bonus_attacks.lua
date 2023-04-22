@@ -6,25 +6,18 @@ modifier_agility_bonus_attacks = class({
 
 function modifier_agility_bonus_attacks:DeclareFunctions()
     return { 
-        MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE,
+        MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE,
         MODIFIER_EVENT_ON_ATTACK_CANCELLED,
     }
 end
 
 if IsServer() then
     function modifier_agility_bonus_attacks:OnCreated(keys)
-        --{minDelay = minDelay, lastDelay = minDelay + delay * (100 - coeff) * 0.01), bonusAttacksCount = self.bonusAttacksCount, coeff = 100 - coeff / 1.5}
         local parent = self:GetParent()
-        self.i = 1
-        self.lastDelay = keys.lastDelay
-        self.bonusAttacksCount = keys.bonusAttacksCount
         self.Pos = parent:GetAbsOrigin()
-
-        local damage = parent:GetAverageTrueAttackDamage(parent)
+        self.target = keys.target
         self._tick = 0
-        self.tick = keys.minDelay
-
-        --print(keys.minDelay)
+        self.tick = keys.attack_rate
         self:StartIntervalThink(self.tick)
     end
 
@@ -39,34 +32,26 @@ if IsServer() then
 
         if (pos - self.Pos):Length2D() >= DISTANCE_DIFFERENCE_FOR_CANCEL_ATACKS then
             self:Destroy()
-        elseif self._tick % (2 / self.tick) == 0 then
+        elseif self._tick % (4 / self.tick) == 0 then
             self.Pos = pos
         end
 
         if not target:IsAlive() then self:Destroy() end
-
+        
         if parent:Script_GetAttackRange() + 100 >= (pos - enemyPos):Length2D() and parent:IsAlive() and target:IsAlive() and not parent:IsStunned() and not parent:IsHexed() and not parent:IsDisarmed() then
+            --self.Damage = parent:GetAgility() * AGILITY_BONUS_BONUS_DAMAGE
+            local orb = false
+            if tostring(parent:GetPrimaryAttribute()) == parent:GetNetworkableEntityInfo("BonusPrimaryAttribute") then
+                orb = true
+            end
+            parent.bonus_attack = true
+            self.damage = AGILITY_BONUS_BASE_DAMAGE - 100
+            parent:PerformAttack(target, true, true, true, false, true, false, false)
+            self.damage = 0
+            parent.bonus_attack = false
+            --self.Damage = 0
         else
             self:Destroy()
-        end
-
-        if self.lastAttack then
-            self:Destroy()
-        end
-
-        if self.i % self.bonusAttacksCount == 0 then
-            self.lastAttack = true
-            self:StartIntervalThink(self.tick)
-            return
-        end
-        
-        self.i = self.i + 1
-        if parent:Script_GetAttackRange() + 100 >= (pos - enemyPos):Length2D() and parent:IsAlive() and target:IsAlive() and not parent:IsStunned() and not parent:IsHexed() and not parent:IsDisarmed() then
-            --parent:FindModifierByName("modifier_agility_primary_bonus")._fix = true
-            self.Damage = parent:GetAgility() * AGILITY_BONUS_BONUS_DAMAGE
-            parent:PerformAttack(target, true, true, true, false, true, false, false)
-            --print(parent:GetAverageTrueAttackDamage(parent))
-            self.Damage = 0
         end
     end
 
@@ -75,8 +60,7 @@ if IsServer() then
             self:Destroy()
         end
     end
-end
-
-function modifier_agility_bonus_attacks:GetModifierBaseDamageOutgoing_Percentage()
-    return self.Damage or 0
+    function modifier_agility_bonus_attacks:GetModifierDamageOutgoing_Percentage()
+        return self.damage --+ (self.Damage or 0)
+    end
 end

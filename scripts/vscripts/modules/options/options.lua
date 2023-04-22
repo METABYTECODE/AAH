@@ -121,7 +121,7 @@ function Options:LoadDefaultValues()
 	--Can be not networkable
 	Options:SetInitialValue("PreGameTime", 60)
 
-	Options:SetPreGameVoting("kill_limit", {100, 125, 150, 175}, 150, {
+	Options:SetPreGameVoting("kill_limit", {100, 125, 150, 175}, 100, {
 		calculationFunction = "/",
 		callback = function(value)
 			Options:SetValue("KillLimit", math.round(value))
@@ -147,7 +147,7 @@ function Options:LoadMapValues()
 		CustomAbilities:PostAbilityShopData()
 	elseif gamemode == "ranked" then
 		Options:SetValue("EnableRatingAffection", true)
-		Options:SetValue("BanningPhaseBannedPercentage", 80)
+		Options:SetValue("BanningPhaseBannedPercentage", 100)
 
 		GameRules:SetCustomGameSetupAutoLaunchDelay(-1)
 		GameRules:LockCustomGameSetupTeamAssignment(true)
@@ -179,15 +179,15 @@ function Options:LoadMapValues()
 			end)
 		end, true)
 	elseif gamemode == "" then
-		Options:SetValue("BanningPhaseBannedPercentage", 40)
+		Options:SetValue("BanningPhaseBannedPercentage", 100)
 	end
 	if landscape == "4v4v4v4" then
 		MAP_LENGTH = 9216
 		Options:SetValue("CustomTeamColors", true)
 	elseif landscape == "1v1" then
 		MAP_LENGTH = 3840
-		Options:SetValue("DynamicKillWeight", false)
-		Options:SetPreGameVoting("kill_limit", {10, 15, 20, 25, 30, 35}, 25)
+		Options:SetValue("DynamicKillWeight", true)
+		Options:SetPreGameVoting("kill_limit", {20, 30, 40, 50}, 40)
 		-- Would be pretty annoying for enemy
 		Options:SetValue("EnableBans", false)
 	end

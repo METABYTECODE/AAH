@@ -441,6 +441,7 @@ if not Containers then
 end
 
 function Containers:start()
+	--print("containers start")
 	if not __ACTIVATE_HOOK then
 		__ACTIVATE_HOOK = {funcs={}}
 		setmetatable(__ACTIVATE_HOOK, {
@@ -480,10 +481,12 @@ function Containers:start()
 			Containers.nextContext = context
 		end
 		Containers.initialized = true
+		--print('true')
 	end)
 
 
-	self.initialized = false
+	self.initialized = true
+	--print('false')
 	self.containers = {}
 	self.nextID = 0
 	self.closeOnOrders = {}
@@ -2971,5 +2974,3 @@ function IsValidContainer(c)
 		return false
 	end
 end
-
-if not Containers.containers then Containers:start() end

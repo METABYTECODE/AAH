@@ -34,7 +34,7 @@ item_radiance_frozen.particle_owner = "particles/arena/items_fx/radiance_frozen_
 
 
 modifier_item_radiance_lua = class({
-	GetAttributes = function() return MODIFIER_ATTRIBUTE_MULTIPLE end,
+	GetAttributes = function() return MODIFIER_ATTRIBUTE_PERMAMENT end,
 	IsPurgable    = function() return false end,
 	IsHidden      = function() return true end,
 	IsToggle 	  = function() return true end
@@ -99,9 +99,9 @@ if IsServer() then
 				if not v:IsMagicImmune() then
 					local modifier = v:FindModifierByNameAndCaster("modifier_item_radiance_lua_effect", target)
 					if not modifier then
-						v:AddNewModifier(target, ability, "modifier_item_radiance_lua_effect", {duration = 0.11})
+						v:AddNewModifier(target, ability, "modifier_item_radiance_lua_effect", {duration = 0.3})
 					else
-						modifier:SetDuration(0.11, false)
+						modifier:SetDuration(0.3, false)
 					end
 				end
 			end
@@ -141,10 +141,12 @@ function modifier_item_radiance_lua_effect:GetModifierHPRegenAmplify_Percentage(
 end
 function modifier_item_radiance_lua_effect:GetModifierAttackSpeedBonus_Constant()
 	local ability = self:GetAbility()
+	if not ability then return 0 end
 	return ability:GetSpecialValueFor(ability:GetName() == "item_radiance_frozen" and "cold_attack_speed" or "attack_speed_slow")
 end
 function modifier_item_radiance_lua_effect:GetModifierMoveSpeedBonus_Percentage()
 	local ability = self:GetAbility()
+	if not ability then return 0 end
 	return ability:GetSpecialValueFor(ability:GetName() == "item_radiance_frozen" and "cold_movement_speed_pct" or "move_speed_slow_pct")
 end
 function modifier_item_radiance_lua_effect:GetModifierMiss_Percentage()
@@ -153,17 +155,25 @@ function modifier_item_radiance_lua_effect:GetModifierMiss_Percentage()
 end
 
 if IsServer() then
-	modifier_item_radiance_lua_effect.interval_think = 0.5
+	modifier_item_radiance_lua_effect.interval_think = 1
 	function modifier_item_radiance_lua_effect:OnCreated()
 		self:StartIntervalThink(self.interval_think)
 	end
 
 	function modifier_item_radiance_lua_effect:OnIntervalThink()
+		local parent = self:GetParent()
+		if not parent:IsAlive() then return end
+		local ability = self:GetAbility()
+		if not ability then return 0 end
+		local damage = ability:GetSpecialValueFor("aura_damage_per_second") * self.interval_think
+		--[[if ability:GetAbilityName() == "item_radiance_frozen" and parent:GetFullName() == "npc_dota_neutral_jungle_variant1" then
+			damage = damage * ability:GetSpecialValueFor("jungle_bears_damage_mult")
+		end]]
 		ApplyDamage({victim = self:GetParent(),
 			attacker = self:GetCaster(),
-			damage = self:GetAbility():GetSpecialValueFor("aura_damage_per_second") * self.interval_think,
+			damage = damage,
 			damage_type = DAMAGE_TYPE_MAGICAL,
-			ability = self:GetAbility()
+			ability = ability
 		})
 	end
 else

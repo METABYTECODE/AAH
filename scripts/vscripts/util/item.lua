@@ -59,11 +59,15 @@ function swap_to_item(unit, srcItem, newItem)
 	ClearSlotsFromDummy(unit)
 end
 
-function FindItemInInventoryByName(unit, itemname, searchStash, onlyStash, ignoreBackpack)
+function FindItemInInventoryByName(unit, itemname, searchStash, onlyStash, ignoreBackpack, all)
 	local lastSlot = ignoreBackpack and DOTA_ITEM_SLOT_6 or DOTA_ITEM_SLOT_10
 	local startSlot = 0
 	if searchStash then lastSlot = DOTA_STASH_SLOT_6 end
 	if onlyStash then startSlot = DOTA_STASH_SLOT_1 end
+	if all then
+		startSlot = 0
+		lastSlot = DOTA_ITEM_NEUTRAL_SLOT
+	end
 	for slot = startSlot, lastSlot do
 		local item = unit:GetItemInSlot(slot)
 		if item and item:GetAbilityName() == itemname then
@@ -79,4 +83,28 @@ function CDOTA_Item:SpendCharge(amount)
 	else
 		self:SetCurrentCharges(newCharges)
 	end
+end
+
+function CheckBackpack(unit, backpack)
+	local update = false
+	if not backpack then
+		backpack = {}
+	end
+
+	local index = 0
+	for slot = DOTA_ITEM_SLOT_7, DOTA_ITEM_SLOT_9  do
+		index = index + 1
+		local item = unit:GetItemInSlot(slot)
+		if item ~= backpack[index] then
+			backpack[index] = item
+			update = true
+		end
+	end
+
+	if update then
+		--print("yes")
+		Attributes:UpdateAll(unit)
+	end
+
+	return backpack
 end

@@ -370,6 +370,7 @@ SHOP_LIST_STATUS_IN_STASH = 1
 SHOP_LIST_STATUS_TO_BUY = 2
 SHOP_LIST_STATUS_NO_STOCK = 3
 SHOP_LIST_STATUS_NO_BOSS = 4
+SHOP_LIST_STATUS_NEUTRAL_ITEM = 5
 
 function PanoramaShop:GetAllItemsByNameInInventory(unit, itemname, bBackpack)
 	local items = {}
@@ -465,6 +466,8 @@ function PanoramaShop:BuyItem(playerId, unit, itemName)
 				ProbablyPurchasable[name .. "_index_" .. itemCounter[name]] = SHOP_LIST_STATUS_NO_BOSS
 			elseif stocks and stocks < 1 then
 				ProbablyPurchasable[name .. "_index_" .. itemCounter[name]] = SHOP_LIST_STATUS_NO_STOCK
+			elseif GetKeyValue(name, "ItemIsNeutralDrop") == 1 then
+				ProbablyPurchasable[name .. "_index_" .. itemCounter[name]] = SHOP_LIST_STATUS_NEUTRAL_ITEM
 			else
 				ProbablyPurchasable[name .. "_index_" .. itemCounter[name]] = SHOP_LIST_STATUS_TO_BUY
 			end
@@ -493,6 +496,9 @@ function PanoramaShop:BuyItem(playerId, unit, itemName)
 		name = string.gsub(name, "_index_%d+", "")
 		if status == SHOP_LIST_STATUS_NO_BOSS then
 			Containers:DisplayError(playerId, "dota_hud_error_item_from_bosses")
+			return
+		elseif status == SHOP_LIST_STATUS_NEUTRAL_ITEM then
+			Containers:DisplayError(playerId, "dota_hud_error_item_neutral_item")
 			return
 		elseif status == SHOP_LIST_STATUS_NO_STOCK then
 			Containers:DisplayError(playerId, "dota_hud_error_item_out_of_stock")

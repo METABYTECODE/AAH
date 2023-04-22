@@ -31,6 +31,8 @@ if IsServer() then
 		if attacker:FindAllModifiersByName(self:GetName())[1] ~= self then return end
 
 		if IsModifierStrongest(attacker, self:GetName(), MODIFIER_PROC_PRIORITY.pure_damage) then
+
+			ability.NoDamageAmp = true
 			ApplyDamage({
 				victim = target,
 				attacker = attacker,

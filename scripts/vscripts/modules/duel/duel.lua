@@ -71,15 +71,6 @@ function Duel:GlobalThink()
 end
 
 function Duel:StartDuel()
-
-	--kill weight increase
-	local dota_time = GetDOTATimeInMinutesFull()
-	if not Duel.kill_weight_increase and dota_time >= KILL_WEIGHT_START_INCREASE_MINUTE then
-		GameMode.kill_weight_per_minute = dota_time - KILL_WEIGHT_START_INCREASE_MINUTE
-		Timers:CreateTimer(Dynamic_Wrap(GameMode, 'KillWeightIncrease'))
-		Duel.kill_weight_increase = true
-	end
-
 	Duel.heroes_teams_for_duel = {}
 	for playerId = 0, DOTA_MAX_TEAM_PLAYERS - 1  do
 		if PlayerResource:IsValidPlayerID(playerId) and not PlayerResource:IsPlayerAbandoned(playerId) then
@@ -127,8 +118,11 @@ function Duel:StartDuel()
 						if not unit.DuelChecked and unit:IsAlive() and PlayerResource:IsValidPlayerID(playerId) then
 							unit.OnDuel = true
 							Duel:FillPreduelUnitData(unit)
-							unit:SetHealth(unit:GetMaxHealth())
 							unit:SetMana(unit:GetMaxMana())
+							unit:SetHealth(unit:GetMaxHealth())
+							if unit.GetMaxStamina then
+								unit:ModifyStamina(unit:GetMaxStamina())
+							end
 							--unit:ModifyStamina(unit:GetMaxStamina())
 							count = count + 1
 						end
@@ -270,17 +264,17 @@ function Duel:EndDuelForUnit(unit)
 		if IsValidEntity(unit) and unit:IsAlive() and unit.StatusBeforeArena then
 			if unit.StatusBeforeArena.Health then unit:SetHealth(unit.StatusBeforeArena.Health) end
 			if unit.StatusBeforeArena.Mana then unit:SetMana(unit.StatusBeforeArena.Mana) end
-			if unit.StatusBeforeArena.Stamina then unit:SetMana(unit.StatusBeforeArena.Stamina) end
+			if unit.StatusBeforeArena.Stamina then unit:ModifyStamina(-(unit:GetMaxStamina() - unit.StatusBeforeArena.Stamina)) end
 			for ability,v in pairs(unit.StatusBeforeArena.AbilityCooldowns or {}) do
-				if IsValidEntity(ability) and unit:HasAbility(ability:GetAbilityName()) then
-					ability:EndCooldown()
-					ability:StartCooldown(v)
+				if IsValidEntity(ability) and unit:HasAbility(ability:GetAbilityName()) and not DUEL_NOT_REFRESHABLE[ability:GetAbilityName()] then
+					--ability:EndCooldown()
+					--ability:StartCooldown(v)
 				end
 			end
 			for item,v in pairs(unit.StatusBeforeArena.ItemCooldowns or {}) do
-				if IsValidEntity(item) then
-					item:EndCooldown()
-					item:StartCooldown(v)
+				if IsValidEntity(item) and not DUEL_NOT_REFRESHABLE[item:GetAbilityName()] then
+					--item:EndCooldown()
+					--item:StartCooldown(v)
 				end
 			end
 			unit.StatusBeforeArena = nil
@@ -312,8 +306,8 @@ function Duel:FillPreduelUnitData(unit)
 		local ability = unit:GetAbilityByIndex(i)
 		if ability and ability:GetCooldown(ability:GetLevel()) > 0 then
 			unit.StatusBeforeArena.AbilityCooldowns[ability] = ability:GetCooldownTimeRemaining()
-			if not DUEL_NOT_REFRESHABLE[ability:GetName()] then
-				ability:EndCooldown()
+			if (not DUEL_NOT_REFRESHABLE[ability:GetAbilityName()]) then
+				--ability:EndCooldown()
 			end
 		end
 	end
@@ -321,7 +315,9 @@ function Duel:FillPreduelUnitData(unit)
 		local item = unit:GetItemInSlot(i)
 		if item then
 			unit.StatusBeforeArena.ItemCooldowns[item] = item:GetCooldownTimeRemaining()
-			item:EndCooldown()
+			if not DUEL_NOT_REFRESHABLE[item:GetAbilityName()] then
+				--item:EndCooldown()
+			end
 		end
 	end
 end
@@ -332,6 +328,8 @@ end
 
 function Duel:EndIfFinished()
 	if Duel:IsDuelOngoing() and Duel:GetWinner() ~= nil then
-		Duel:EndDuel()
+		Timers:CreateTimer(0.5, function()
+			Duel:EndDuel()
+		end)
 	end
 end

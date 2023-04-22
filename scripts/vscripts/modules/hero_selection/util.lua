@@ -52,6 +52,11 @@ function HeroSelection:GetSelectedHeroPlayer(hero)
 end
 
 function HeroSelection:ExtractHeroStats(heroTable)
+	local primary = _G[heroTable.AttributePrimary]
+	local primary_damage
+	if primary == DOTA_ATTRIBUTE_ALL then
+		primary_damage = (heroTable.AttributeBaseStrength + heroTable.AttributeBaseAgility + heroTable.AttributeBaseIntelligence) * DAMAGE_PER_ATTRIBUTE_FOR_UNIVERSALES
+	end
 	local attributes = {
 		attribute_primary = _G[heroTable.AttributePrimary],
 		attribute_base_0 = heroTable.AttributeBaseStrength,
@@ -67,10 +72,10 @@ function HeroSelection:ExtractHeroStats(heroTable)
 		armor = heroTable.ArmorPhysical,
 		team = heroTable.Team
 	}
-	attributes.damage_min = attributes.damage_min + attributes["attribute_base_" .. attributes.attribute_primary]
-	attributes.damage_max = attributes.damage_max + attributes["attribute_base_" .. attributes.attribute_primary]
+	attributes.damage_min = math.round(attributes.damage_min + (attributes["attribute_base_" .. attributes.attribute_primary] or primary_damage))
+	attributes.damage_max = math.round(attributes.damage_max + (attributes["attribute_base_" .. attributes.attribute_primary] or primary_damage))
 
-	local armorForFirstLevel = CalculateBaseArmor(heroTable.AttributeBaseIntelligence)
+	local armorForFirstLevel = CalculateBaseArmor(heroTable.AttributeBaseAgility)
 	attributes.armor = attributes.armor + armorForFirstLevel
 	return attributes
 end
@@ -108,12 +113,15 @@ function TransformUnitClass(unit, classTable, skipAbilityRemap)
 			unit:SetPhysicalArmorBaseValue(value)
 		elseif key == "MagicalResistance" then
 			unit:SetBaseMagicalResistanceValue(value)
+			unit.Custom_MagicalResist = value
 		elseif key == "AttackCapabilities" then
 			unit:SetAttackCapability(_G[value])
 		elseif key == "AttackDamageMin" then
 			unit:SetBaseDamageMin(value)
+			unit.Custom_AttackDamageMin = value
 		elseif key == "AttackDamageMax" then
 			unit:SetBaseDamageMax(value)
+			unit.Custom_AttackDamageMax = value
 		elseif key == "AttackRate" then
 			unit:SetBaseAttackTime(value)
 			unit:SetNetworkableEntityInfo("BaseAttackTime", value)
@@ -123,9 +131,13 @@ function TransformUnitClass(unit, classTable, skipAbilityRemap)
 			unit:SetRangedProjectileName(value)
 		elseif key == "AttributePrimary" then
 			Timers:NextTick(function()
-				--print(_G[value])
+				print(_G[value])
+				print(type(_G[value]))
 				unit:SetPrimaryAttribute(_G[value])
-				unit.Custom_PrimaryAttribute = unit:GetPrimaryAttribute()
+				unit.GetPrimaryAttribute = function()
+					return _G[value]
+				end
+				--unit.Custom_PrimaryAttribute = unit:GetPrimaryAttribute()
 				unit:CalculateStatBonus(true)
 
 				local illusionParent = unit:GetIllusionParent()

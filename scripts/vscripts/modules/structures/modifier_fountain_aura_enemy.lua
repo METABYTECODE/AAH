@@ -43,7 +43,7 @@ if IsServer() then
 
 	function modifier_fountain_aura_enemy:OnIntervalThink()
 		local parent = self:GetParent()
-		if parent:IsCourier() then return end
+		if parent:IsCourier() or parent:GetName() == "infinity_stone" then return end
 
 		self:CreateFountainPFX()
 		if Bosses:IsAlive("cursed_zeld") or parent:IsCustomWard() then
@@ -52,7 +52,7 @@ if IsServer() then
 			ApplyDamage({
 				attacker = FindFountain(self.team),
 				victim = parent,
-				damage = 1000 + parent:GetMaxHealth() * self:OnTooltip() * 0.01,
+				damage = 5000 + parent:GetMaxHealth() * self:OnTooltip() * 0.01,
 				damage_type = DAMAGE_TYPE_PURE,
 				damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION
 			})

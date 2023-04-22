@@ -174,6 +174,11 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityValues"
+		{
+			"lifesteal_percent"		"18"
+			"creep_lifesteal_reduction_pct"	"100"
+		}
 	}
 	"item_ring_of_regen"
 	{
@@ -250,7 +255,7 @@
 		"ItemStockMax"					"10"
 		"ItemStockInitial"				"3"
 		"ItemStockTime"					"50"
-		"ItemCost"						"70"
+		"ItemCost"						"0"
 
 		"AbilitySpecial"
 		{
@@ -418,6 +423,16 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+
+		"AbilityValues"
+		{
+			"bonus_strength"		"5 10"
+			"bonus_agility"			"2 4"
+			"bonus_intellect"		"2 4"
+			"bonus_damage"			"2 4"
+			"bonus_health_regen"	"0.75 1.5"
+			"clock_time"			"5"
+		}
 	}
 	"item_recipe_wraith_band"
 	{
@@ -428,6 +443,16 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+
+		"AbilityValues"
+		{
+				"bonus_agility"			"5 10"
+				"bonus_strength"		"2 4"
+				"bonus_intellect"		"2 4"
+				"bonus_attack_speed"	"5 10"
+				"bonus_armor"			"2 4"
+				"clock_time"			"5"
+		}
 	}
 	"item_recipe_null_talisman"
 	{
@@ -438,6 +463,16 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+
+		"AbilityValues"
+		{
+			"bonus_intellect"		"5 10"
+			"bonus_strength"		"2 4"
+			"bonus_agility"			"2 4"
+			"bonus_max_mana_percentage"	"3 6"
+			"bonus_mana_regen"		"0.75 1.5"
+			"clock_time"			"5"
+		}
 	}
 	"item_recipe_vladmir"
 	{
@@ -514,7 +549,7 @@
 			"06"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"magic_resistance_aura"		"10"
+				"magic_resistance_aura"	"10"
 			}
 			"07"
 			{
@@ -714,6 +749,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ICE"
 	}
 	"item_recipe_bloodstone"
 	{
@@ -818,7 +854,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"crit_chance"			"20"
+				"crit_chance"			"30"
 			}
 			"03"
 			{
@@ -880,13 +916,41 @@
 	}
 	"item_recipe_satanic"
 	{
-		"SecretShop"					"0"
-		"SideShop"						"0"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"ID"							"155"														// unique ID number for this item.  Do not change this once established or it will invalidate collected stats.
+		"Model"							"models/props_gameplay/recipe.vmdl"
+		
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"1500"	
+		"ItemShopTags"					""
+		
+		// Recipe
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemRecipe"					"1"
+		"ItemResult"					"item_satanic"
+		"ItemRequirements"
+		{
+			"01"						"item_lifesteal;item_claymore;item_reaver;item_reaver;item_reaver"
+		}
 	}
 	"item_satanic"
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityCooldown"				"50.0"
+
+		"AbilityValues"
+		{
+				"bonus_strength"		"75"
+				"bonus_damage"			"50"
+				"lifesteal_percent"		"30"
+				"creep_lifesteal_reduction_pct"	"-100"
+				"unholy_lifesteal_percent"	"175"
+				"unholy_lifesteal_total_tooltip"	"175"
+				"unholy_duration"		"10.0"
+		}
 	}
 	"item_recipe_mjollnir"
 	{
@@ -901,7 +965,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
-		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ENERGY"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_LIGHTING"
 	}
 	"item_recipe_helm_of_the_dominator"
 	{
@@ -922,7 +986,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
-		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ENERGY"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_LIGHTING"
 	}
 	"item_recipe_desolator"
 	{
@@ -945,15 +1009,16 @@
 		"SideShop"						"0"
 		"AbilityManaCost"				"0"
 		"AbilityCooldown"				"17"
+
 		"AbilityValues"
 		{
-				"bonus_damage"	"10"
+				"bonus_damage"	"15"
 				"bonus_attack_speed"	"10"
 				"lifesteal_percent"		"25"
-				"creep_lifesteal_reduction_pct"	"0"
+				"creep_lifesteal_reduction_pct"	"100"
 				"berserk_bonus_attack_speed"	"110"
 				"berserk_bonus_movement_speed"	"30"
-				"berserk_armor_reduction"	"4"
+				"berserk_armor_reduction"	"6"	
 				"berserk_duration"		"9.0"
 		}
 	}
@@ -970,7 +1035,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
-		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DARK"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DEATH"
 		"AbilitySpecial"
 		{
 			"01"
@@ -1508,6 +1573,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DARK"
 	}
 	"item_recipe_aeon_disk"
 	{
@@ -1568,6 +1634,14 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityValues"
+		{
+				"bonus_intellect"			"16"
+				"spell_amp"			"8"
+				"mana_regen_multiplier"		"50"
+				"spell_lifesteal_amp"	"24"
+
+		}
 	}
 	"item_recipe_meteor_hammer"
 	{
@@ -1642,6 +1716,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_FIRE"
 		"ItemRequirements"
 		{
 			"01"						"item_blink;item_reaver"
@@ -1651,6 +1726,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilitySharedCooldown" 		"blink"
 		"AbilitySpecial"
 		{
 			"01"
@@ -1704,11 +1780,13 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilitySharedCooldown" 		"blink"
 	}
 	"item_arcane_blink"
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilitySharedCooldown" 		"blink"
 	}
 	"item_recipe_revenants_brooch"
 	{
@@ -1723,6 +1801,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DEATH"
 	}
 	"item_wind_waker"
 	{
@@ -1742,6 +1821,7 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ENERGY"
 	}
 	"item_recipe_witch_blade"
 	{
@@ -1765,11 +1845,37 @@
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_LIGHTING"
 	}
 	"item_moon_shard"
 	{
 		"SecretShop"					"0"
 		"SideShop"						"0"
+		"ItemPermanent"					"1"
 		"ItemCost"						"4000"
+	}
+
+	"item_aghanims_shard"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"ID"							"609"														// unique ID number for this item.  Do not change this once established or it will invalidate collected stats.
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"6000"
+		"ItemShopTags"					"int;str;agi;mana_pool;health_pool;hard_to_tag"
+		"ItemQuality"					"rare"
+		"ItemAliases"					"ags;shard;aghanim's shard;aghs"
+		
+		"ItemPermanent"					"0"
+		"ItemStockTime"					"1"			  
+		"ItemStockInitial"				"0"
+		"ItemStockMax"					"1"
+		"ItemInitialStockTime"			"360.0"
+		"ItemInitialStockTimeTurbo"		"645.0"
+
+		"ShouldBeSuggested"				"1"
 	}
 }

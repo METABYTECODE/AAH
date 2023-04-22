@@ -16,6 +16,11 @@ function GameMode:_InitGameMode()
 	ListenToGameEvent('dota_team_kill_credit', Dynamic_Wrap(GameMode, 'OnTeamKillCredit'), self)
 	ListenToGameEvent("dota_item_combined", Dynamic_Wrap(GameMode, 'OnItemCombined'), self)
 
+	--attributes
+	ListenToGameEvent("dota_inventory_item_added", Dynamic_Wrap(GameMode, '_InventoryItemAdded'), self)
+	ListenToGameEvent("dota_hero_inventory_item_change", Dynamic_Wrap(GameMode, '_InventoryItemChange'), self)
+	ListenToGameEvent("dota_player_gained_level", Dynamic_Wrap(GameMode, '_HeroGainedLevel'), self)
+
 	-- Change random seed
 	local timeTxt = string.gsub(string.gsub(GetSystemTime(), ':', ''), '^0+','')
 	math.randomseed(tonumber(timeTxt))

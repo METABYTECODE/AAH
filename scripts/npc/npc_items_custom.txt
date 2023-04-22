@@ -13,6 +13,7 @@
 #base "items/radiance.txt"
 #base "items/mekansm.txt"
 #base "items/book_of_the_guardian.txt"
+#base "items/infinity_stones.txt"
 
 "DOTAAbilities"
 {
@@ -303,6 +304,8 @@
 		"ItemQuality"					"legendary"
 		"ItemAliases"					"hot;heart of tarrasque; cyclone; eul; eul's scepter of divinity"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
+
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_AIR"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -600,7 +603,7 @@
 		"ItemShopTags"					"damage;attack_speed;movespeed;hard_to_tag"
 		"ItemQuality"					"epic"
 		"ItemAliases"					"sb;invis;shadow blade;hex;sheepstick;scythe of vyse"
-		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ICE"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ENERGY"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_IN_SPEECH | DECLARE_PURCHASES_TO_SPECTATORS"
 
 		"AbilitySpecial"
@@ -721,7 +724,7 @@
 				{
 					"MODIFIER_STATE_INVISIBLE"					"MODIFIER_STATE_VALUE_ENABLED"
 					"MODIFIER_STATE_NO_UNIT_COLLISION"			"MODIFIER_STATE_VALUE_ENABLED"
-					"MODIFIER_STATE_CANNOT_MISS"			"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_CANNOT_MISS"				"MODIFIER_STATE_VALUE_ENABLED"
 				}
 
 				"OnAttack"
@@ -1525,7 +1528,7 @@
 			"01"
 			{
 				"var_type"											"FIELD_INTEGER"
-				"bonus_strength"									"70"
+				"bonus_strength"									"120"
 			}
 			"02"
 			{
@@ -1540,7 +1543,7 @@
 			"04"
 			{
 				"var_type"											"FIELD_INTEGER"
-				"bonus_attack_speed"								"35"
+				"bonus_attack_speed"								"100"
 			}
 			"05"
 			{
@@ -1570,12 +1573,12 @@
 			"10"
 			{
 				"var_type"											"FIELD_INTEGER"
-				"illusion_damage_percent_incoming"					"550"
+				"illusion_damage_percent_incoming"					"400"
 			}
 			"11"
 			{
 				"var_type"											"FIELD_INTEGER"
-				"illusion_damage_percent_incoming_tooltip"			"550"
+				"illusion_damage_percent_incoming_tooltip"			"400"
 			}
 			"12"
 			{
@@ -1635,7 +1638,7 @@
 			"23"
 			{
 				"var_type"											"FIELD_INTEGER"
-				"damage_per_burn_pct"								"50"
+				"damage_per_burn_pct"								"80"
 			}
 			"24"
 			{
@@ -1645,7 +1648,7 @@
 			"25"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"mana_burn_pct"			"9.0"
+				"mana_burn_pct"			"2.0"
 			}
 			"26"
 			{
@@ -1771,13 +1774,13 @@
 		"BaseClass"                     "item_datadriven"
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"525"
+		"ItemCost"						"10000"
 		"ItemShopTags"					""
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_blink_staff"
 		"ItemRequirements"
 		{
-			"01"						"item_blink;item_force_staff;item_moon_dust"
+			"01"						"item_blink;item_force_staff"
 		}
 	}
 
@@ -2490,12 +2493,12 @@
 		"BaseClass"						"item_datadriven"
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"2500"
+		"ItemCost"						"500"
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_essential_orb_fire_1"
 		"ItemRequirements"
 		{
-			"01"						"item_mystic_staff;item_mystic_staff;item_staff_of_wizardry"
+			"01"						"item_mystic_staff;item_staff_of_wizardry"
 		}
 	}
 
@@ -2504,7 +2507,7 @@
 		"BaseClass"						"item_datadriven"
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"3000"
+		"ItemCost"						"2000"
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_essential_orb_fire_2"
 		"ItemRequirements"
@@ -2532,7 +2535,7 @@
 		"BaseClass"						"item_datadriven"
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"5500"
+		"ItemCost"						"6000"
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_essential_orb_fire_4"
 		"ItemRequirements"
@@ -2546,7 +2549,7 @@
 		"BaseClass"						"item_datadriven"
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"7000"
+		"ItemCost"						"8000"
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_essential_orb_fire_5"
 		"ItemRequirements"
@@ -2560,7 +2563,7 @@
 		"BaseClass"						"item_datadriven"
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"9000"
+		"ItemCost"						"10000"
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_essential_orb_fire_6"
 		"ItemRequirements"
@@ -2581,56 +2584,62 @@
 		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_FIRE"
 
 		"AbilityCooldown"				"7.5 7 6.5 6 5.5 5"
-		"AbilityManaCost"				"50 75 100 125 150 175"
-		"AbilityDamage"					"600 800 1000 1200 1400 1600"
-		"AbilityCastRange"				"3000 3250 3500 3750 4000 4000"
+		"AbilityManaCost"				"50 100 150 200 250 300"
+		"AbilityDamage"					"100 150 200 250 300 350"
+		"AbilityCastRange"				"3000 3250 3500 3750 4000 4250"
 
 		"MaxUpgradeLevel"				"6"
 		"ItemBaseLevel"					"1"
 
 		"AbilitySpecial"
 		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"bonus_int"			"60"
+				"01"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"bonus_int"			"30 40 50 60 70 80"
+				}
+				"02"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"range"				"3000 3250 3500 3750 4000 4250"
+				}
+				"03"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"speed"				"450"
+				}
+				"04"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"damage_hit_growth"	"10 20 30 40 50 60"
+				}
+				"05"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_duration"		"2.0 3.0 4.0 5.0 6.0 7.0"
+				}
+				"06"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_damage_interval"		"1.0"
+				}
+				"07"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_damage_per_sec" "50 75 100 125 150 175"
+				}
+				"08"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_armor"		"-2 -4 -6 -8 -10 -12"
+				}
+				"09"
+				{
+					"var_type"	"FIELD_FLOAT"
+					"jungle_bears_damage_multiplier"	"2.5 3.0 3.5 4.0 4.5 5.0"
+					"CalculateSpellDamageTooltip"		"0"
+				}
 			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"range"				"3000 3250 3500 3750 4000 4000"
-			}
-			"03"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"speed"				"500 700 900 1100 1150 1200"
-			}
-			"04"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"damage_hit_growth"	"35 70 125 180 225 290"
-			}
-			"05"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_duration"		"0 0 0 2 3 4"
-			}
-			"06"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_damage_interval"		"0.5"
-			}
-			"07"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_damage_per_sec" "0 0 0 50 100 150"
-			}
-			"08"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_armor"		"0 0 0 -12 -16 -20"
-			}
-		}
 
 		"OnSpellStart"
 		{
@@ -2677,7 +2686,7 @@
 					{
 						"Target"		"TARGET"
 						"Type"			"DAMAGE_TYPE_MAGICAL"
-						"Damage"		"%burn_damage_per_sec * %burn_damage_interval"
+						"Damage"		"%burn_damage_per_sec"
 					}
 				}
 
@@ -2701,8 +2710,8 @@
 		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_FIRE"
 
 		"AbilityCooldown"				"7.5 7 6.5 6 5.5 5"
-		"AbilityManaCost"				"50 75 100 125 150 175"
-		"AbilityDamage"					"600 800 1000 1200 1400 1600"
+		"AbilityManaCost"				"50 100 150 200 250 300"
+		"AbilityDamage"					"100 150 200 250 300 350"
 		"AbilityCastRange"				"3000 3250 3500 3750 4000 4000"
 
 		"MaxUpgradeLevel"				"6"
@@ -2710,47 +2719,53 @@
 
 		"AbilitySpecial"
 		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"bonus_int"			"60"
+				"01"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"bonus_int"			"30 40 50 60 70 80"
+				}
+				"02"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"range"				"3000 3250 3500 3750 4000 4250"
+				}
+				"03"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"speed"				"450"
+				}
+				"04"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"damage_hit_growth"	"10 20 30 40 50 60"
+				}
+				"05"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_duration"		"2.0 3.0 4.0 5.0 6.0 7.0"
+				}
+				"06"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_damage_interval"		"1.0"
+				}
+				"07"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_damage_per_sec" "50 75 100 125 150 175"
+				}
+				"08"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_armor"		"-2 -4 -6 -8 -10 -12"
+				}
+				"09"
+				{
+					"var_type"	"FIELD_FLOAT"
+					"jungle_bears_damage_multiplier"	"2.5 3.0 3.5 4.0 4.5 5.0"
+					"CalculateSpellDamageTooltip"		"0"
+				}
 			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"range"				"3000 3250 3500 3750 4000 4000"
-			}
-			"03"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"speed"				"500 700 900 1100 1150 1200"
-			}
-			"04"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"damage_hit_growth"	"35 70 125 180 225 290"
-			}
-			"05"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_duration"		"0 0 0 2 3 4"
-			}
-			"06"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_damage_interval"		"0.5"
-			}
-			"07"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_damage_per_sec" "0 0 0 50 100 150"
-			}
-			"08"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_armor"		"0 0 0 -12 -16 -20"
-			}
-		}
 
 		"OnSpellStart"
 		{
@@ -2797,7 +2812,7 @@
 					{
 						"Target"		"TARGET"
 						"Type"			"DAMAGE_TYPE_MAGICAL"
-						"Damage"		"%burn_damage_per_sec * %burn_damage_interval"
+						"Damage"		"%burn_damage_per_sec"
 					}
 				}
 
@@ -2821,8 +2836,8 @@
 		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_FIRE"
 
 		"AbilityCooldown"				"7.5 7 6.5 6 5.5 5"
-		"AbilityManaCost"				"50 75 100 125 150 175"
-		"AbilityDamage"					"600 800 1000 1200 1400 1600"
+		"AbilityManaCost"				"50 100 150 200 250 300"
+		"AbilityDamage"					"100 150 200 250 300 350"
 		"AbilityCastRange"				"3000 3250 3500 3750 4000 4000"
 
 		"MaxUpgradeLevel"				"6"
@@ -2830,47 +2845,53 @@
 
 		"AbilitySpecial"
 		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"bonus_int"			"60"
+				"01"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"bonus_int"			"30 40 50 60 70 80"
+				}
+				"02"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"range"				"3000 3250 3500 3750 4000 4250"
+				}
+				"03"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"speed"				"450"
+				}
+				"04"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"damage_hit_growth"	"10 20 30 40 50 60"
+				}
+				"05"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_duration"		"2.0 3.0 4.0 5.0 6.0 7.0"
+				}
+				"06"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_damage_interval"		"1.0"
+				}
+				"07"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_damage_per_sec" "50 75 100 125 150 175"
+				}
+				"08"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_armor"		"-2 -4 -6 -8 -10 -12"
+				}
+				"09"
+				{
+					"var_type"	"FIELD_FLOAT"
+					"jungle_bears_damage_multiplier"	"2.5 3.0 3.5 4.0 4.5 5.0"
+					"CalculateSpellDamageTooltip"		"0"
+				}
 			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"range"				"3000 3250 3500 3750 4000 4000"
-			}
-			"03"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"speed"				"500 700 900 1100 1150 1200"
-			}
-			"04"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"damage_hit_growth"	"35 70 125 180 225 290"
-			}
-			"05"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_duration"		"0 0 0 2 3 4"
-			}
-			"06"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_damage_interval"		"0.5"
-			}
-			"07"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_damage_per_sec" "0 0 0 50 100 150"
-			}
-			"08"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_armor"		"0 0 0 -12 -16 -20"
-			}
-		}
 
 		"OnSpellStart"
 		{
@@ -2917,7 +2938,7 @@
 					{
 						"Target"		"TARGET"
 						"Type"			"DAMAGE_TYPE_MAGICAL"
-						"Damage"		"%burn_damage_per_sec * %burn_damage_interval"
+						"Damage"		"%burn_damage_per_sec"
 					}
 				}
 
@@ -2941,8 +2962,8 @@
 		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_FIRE"
 
 		"AbilityCooldown"				"7.5 7 6.5 6 5.5 5"
-		"AbilityManaCost"				"50 75 100 125 150 175"
-		"AbilityDamage"					"600 800 1000 1200 1400 1600"
+		"AbilityManaCost"				"50 100 150 200 250 300"
+		"AbilityDamage"					"100 150 200 250 300 350"
 		"AbilityCastRange"				"3000 3250 3500 3750 4000 4000"
 
 		"MaxUpgradeLevel"				"6"
@@ -2950,47 +2971,53 @@
 
 		"AbilitySpecial"
 		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"bonus_int"			"60"
+				"01"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"bonus_int"			"30 40 50 60 70 80"
+				}
+				"02"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"range"				"3000 3250 3500 3750 4000 4250"
+				}
+				"03"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"speed"				"450"
+				}
+				"04"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"damage_hit_growth"	"10 20 30 40 50 60"
+				}
+				"05"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_duration"		"2.0 3.0 4.0 5.0 6.0 7.0"
+				}
+				"06"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_damage_interval"		"1.0"
+				}
+				"07"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_damage_per_sec" "50 75 100 125 150 175"
+				}
+				"08"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_armor"		"-2 -4 -6 -8 -10 -12"
+				}
+				"09"
+				{
+					"var_type"	"FIELD_FLOAT"
+					"jungle_bears_damage_multiplier"	"2.5 3.0 3.5 4.0 4.5 5.0"
+					"CalculateSpellDamageTooltip"		"0"
+				}
 			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"range"				"3000 3250 3500 3750 4000 4000"
-			}
-			"03"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"speed"				"500 700 900 1100 1150 1200"
-			}
-			"04"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"damage_hit_growth"	"35 70 125 180 225 290"
-			}
-			"05"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_duration"		"0 0 0 2 3 4"
-			}
-			"06"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_damage_interval"		"0.5"
-			}
-			"07"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_damage_per_sec" "0 0 0 50 100 150"
-			}
-			"08"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_armor"		"0 0 0 -12 -16 -20"
-			}
-		}
 
 		"OnSpellStart"
 		{
@@ -3037,7 +3064,7 @@
 					{
 						"Target"		"TARGET"
 						"Type"			"DAMAGE_TYPE_MAGICAL"
-						"Damage"		"%burn_damage_per_sec * %burn_damage_interval"
+						"Damage"		"%burn_damage_per_sec"
 					}
 				}
 
@@ -3061,8 +3088,8 @@
 		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_FIRE"
 
 		"AbilityCooldown"				"7.5 7 6.5 6 5.5 5"
-		"AbilityManaCost"				"50 75 100 125 150 175"
-		"AbilityDamage"					"600 800 1000 1200 1400 1600"
+		"AbilityManaCost"				"50 100 150 200 250 300"
+		"AbilityDamage"					"100 150 200 250 300 350"
 		"AbilityCastRange"				"3000 3250 3500 3750 4000 4000"
 
 		"MaxUpgradeLevel"				"6"
@@ -3070,47 +3097,53 @@
 
 		"AbilitySpecial"
 		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"bonus_int"			"60"
+				"01"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"bonus_int"			"30 40 50 60 70 80"
+				}
+				"02"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"range"				"3000 3250 3500 3750 4000 4250"
+				}
+				"03"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"speed"				"450"
+				}
+				"04"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"damage_hit_growth"	"10 20 30 40 50 60"
+				}
+				"05"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_duration"		"2.0 3.0 4.0 5.0 6.0 7.0"
+				}
+				"06"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_damage_interval"		"1.0"
+				}
+				"07"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_damage_per_sec" "50 75 100 125 150 175"
+				}
+				"08"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_armor"		"-2 -4 -6 -8 -10 -12"
+				}
+				"09"
+				{
+					"var_type"	"FIELD_FLOAT"
+					"jungle_bears_damage_multiplier"	"2.5 3.0 3.5 4.0 4.5 5.0"
+					"CalculateSpellDamageTooltip"		"0"
+				}
 			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"range"				"3000 3250 3500 3750 4000 4000"
-			}
-			"03"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"speed"				"500 700 900 1100 1150 1200"
-			}
-			"04"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"damage_hit_growth"	"35 70 125 180 225 290"
-			}
-			"05"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_duration"		"0 0 0 2 3 4"
-			}
-			"06"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_damage_interval"		"0.5"
-			}
-			"07"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_damage_per_sec" "0 0 0 50 100 150"
-			}
-			"08"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_armor"		"0 0 0 -12 -16 -20"
-			}
-		}
 
 		"OnSpellStart"
 		{
@@ -3157,7 +3190,7 @@
 					{
 						"Target"		"TARGET"
 						"Type"			"DAMAGE_TYPE_MAGICAL"
-						"Damage"		"%burn_damage_per_sec * %burn_damage_interval"
+						"Damage"		"%burn_damage_per_sec"
 					}
 				}
 
@@ -3181,8 +3214,8 @@
 		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_FIRE"
 
 		"AbilityCooldown"				"7.5 7 6.5 6 5.5 5"
-		"AbilityManaCost"				"50 75 100 125 150 175"
-		"AbilityDamage"					"600 800 1000 1200 1400 1600"
+		"AbilityManaCost"				"50 100 150 200 250 300"
+		"AbilityDamage"					"100 150 200 250 300 350"
 		"AbilityCastRange"				"3000 3250 3500 3750 4000 4000"
 
 		"MaxUpgradeLevel"				"6"
@@ -3190,47 +3223,53 @@
 
 		"AbilitySpecial"
 		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"bonus_int"			"60"
+				"01"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"bonus_int"			"30 40 50 60 70 80"
+				}
+				"02"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"range"				"3000 3250 3500 3750 4000 4250"
+				}
+				"03"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"speed"				"450"
+				}
+				"04"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"damage_hit_growth"	"10 20 30 40 50 60"
+				}
+				"05"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_duration"		"2.0 3.0 4.0 5.0 6.0 7.0"
+				}
+				"06"
+				{
+					"var_type"			"FIELD_FLOAT"
+					"burn_damage_interval"		"1.0"
+				}
+				"07"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_damage_per_sec" "50 75 100 125 150 175"
+				}
+				"08"
+				{
+					"var_type"			"FIELD_INTEGER"
+					"burn_armor"		"-2 -4 -6 -8 -10 -12"
+				}
+				"09"
+				{
+					"var_type"	"FIELD_FLOAT"
+					"jungle_bears_damage_multiplier"	"2.5 3.0 3.5 4.0 4.5 5.0"
+					"CalculateSpellDamageTooltip"		"0"
+				}
 			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"range"				"3000 3250 3500 3750 4000 4000"
-			}
-			"03"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"speed"				"500 700 900 1100 1150 1200"
-			}
-			"04"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"damage_hit_growth"	"35 70 125 180 225 290"
-			}
-			"05"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_duration"		"0 0 0 2 3 4"
-			}
-			"06"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"burn_damage_interval"		"0.5"
-			}
-			"07"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_damage_per_sec" "0 0 0 50 100 150"
-			}
-			"08"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"burn_armor"		"0 0 0 -12 -16 -20"
-			}
-		}
 
 		"OnSpellStart"
 		{
@@ -3277,7 +3316,7 @@
 					{
 						"Target"		"TARGET"
 						"Type"			"DAMAGE_TYPE_MAGICAL"
-						"Damage"		"%burn_damage_per_sec * %burn_damage_interval"
+						"Damage"		"%burn_damage_per_sec"
 					}
 				}
 
@@ -3352,12 +3391,12 @@
 			"07"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"hero_lifesteal"		"25"
+				"hero_lifesteal"		"10.0"
 			}
 			"08"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"creep_lifesteal"		"8.5"
+				"creep_lifesteal"		"3.0"
 			}
 			"09"
 			{
@@ -3495,12 +3534,12 @@
 			"10"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"hero_lifesteal"		"30"
+				"hero_lifesteal"		"15"
 			}
 			"11"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"creep_lifesteal"		"10"
+				"creep_lifesteal"		"3"
 			}
 			"12"
 			{
@@ -4138,7 +4177,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"AbilityTextureName"			"item_arena/urn_of_souls"
-		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DARK"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DEATH"
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
@@ -4324,7 +4363,7 @@
 		"ItemResult"					"item_demon_king_bar"
 		"ItemRequirements"
 		{
-			"01"						"item_monkey_king_bar;item_javelin;item_hyperstone"
+			"01"						"item_monkey_king_bar;item_moon_dust;item_dark_blade"
 		}
 	}
 
@@ -4336,9 +4375,9 @@
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"AbilityTextureName"			"item_arena/demon_king_bar"
 
-		"AbilityCooldown"				"240"
+		"AbilityCooldown"				"600"
 		"AbilityManaCost"				"200"
-		"AbilityCastRange"				"250"
+		"AbilityCastRange"				"1000"
 
 		"ItemShopTags"					"damage;attack_speed;hard_to_tag"
 		"ItemQuality"					"legendary"
@@ -4352,19 +4391,24 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_attack_speed"	"120"
+				"bonus_attack_speed"	"100"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bash_chance"			"15"
+				"bonus_damage"			"150"
 			}
 			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bash_damage"			"150"
+				"bash_chance"			"15"
 			}
 			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bash_damage"			"150"
+			}
+			"05"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"bash_stun"				"0.1"
@@ -4399,6 +4443,7 @@
 				"Properties"
 				{
 					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"		"%bonus_attack_speed"
+					"MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE"			"%bonus_damage"
 				}
 
 				"States"
@@ -4695,7 +4740,7 @@
 		"AbilityTextureName"			"item_arena/thunder_musket"
 		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_ALWAYS"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
-		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_ENERGY"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_LIGHTING"
 		"AbilityCooldown"				"2.0"
 
 		"AbilitySpecial"
@@ -4723,7 +4768,7 @@
 			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_attack_range"	"140"
+				"bonus_attack_range"	"200"
 			}
 			"06"
 			{
@@ -5285,6 +5330,7 @@
 				{
 					"MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BONUS"				"%bonus_magical_armor"
 					"MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE"					"%bonus_armor"
+					"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS"	"%bonus_armor"
 				}
 			}
 
@@ -5417,7 +5463,7 @@
 		"AbilityTextureName"			"item_arena/blade_of_discord"
 		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
-		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DARK"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DEATH"
 
 		"AbilityCooldown"				"20"
 		"AbilityCastRange"				"700"
@@ -5743,7 +5789,7 @@
 		"ItemResult"					"item_soulcutter"
 		"ItemRequirements"
 		{
-			"01"						"item_dark_flow;item_dark_blade;item_soul_of_titan"
+			"01"						"item_dark_flow;item_dark_blade;item_soul_of_titan;item_demons_paw"
 		}
 	}
 
@@ -5773,7 +5819,7 @@
 			"03"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"armor_per_hit_pct"		"-2"
+				"armor_per_hit_pct"		"-6"
 			}
 			"04"
 			{
@@ -5783,7 +5829,7 @@
 			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"aura_armor_reduction"	"-30"
+				"aura_armor_reduction"	"-10"
 			}
 			"06"
 			{
@@ -5793,7 +5839,12 @@
 			"07"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"max_stacks"			"20"
+				"max_stacks"			"10"
+			}
+			"08"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"all_damage_increase"	"10"
 			}
 		}
 	}
@@ -5883,12 +5934,12 @@
 			"10"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"valor_armor_reduction"	"-35"
+				"valor_armor_reduction"	"-10"
 			}
 			"11"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"valor_armor_bonus"		"25"
+				"valor_armor_bonus"		"10"
 			}
 			"12"
 			{
@@ -6179,7 +6230,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_attack_speed"	"35"
+				"bonus_attack_speed"	"60"
 			}
 			"03"
 			{
@@ -6189,7 +6240,7 @@
 			"04"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"aura_attack_speed"		"70"
+				"aura_attack_speed"		"60"
 			}
 			"05"
 			{
@@ -6264,31 +6315,27 @@
 		"BaseClass"						"item_datadriven"
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"6000"
+		"ItemCost"						"15000"
 		"ItemShopTags"					""
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_demonic_cuirass"
 		"ItemRequirements"
 		{
-			"01"						"item_phantom_cuirass;item_demon_king_bar;item_phantom_bone;item_soul_of_titan"
+			"01"						"item_phantom_cuirass;item_phantom_bone;item_soul_of_titan"
 		}
 	}
 
 	"item_demonic_cuirass"
 	{
 		"BaseClass"						"item_datadriven"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"AbilityTextureName"			"item_arena/demonic_cuirass"
 		"ItemQuality"					"legendary"
 		//"ItemShareability"				"ITEM_FULLY_SHAREABLE"
 		"ItemAliases"					"ac;assault cuirass;dkb;demon king bar;monkey king bar;mkb;demonic cuirass"
 		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
 		"ItemShopTags"					"damage;attack_speed;armor;hard_to_tag"
-
-		"AbilityCooldown"				"80"
-		"AbilityManaCost"				"400"
 		"AbilityCastRange"				"%aura_radius"
-		"AbilityCastPoint"				"0.2"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -6302,95 +6349,95 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_armor"			"60"
+				"bonus_armor"			"40"
 			}
 			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_attack_speed"	"60"
+				"bonus_attack_speed"	"80"
 			}
+			//"04"
+			//{
+			//	"var_type"				"FIELD_INTEGER"
+			//	"self_bash_chance"		"25"
+			//}
+			//"05"
+			//{
+			//	"var_type"				"FIELD_INTEGER"
+			//	"self_bash_damage"		"300"
+			//}
+			//"06"
+			//{
+			//	"var_type"				"FIELD_FLOAT"
+			//	"bash_stun"				"0.01"
+			//}
 			"04"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"self_bash_chance"		"25"
-			}
-			"05"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"self_bash_damage"		"300"
-			}
-			"06"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"bash_stun"				"0.01"
-			}
-			"07"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"aura_radius"			"1050"
 			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"aura_attack_speed"		"80"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"aura_positive_armor"	"20"
+			}
+			"07"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"aura_negative_armor"	"-15"
+			}
 			"08"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"aura_attack_speed"		"175"
-			}
-			"09"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"aura_positive_armor"	"50"
-			}
-			"10"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"aura_negative_armor"	"-30"
-			}
-			"11"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"aura_bonus_hp_regen_pct" "1.5"
 			}
-			"12"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"aura_bash_chance"		"15"
-			}
-			"13"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"aura_bash_damage"		"200"
-			}
+			//"12"
+			//{
+			//	"var_type"				"FIELD_INTEGER"
+			//	"aura_bash_chance"		"15"
+			//}
+			//"13"
+			//{
+			//	"var_type"				"FIELD_INTEGER"
+			//	"aura_bash_damage"		"200"
+			//}
 		}
 
-		"OnSpellStart"
-		{
-			"ActOnTargets"
-			{
-				"Target"
-				{
-					"Center"  	"CASTER"
-					"Radius" 	"%aura_radius"
-					"Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
-					"Types" 	"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
-				}
+		//"OnSpellStart"
+		//{
+		//	"ActOnTargets"
+		//	{
+		//		"Target"
+		//		{
+		//			"Center"  	"CASTER"
+		//			"Radius" 	"%aura_radius"
+		//			"Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		//			"Types" 	"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		//		}
 
-				"Action"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"kv.lua"
-						"Function"		"ApplyModifierWithoutRefresh"
-						"modifier"		"modifier_item_demon_king_bar_curse"
-						"lua"			"1"
-					}
+		//		"Action"
+		//		{
+		//			"RunScript"
+		//			{
+		//				"ScriptFile"	"kv.lua"
+		//				"Function"		"ApplyModifierWithoutRefresh"
+		//				"modifier"		"modifier_item_demon_king_bar_curse"
+		//				"lua"			"1"
+		//			}
 
-					"FireSound"
-					{
-						"EffectName"	"Hero_VengefulSpirit.MagicMissile"
-						"Target" 		"CASTER"
-					}
-				}
-			}
-		}
+		//			"FireSound"
+		//			{
+		//				"EffectName"	"Hero_VengefulSpirit.MagicMissile"
+		//				"Target" 		"CASTER"
+		//			}
+		//		}
+		//	}
+		//}
 
 		"Modifiers"
 		{
@@ -6404,7 +6451,7 @@
 				{
 					"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS"		"%bonus_armor"
 					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%bonus_attack_speed"
-					"MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE"		"%bonus_damage"
+				//	"MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE"		"%bonus_damage"
 				}
 
 				"Aura" 					"modifier_item_demonic_cuirass_ally_aura"
@@ -6415,87 +6462,87 @@
 				"Aura_ApplyToCaster" 	"1"
 			}
 
-			"modifier_item_demonic_cuirass_bashes_self"
-			{
-				"Passive"			"1"
-				"IsHidden"			"1"
-				"Attributes" 		"MODIFIER_ATTRIBUTE_MULTIPLE"
-				"AllowIllusionDuplicate"     "0"
-				"OnCreated"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"kv.lua"
-						"Function"		"IllusionModifierCleaner"
-						"modifier"		"modifier_item_demonic_cuirass_bashes"
-					}
-				}
+			//"modifier_item_demonic_cuirass_bashes_self"
+			//{
+			//	"Passive"			"1"
+			//	"IsHidden"			"1"
+			//	"Attributes" 		"MODIFIER_ATTRIBUTE_MULTIPLE"
+			//	"AllowIllusionDuplicate"     "0"
+			//	"OnCreated"
+			//	{
+			//		"RunScript"
+			//		{
+			//			"ScriptFile"	"kv.lua"
+			//			"Function"		"IllusionModifierCleaner"
+			//			"modifier"		"modifier_item_demonic_cuirass_bashes_self"
+			//		}
+			//	}
 
-				"OnAttackLanded"
-				{
-					"Random"
-					{
-						"Chance"			"%self_bash_chance"
-						"PseudoRandom"		"DOTA_PSEUDO_RANDOM_ITEM_MKB"
-						"OnSuccess"
-						{
-							"Damage"
-							{
-								"Target"		"TARGET"
-								"Type"			"DAMAGE_TYPE_MAGICAL"
-								"Damage"		"%self_bash_damage"
-							}
+			//	"OnAttackLanded"
+			//	{
+			//		"Random"
+			//		{
+			//			"Chance"			"%self_bash_chance"
+			//			"PseudoRandom"		"DOTA_PSEUDO_RANDOM_ITEM_MKB"
+			//			"OnSuccess"
+			//			{
+			//				"Damage"
+			//				{
+			//					"Target"		"TARGET"
+			//					"Type"			"DAMAGE_TYPE_MAGICAL"
+			//					"Damage"		"%self_bash_damage"
+			//				}
 
-							"ApplyModifier"
-							{
-								"Target"			"TARGET"
-								"ModifierName"		"modifier_item_demonic_cuirass_bash"
-							}
+			//				"ApplyModifier"
+			//				{
+			//					"Target"			"TARGET"
+			//					"ModifierName"		"modifier_item_demonic_cuirass_bash"
+			//				}
 
-							"FireSound"
-							{
-								"EffectName"		"DOTA_Item.MKB.Minibash"
-								"Target"			"TARGET"
-							}
-						}
-					}
-				}
-			}
+			//				"FireSound"
+			//				{
+			//					"EffectName"		"DOTA_Item.MKB.Minibash"
+			//					"Target"			"TARGET"
+			//				}
+			//			}
+			//		}
+			//	}
+			//}
 
 			"modifier_item_demonic_cuirass_ally_aura"
 			{
 				"Passive"			"0"
 				"IsHidden"			"0"
 
-				"OnAttackLanded"
-				{
-					"Random"
-					{
-						"Chance"			"%aura_bash_chance"
-						"PseudoRandom"		"DOTA_PSEUDO_RANDOM_ITEM_MKB"
-						"OnSuccess"
-						{
-							"Damage"
-							{
-								"Target"		"TARGET"
-								"Type"			"DAMAGE_TYPE_MAGICAL"
-								"Damage"		"%aura_bash_damage"
-							}
+				//"OnAttackLanded"
+				//{
+				//	"Random"
+				//	{
+				//		"Chance"			"%aura_bash_chance"
+				//		"PseudoRandom"		"DOTA_PSEUDO_RANDOM_ITEM_MKB"
+				//		"OnSuccess"
+				//		{
+				//			"Damage"
+				//			{
+				//				"Target"		"TARGET"
+				//				"Type"			"DAMAGE_TYPE_MAGICAL"
+				//				"Damage"		"%aura_bash_damage"
+				//			}
 
-							"ApplyModifier"
-							{
-								"Target"			"TARGET"
-								"ModifierName"		"modifier_item_demonic_cuirass_bash"
-							}
+				//			"ApplyModifier"
+				//			{
+				//				"Target"			"TARGET"
+				//				"ModifierName"		"modifier_item_demonic_cuirass_bash"
+				//			}
 
-							"FireSound"
-							{
-								"EffectName"		"DOTA_Item.MKB.Minibash"
-								"Target"			"TARGET"
-							}
-						}
-					}
-				}
+				//			"FireSound"
+				//			{
+				//				"EffectName"		"DOTA_Item.MKB.Minibash"
+				//				"Target"			"TARGET"
+				//			}
+				//		}
+				//	}
+				//}
 
 				"Properties"
 				{
@@ -6504,10 +6551,10 @@
 					"MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE"			"%aura_bonus_hp_regen_pct"
 				}
 
-				"States"
-				{
-					"MODIFIER_STATE_CANNOT_MISS"			"MODIFIER_STATE_VALUE_ENABLED"
-				}
+				//"States"
+				//{
+				//	"MODIFIER_STATE_CANNOT_MISS"			"MODIFIER_STATE_VALUE_ENABLED"
+				//}
 			}
 			"modifier_item_demonic_cuirass_enemy_aura_emitter"
 			{
@@ -6530,21 +6577,21 @@
 					"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS"			"%aura_negative_armor"
 				}
 			}
-			"modifier_item_demonic_cuirass_bash"
-			{
-				"Duration"              "%bash_stun"
-				"IsHidden"				"1"
-				"IsDebuff"				"1"
+			//"modifier_item_demonic_cuirass_bash"
+			//{
+			//	"Duration"              "%bash_stun"
+			//	"IsHidden"				"1"
+			//	"IsDebuff"				"1"
 
-				"EffectName"            "particles/generic_gameplay/generic_stunned.vpcf"
-				"EffectAttachType"      "follow_overhead"
-				"OverrideAnimation"     "ACT_DOTA_DISABLED"
+			//	"EffectName"            "particles/generic_gameplay/generic_stunned.vpcf"
+			//	"EffectAttachType"      "follow_overhead"
+			//	"OverrideAnimation"     "ACT_DOTA_DISABLED"
 
-				"States"
-				{
-					"MODIFIER_STATE_STUNNED" 		"MODIFIER_STATE_VALUE_ENABLED"
-				}
-			}
+			//	"States"
+			//	{
+			//		"MODIFIER_STATE_STUNNED" 		"MODIFIER_STATE_VALUE_ENABLED"
+			//	}
+			//}
 		}
 	}
 
@@ -6817,6 +6864,7 @@
 		"ItemStackable"					"0"
 		"ItemPermanent"					"1"
 		"ItemInitialCharges"			"0"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DARK"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -6860,8 +6908,8 @@
 			"08"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"soul_hp_total_pct" 	"22"
-				"CalculateSpellDamageTooltip"	"0"
+				"soul_hp_total_pct" 	"11"
+				//"CalculateSpellDamageTooltip"	"0"
 			}
 			"09"
 			{
@@ -7024,7 +7072,7 @@
 			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_armor"			"40"
+				"bonus_armor"			"30"
 			}
 			"04"
 			{
@@ -7665,17 +7713,17 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_strength"		"40"
+				"bonus_strength"		"20"
 			}
 			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_agility"			"40"
+				"bonus_agility"			"20"
 			}
 			"04"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_intellect"		"40"
+				"bonus_intellect"		"20"
 			}
 			"05"
 			{
@@ -7695,7 +7743,7 @@
 			"08"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_mana_regen_pct"	"150"
+				"bonus_mana_regen_pct"	"50"
 			}
 			"09"
 			{
@@ -7740,12 +7788,12 @@
 			"17"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_heal_and_lifesteal"	"32"
+				"bonus_heal_and_lifesteal"	"22"
 			}
 			"18"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_status_resist"		"32"
+				"bonus_status_resist"		"20"
 			}
 			"19"
 			{
@@ -7790,47 +7838,47 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_damage"			"160"
+				"bonus_damage"			"200"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_strength"		"120"
+				"bonus_strength"		"90"
 			}
 			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_agility"			"120"
+				"bonus_agility"			"90"
 			}
 			"04"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_intellect"		"120"
+				"bonus_intellect"		"90"
 			}
 			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_attack_speed"	"40"
+				"bonus_attack_speed"	"100"
 			}
 			"06"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_movement_speed_pct"	"30"
+				"bonus_movement_speed_pct"	"50"
 			}
 			"07"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"spell_amp_pct"			"32"
+				"spell_amp_pct"			"20"
 			}
 			"08"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_mana_regen_pct"	"300"
+				"bonus_mana_regen_pct"	"125"
 			}
 			"09"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_health_regen"	"32"
+				"bonus_health_regen"	"50"
 			}
 			"10"
 			{
@@ -7840,12 +7888,12 @@
 			"11"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"cleave_damage_percent"	"80"
+				"cleave_damage_percent"	"100"
 			}
 			"12"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"quelling_bonus_damage_pct"	"90"
+				"quelling_bonus_damage_pct"	"100"
 			}
 			"13"
 			{
@@ -7870,32 +7918,32 @@
 			"17"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_heal_and_lifesteal"	"64"
+				"bonus_heal_and_lifesteal"	"50"
 			}
 			"18"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_status_resist"		"32"
+				"bonus_status_resist"		"30"
 			}
 			"19"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"bonus_spell_lifesteal_pct"		"36"
+				"bonus_spell_lifesteal_pct"		"80"
 			}
 			"20"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"split_damage_pct"				"80"
+				"split_damage_pct"				"100"
 			}
 			"21"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"split_radius"					"450"
+				"split_radius"					"500"
 			}
 			"22"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"global_attack_chance_pct"		"10"
+				"global_attack_chance_pct"		"0"
 			}
 		}
 	}
@@ -7927,7 +7975,7 @@
 
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_LIGHT"
-		"AbilityDamage"					"800"
+		"AbilityDamage"					"300"
 		"AbilityCastRange"				"800"
 		"AbilityCooldown"				"20"
 		"AbilityManaCost"				"250"
@@ -8268,7 +8316,7 @@
 		"ItemResult"					"item_scythe_of_the_ancients"
 		"ItemRequirements"
 		{
-			"01"						"item_ultimate_scepter_arena;item_sunray_dagon_5_arena;item_moon_dust"
+			"01"						"item_ultimate_scepter_arena;item_sunray_dagon_5_arena;item_moon_dust;item_demons_paw"
 		}
 	}
 
@@ -8282,10 +8330,11 @@
 		"AbilityTextureName"			"item_arena/scythe_of_the_ancients"
 		"AbilityUnitDamageType"         "DAMAGE_TYPE_PURE"
 		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_DEATH"
 
 		"AbilityCastRange"				"1000"
 		"AbilityCastPoint"				"0"
-		"AbilityCooldown"				"30"
+		"AbilityCooldown"				"70"
 		"AbilityManaCost"				"1000"
 
 		"ItemQuality"					"legendary"
@@ -8345,7 +8394,8 @@
 			"11"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"all_damage_bonus_pct"      "0"
+				"all_damage_bonus_pct"      "10"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"12"
 			{
@@ -8356,11 +8406,13 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"cast_damage"				"1400"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"14"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"cast_damage_pct"			"5"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"15"
 			{
@@ -8375,7 +8427,8 @@
 			"17"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"delayed_damage_per_health"	"0.4"
+				"delayed_damage_per_health"	"0.3"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 		}
 		"precache"
@@ -8418,7 +8471,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_heal_and_lifesteal"	"30"
+				"bonus_heal_and_lifesteal"	"22"
 			}
 			"02"
 			{
@@ -8453,12 +8506,12 @@
 			"08"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_status_resist"		"24"
+				"bonus_status_resist"		"20"
 			}
 			"09"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_mana_regen_pct"		"100"
+				"bonus_mana_regen_pct"		"50"
 			}
 			"09"
 			{
@@ -8499,6 +8552,7 @@
 		"ItemQuality"					"legendary"
 		"ItemAliases"					"static"
 		"AOERadius"						"%damage_radius"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_VOID"
 
 		"AbilitySpecial"
 		{
@@ -8521,6 +8575,7 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"spell_amp_pct"				"30"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"05"
 			{
@@ -8537,13 +8592,13 @@
 			"07"
 			{
 				"var_type"						"FIELD_FLOAT"
-				"damage_pct"					"8.0"
+				"damage_pct"					"3.0"
 				"CalculateSpellDamageTooltip" 	"0"
 			}
 			"08"
 			{
 				"var_type"						"FIELD_FLOAT"
-				"intelligence_damage_pct"		"15.0"
+				"intelligence_damage_pct"		"5.0"
 				"CalculateSpellDamageTooltip" 	"0"
 			}
 			"09"
@@ -8584,12 +8639,20 @@
 			"16"
 			{
 				"var_type"						"FIELD_FLOAT"
-				"manacost_pct"					"8"
+				"manacost_pct"					"5"
+				"CalculateSpellDamageTooltip"	"0"
 			}
 			"17"
 			{
 				"var_type"						"FIELD_INTEGER"
 				"increase_all_damage_pct"		"5"
+				"CalculateSpellDamageTooltip"	"0"
+			}
+			"18"
+			{
+				"var_type"						"FIELD_FLOAT"
+				"manacost_in_damage_pct"		"20"
+				"CalculateSpellDamageTooltip" 	"0"
 			}
 		}
 		"precache"
@@ -8639,6 +8702,65 @@
 				"var_type"				"FIELD_INTEGER"
 				"tooltip_range"			"250"
 			}
+		}
+	}
+
+	"item_recipe_pipe_of_enlightenment"
+	{
+		"BaseClass"						"item_datadriven"
+		"Model"							"models/props_gameplay/recipe.vmdl"
+		"AbilityTextureName"			"item_recipe_pipe"
+		"ItemCost"						"10000"
+		"ItemRecipe"					"1"
+		"ItemResult"					"item_pipe_of_enlightenment"
+		"ItemRequirements"
+		{
+			"01"						"item_pipe;item_holy_knight_shield;item_phantom_bone;item_moon_dust;item_moon_dust"
+		}
+	}
+
+	"item_pipe_of_enlightenment"
+	{
+		"BaseClass"						"item_lua"
+		"ScriptFile"					"items/item_pipe_of_enlightenment.lua"
+		"AbilityTextureName"			"item_arena/pipe_of_enlightenment"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam" 		"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityUnitTargetType" 		"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitTargetFlags" 		"DOTA_UNIT_TARGET_FLAG_NONE"
+		"AbilityCooldown"				"40"
+		"AbilityManaCost"				"150"
+		"ItemShopTags"					"armor;resist;pipe"
+		"ItemQuality"					"epic"
+		"ItemAliases"					"pipe of enlightement;pipe"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_TEAMMATES | DECLARE_PURCHASES_TO_SPECTATORS"
+		"AbilityCastRange"				"%aura_radius"
+
+		"AbilityValues"
+		{
+			"health_regen_pct"			"1"
+			"bonus_armor"				"20"
+			"magic_resistance"			"40"
+			"aura_health_regen_pct"		"0.5"
+			"magic_resistance_aura"		"20"
+			"aura_radius"				"1200"
+			"barrier_block_pct"			"30"
+			"barrier_duration"			"14.0"
+			"barrier_cooldown"			"30"
+			"radius"					"1200"
+			"barrier_radius"			"1200"
+			"resist_per_armor"			"0.1"
+			"max_resist_per_armor"		"25"
+			"buff_chance"			"10"
+			"buff_duration"			"2"
+			"buff_cooldown"			"16"
+			
+		}
+
+		"precache"
+		{
+			"particle" "particles/arena/items_fx/pipe_of_enlightenment_launch.vpcf"
+			"particle" "particles/arena/items_fx/pipe_of_enlightenment_smoke_ring.vpcf"
 		}
 	}
 

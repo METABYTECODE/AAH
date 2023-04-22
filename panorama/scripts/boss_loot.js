@@ -9,7 +9,7 @@ function SnippetBossDropItemVoteItemPanel(rootPanel, id, entry, entryid) {
 	if (entry.item) BossDropItemIcon.itemname = entry.item; else
 	if (entry.hero) {
 		BossDropItemIcon.SetImage(TransformTextureToPath(entry.hero));
-		var msg = $.Localize('#boss_loot_vote_hero') + $.Localize(entry.hero);
+		var msg = $.Localize('#boss_loot_vote_hero') + $.Localize("#"+entry.hero);
 		BossDropItemIcon.style.tooltipPosition = 'left';
 		BossDropItemIcon.SetPanelEvent('onmouseover', function() {
 			$.DispatchEvent('DOTAShowTextTooltip', BossDropItemIcon, msg);
@@ -56,6 +56,7 @@ function CreateBossItemVote(id, data) {
 }
 
 function UpdateBossItemVote(id, data) {
+	//SetBossDropItemVotingsVisible()
 	var localPlayerId = Game.GetLocalPlayerID();
 	if ($('#boss_item_vote_id_' + id) == null) CreateBossItemVote(id, data);
 	var panel = $('#boss_item_vote_id_' + id);

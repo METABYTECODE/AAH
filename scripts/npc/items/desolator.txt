@@ -106,13 +106,13 @@
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"BaseClass"                     "item_datadriven"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"500"
+		"ItemCost"						"5000"
 		"ItemShopTags"					""
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_desolator3"
 		"ItemRequirements"
 		{
-			"01"						"item_desolator2;item_dark_flow"
+			"01"						"item_desolator2;item_relic"
 		}
 	}
 
@@ -138,7 +138,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"corruption_armor"		"-30"
+				"corruption_armor"		"-20"
 			}
 			"03"
 			{
@@ -240,7 +240,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"corruption_armor"		"-40"
+				"corruption_armor"		"-25"
 			}
 			"03"
 			{
@@ -335,13 +335,13 @@
 		"Model"							"models/props_gameplay/recipe.vmdl"
 		"BaseClass"                     "item_datadriven"
 		"AbilityTextureName"			"item_recipe"
-		"ItemCost"						"1250"
+		"ItemCost"						"7500"
 		"ItemShopTags"					""
 		"ItemRecipe"					"1"
 		"ItemResult"					"item_desolator5"
 		"ItemRequirements"
 		{
-			"01"						"item_desolator4;item_soul_of_titan;item_skadi_8"
+			"01"						"item_desolator4;item_soul_of_titan"
 		}
 	}
 
@@ -363,27 +363,12 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_damage"			"400"
-			}
-			"02"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_all_stats"		"250"
-			}
-			"03"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_health"			"2500"
-			}
-			"04"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_mana"			"2500"
+				"bonus_damage"			"600"
 			}
 			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"corruption_armor"		"-50"
+				"corruption_armor"		"-30"
 			}
 			"06"
 			{
@@ -393,12 +378,12 @@
 			"07"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"cold_movement_speed"	"-40"
+				"cold_movement_speed"	"-20"
 			}
 			"08"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"cold_attack_speed"		"-200"
+				"cold_attack_speed"		"-100"
 			}
 			"09"
 			{
@@ -413,7 +398,7 @@
 			"11"
 			{
 				"var_type"							"FIELD_INTEGER"
-				"heal_reduce"						"-50"
+				"heal_reduce"						"-0"
 			}
 		}
 
@@ -445,11 +430,11 @@
 				"Properties"
 				{
 					"MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE"		"%bonus_damage"
-					"MODIFIER_PROPERTY_STATS_STRENGTH_BONUS"		"%bonus_all_stats"
-					"MODIFIER_PROPERTY_STATS_AGILITY_BONUS"			"%bonus_all_stats"
-					"MODIFIER_PROPERTY_STATS_INTELLECT_BONUS"		"%bonus_all_stats"
-					"MODIFIER_PROPERTY_HEALTH_BONUS"				"%bonus_health"
-					"MODIFIER_PROPERTY_MANA_BONUS"					"%bonus_mana"
+					//"MODIFIER_PROPERTY_STATS_STRENGTH_BONUS"		"%bonus_all_stats"
+					//"MODIFIER_PROPERTY_STATS_AGILITY_BONUS"			"%bonus_all_stats"
+					//"MODIFIER_PROPERTY_STATS_INTELLECT_BONUS"		"%bonus_all_stats"
+					//"MODIFIER_PROPERTY_HEALTH_BONUS"				"%bonus_health"
+					//"MODIFIER_PROPERTY_MANA_BONUS"					"%bonus_mana"
 				}
 
 				"OnAttackLanded"
@@ -482,10 +467,10 @@
 					"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS"		"%corruption_armor"
 					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"		"%cold_attack_speed"
 					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"		"%cold_movement_speed"
-					"MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_TARGET"	"%heal_reduce"
-  					"MODIFIER_PROPERTY_HP_REGEN_AMPLIFY_PERCENTAGE"		"%heal_reduce"
- 					"MODIFIER_PROPERTY_LIFESTEAL_AMPLIFY_PERCENTAGE"	"%heal_reduce"
-					"MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE"	"%heal_reduce"
+					//"MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_TARGET"	"%heal_reduce"
+  					//"MODIFIER_PROPERTY_HP_REGEN_AMPLIFY_PERCENTAGE"		"%heal_reduce"
+ 					//"MODIFIER_PROPERTY_LIFESTEAL_AMPLIFY_PERCENTAGE"	"%heal_reduce"
+					//"MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE"	"%heal_reduce"
 				}
 
 				"ThinkInterval" 		"%poison_damage_interval"
@@ -536,22 +521,7 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_damage"			"700"
-			}
-			"02"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_all_stats"		"250"
-			}
-			"03"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_health"			"2800"
-			}
-			"04"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"bonus_mana"			"3000"
+				"bonus_damage"			"1000"
 			}
 			"05"
 			{
@@ -561,12 +531,12 @@
 			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"all_damage_bonus_pct"		"10"
+				"all_damage_bonus_pct"		"15"
 			}
 			"07"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"corruption_armor"		"-60"
+				"corruption_armor"		"-40"
 			}
 			"08"
 			{
@@ -576,12 +546,12 @@
 			"09"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"cold_movement_speed"	"-45"
+				"cold_movement_speed"	"-30"
 			}
 			"10"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"cold_attack_speed"		"-400"
+				"cold_attack_speed"		"-200"
 			}
 			"11"
 			{
@@ -624,11 +594,11 @@
 				{
 					"MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE"	"%all_damage_bonus_pct"
 					"MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE"		"%bonus_damage"
-					"MODIFIER_PROPERTY_STATS_STRENGTH_BONUS"		"%bonus_all_stats"
-					"MODIFIER_PROPERTY_STATS_AGILITY_BONUS"			"%bonus_all_stats"
-					"MODIFIER_PROPERTY_STATS_INTELLECT_BONUS"		"%bonus_all_stats"
-					"MODIFIER_PROPERTY_HEALTH_BONUS"				"%bonus_health"
-					"MODIFIER_PROPERTY_MANA_BONUS"					"%bonus_mana"
+					//"MODIFIER_PROPERTY_STATS_STRENGTH_BONUS"		"%bonus_all_stats"
+					//"MODIFIER_PROPERTY_STATS_AGILITY_BONUS"			"%bonus_all_stats"
+					//"MODIFIER_PROPERTY_STATS_INTELLECT_BONUS"		"%bonus_all_stats"
+					//"MODIFIER_PROPERTY_HEALTH_BONUS"				"%bonus_health"
+					//"MODIFIER_PROPERTY_MANA_BONUS"					"%bonus_mana"
 				}
 
 				"OnAttackLanded"

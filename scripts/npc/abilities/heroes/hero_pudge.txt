@@ -7,6 +7,7 @@
 		"AbilityDamage"					"140 180 220 260 300 340 380"
 		"AbilityCooldown"				"30 27 24 21 18 15 12"
 		"AbilityManaCost"				"140 150 160 170 180 190 200"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_BLOOD"
 		"MaxLevel"	"7"
 
 		"AbilitySpecial"
@@ -106,6 +107,12 @@
 				"var_type"				"FIELD_INTEGER"
 				"hook_distance_per_stack" "10"
 			}
+			"99"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"10.0"
+				"CalculateSpellDamageTooltip"		"0"
+			}
 		}
 	}
 
@@ -125,7 +132,7 @@
 		"AbilityCastAnimation"			"ACT_DOTA_CHANNEL_ABILITY_2"
 		"AbilityCastRange"				"%rot_radius"
 
-		"AbilityUnitDamageSubType"	"DAMAGE_SUBTYPE_EARTH"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_POISON"
 
 		"precache"
 		{
@@ -153,7 +160,7 @@
 			"04"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"rot_damage"			"30 55 80 105 130 155 180"
+				"rot_damage"			"30 45 60 75 90 105 120"
 			}
 			"05"
 			{
@@ -164,6 +171,12 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"rot_radius_limit"		"650"
+			}
+			"99"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"jungle_bears_damage_multiplier"	"3"
+				"CalculateSpellDamageTooltip"		"0"
 			}
 		}
 
@@ -406,7 +419,7 @@
 		"AbilityCooldown"				"32 30 28 26 24 22 20"
 		"AbilityManaCost"				"100 130 170 200 230 270 300"
 
-		"AbilityUnitDamageSubType"	"DAMAGE_SUBTYPE_EARTH"
+		"AbilityUnitDamageSubType"		"DAMAGE_SUBTYPE_BLOOD"
 
 		"AbilitySpecial"
 		{

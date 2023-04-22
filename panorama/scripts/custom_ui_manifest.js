@@ -42,6 +42,14 @@ GameUI.CustomUIConfig().custom_entity_values = GameUI.CustomUIConfig().custom_en
 DynamicSubscribeNTListener('custom_entity_values', function(tableName, key, value) {
 	GameUI.CustomUIConfig().custom_entity_values[key] = value;
 });
+GameUI.CustomUIConfig().ability_damage_subtypes = GameUI.CustomUIConfig().ability_damage_subtypes || {};
+DynamicSubscribeNTListener('ability_damage_subtypes', function(tableName, key, value) {
+	GameUI.CustomUIConfig().ability_damage_subtypes[key] = value;
+});
+GameUI.CustomUIConfig().units_subtypes_resistance = GameUI.CustomUIConfig().units_subtypes_resistance || {};
+DynamicSubscribeNTListener('units_subtypes_resistance', function(tableName, key, value) {
+	GameUI.CustomUIConfig().units_subtypes_resistance[key] = value;
+});
 
 function Hook() {
 	this.handlers = [];

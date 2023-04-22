@@ -19,6 +19,7 @@ modifier_item_unstable_quasar_passive = class({
 	IsHidden   = function() return true end,
 	IsPurgable = function() return false end,
 	RemoveOnDeath = function() return false end,
+	GetAttributes = function() return MODIFIER_ATTRIBUTE_PERMANENT end,
 })
 
 function modifier_item_unstable_quasar_passive:DeclareFunctions()
@@ -43,21 +44,32 @@ if IsServer() then
 		local radius = ability:GetSpecialValueFor("singularity_radius")
 
 		if (
-			usedAbility:GetCooldown(usedAbility:GetLevel()) >= ability:GetSpecialValueFor("min_ability_cooldown") and
+			usedAbility:GetCooldown(usedAbility:GetLevel()) >= 0.1 and
 			usedAbility:GetManaCost(usedAbility:GetLevel()) ~= 0 and
 			ability:PerformPrecastActions()
 		) then
 			for _,v in ipairs(FindUnitsInRadius(team, pos, nil, radius, ability:GetAbilityTargetTeam(), ability:GetAbilityTargetType(), ability:GetAbilityTargetFlags(), FIND_ANY_ORDER, false)) do
 				local enemyPos = v:GetAbsOrigin()
-				local damage = v:GetHealth() * ability:GetSpecialValueFor(caster:GetPrimaryAttribute() == DOTA_ATTRIBUTE_INTELLECT and "intelligence_damage_pct" or "damage_pct") * 0.01 + ability:GetSpecialValueFor("base_damage")
+				local damage = (v:GetHealth() * ability:GetSpecialValueFor(caster:GetPrimaryAttribute() == DOTA_ATTRIBUTE_INTELLECT and "intelligence_damage_pct" or "damage_pct") * 0.01) / (caster.DamageMultiplier or 1) --* (1 + caster:GetSpellAmplification(false))
 
+				--local spellamp = 1 + (caster:GetSpellAmplification(false) - (caster.DamageAmpPerAgility * 0.01))
+
+				--ability.NoDamageAmp = true
+				if not caster:FindModifierByName("sara_evolution_new") then ApplyDamage({
+					attacker = caster,
+					victim = v,
+					damage = (ability:GetManaCost() * ability:GetSpecialValueFor("manacost_in_damage_pct") * 0.01),
+					damage_type = ability:GetAbilityDamageType(),
+					damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
+					ability = ability
+				}) end
 				ApplyDamage({
 					attacker = caster,
 					victim = v,
 					damage = damage,
 					damage_type = ability:GetAbilityDamageType(),
 					damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
-					ability = self:GetAbility()
+					ability = ability
 				})
 
 				local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_zuus/zuus_arc_lightning.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster)
@@ -154,10 +166,34 @@ if IsServer() then
 		local owner = self:GetParent()
 		local caster = self:GetCaster()
 		local ability = self:GetAbility()
-		self.truesight = owner:AddNewModifier(caster, ability, "modifier_truesight", nil)
+		owner.truesight = owner:AddNewModifier(caster, ability, "modifier_truesight", nil)
+
+		if caster:IsRealHero() and owner:IsTrueHero() then
+			owner.GemOfPureSoulCooldownsWorldpanel = WorldPanels:CreateWorldPanelForTeam(caster:GetTeamNumber(), {
+				layout = "file://{resources}/layout/custom_game/worldpanels/abilitycooldowns.xml",
+				entity = owner,
+				entityHeight = 210,
+				data = {hasHealthBar = not owner:NoHealthBar()}
+			})
+		end
+
+		if owner:IsIllusion() and caster:IsRealHero() then
+			owner.GemOfClearMindIllusionParticle = ParticleManager:CreateParticleForTeam("particles/arena/items_fx/gem_of_clear_mind_illusion.vpcf", PATTACH_ABSORIGIN_FOLLOW, owner, caster:GetTeamNumber())
+		end
 	end
 
 	function modifier_item_unstable_quasar_aura:OnDestroy()
-		if not self.truesight:IsNull() then self.truesight:Destroy() end
+		local target = self:GetParent()
+		if not target.truesight:IsNull() then target.truesight:Destroy() end
+
+		if target.GemOfPureSoulCooldownsWorldpanel then
+			target.GemOfPureSoulCooldownsWorldpanel:Delete()
+			target.GemOfPureSoulCooldownsWorldpanel = nil
+		end
+
+		if target.GemOfClearMindIllusionParticle then
+			ParticleManager:DestroyParticle(target.GemOfClearMindIllusionParticle, false)
+			target.GemOfClearMindIllusionParticle = nil
+		end
 	end
 end

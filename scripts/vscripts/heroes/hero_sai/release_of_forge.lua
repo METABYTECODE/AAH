@@ -98,6 +98,8 @@ if IsServer() then
 		local attacker = keys.attacker
 		if attacker ~= self:GetParent() then return end
 		local ability = self:GetAbility()
+
+		ability.NoDamageAmp = true
 		ApplyDamage({
 			victim = keys.target,
 			attacker = attacker,

@@ -38,7 +38,7 @@ function SunrayDagon(keys)
 	local caster = keys.caster
 	local target = keys.target
 	local ability = keys.ability
-	local Damage = keys.Damage
+	local Damage = keys.Damage * caster.DamageMultiplier
 
 	local dagon_particle = ParticleManager:CreateParticle("particles/econ/events/ti5/dagon_lvl2_ti5.vpcf",  PATTACH_ABSORIGIN_FOLLOW, caster)
 	ParticleManager:SetParticleControlEnt(dagon_particle, 1, target, PATTACH_POINT_FOLLOW, "attach_hitloc", target:GetAbsOrigin(), false)
@@ -51,5 +51,6 @@ function SunrayDagon(keys)
 		ability:ApplyDataDrivenModifier(caster, target, keys.modifier, {})
 	end
 	local PctDmg = caster:GetMaxHealth() * keys.DamagePct * 0.01
+	ability.NoDamageAmp = true
 	ApplyDamage({victim = target, attacker = caster, damage = Damage + PctDmg, damage_type = DAMAGE_TYPE_MAGICAL, ability = ability})
 end

@@ -44,13 +44,19 @@ local modifiers = {
 	modifier_arena_hero = "modifiers/modifier_arena_hero",
 	modifier_item_demon_king_bar_curse = "items/modifier_item_demon_king_bar_curse",
 	modifier_hero_out_of_game = "modifiers/modifier_hero_out_of_game",
+	modifier_arena_util = "modifiers/modifier_arena_util",
+
+	modifier_splash_timer = "modifiers/modifier_splash_timer",
 
 	modifier_stamina = "modifiers/modifier_stamina",
 	modifier_strength_crit = "modifiers/modifier_strength_crit",
-
+	modifier_strength_crit_true_strike = "modifiers/modifier_strength_crit",
 	modifier_intelligence_primary_bonus = "modifiers/modifier_intelligence_primary_bonus",
+
 	modifier_agility_bonus_attacks = "modifiers/modifier_agility_primary_bonus/modifier_agility_bonus_attacks",
 	modifier_agility_primary_bonus = "modifiers/modifier_agility_primary_bonus/modifier_agility_primary_bonus",
+
+	modifier_universal_attribute = "modifiers/modifier_universal_attribute",
 
 
 	--modifier_item_shard_attackspeed_stack = "modifiers/modifier_item_shard_attackspeed_stack",
@@ -73,6 +79,8 @@ function GameMode:InitGameMode()
 	GameMode = self
 	GameRules:GetGameModeEntity():SetCustomBackpackSwapCooldown(0)
 	GameRules:GetGameModeEntity():SetCustomBackpackCooldownPercent(1)
+	GameRules:SetPreGameTime( 700.0 )
+	--print("init game mode")
 	if GAMEMODE_INITIALIZATION_STATUS[2] then
 		return
 	end
@@ -83,7 +91,13 @@ function GameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetFreeCourierModeEnabled(true)
 	--GameRules:GetGameModeEntity():SetUseTurboCouriers(true)
 	GameRules:GetGameModeEntity():SetPauseEnabled(IsInToolsMode())
+	--print("init game mode")
+	
+	if not Timers.started then Timers:start() end
+	if not Containers.containers then Containers:start() end
+	
 	Events:Emit("activate")
+
 
 	PlayerTables:CreateTable("arena", {}, AllPlayersInterval)
 	PlayerTables:CreateTable("player_hero_indexes", {}, AllPlayersInterval)
@@ -91,6 +105,13 @@ function GameMode:InitGameMode()
 	PlayerTables:CreateTable("gold", {}, AllPlayersInterval)
 	PlayerTables:CreateTable("weather", {}, AllPlayersInterval)
 	PlayerTables:CreateTable("disable_help_data", {[0] = {}, [1] = {}, [2] = {}, [3] = {}, [4] = {}, [5] = {}, [6] = {}, [7] = {}, [8] = {}, [9] = {}, [10] = {}, [11] = {}, [12] = {}, [13] = {}, [14] = {}, [15] = {}, [16] = {}, [17] = {}, [18] = {}, [19] = {}, [20] = {}, [21] = {}, [22] = {}, [23] = {}}, AllPlayersInterval)
+
+	--Timers:start()
+	--Containers:start()
+
+	Timers:NextTick(function()
+		GLOBAL_DUMMY = GLOBAL_DUMMY or CreateUnitByName("npc_dummy_unit", Vector(0, 0, 0), false, nil, nil, DOTA_TEAM_NEUTRALS)
+	end)
 end
 
 function GameMode:OnFirstPlayerLoaded()
@@ -130,13 +151,18 @@ function GameMode:OnHeroSelectionStart()
 end
 
 function GameMode:OnHeroSelectionEnd()
-	Timers:CreateTimer(CUSTOM_GOLD_TICK_TIME, Dynamic_Wrap(GameMode, "GameModeThink"))
+	--Timers:CreateTimer(CUSTOM_GOLD_TICK_TIME, Dynamic_Wrap(GameMode, "GameModeThink"))
+	GameRules:GetGameModeEntity():SetThink( "GameModeThink", GameMode, "GameModeThink", CUSTOM_GOLD_TICK_TIME)
+	--Timers:CreateTimer(0.1, Dynamic_Wrap(InfinityStones, "Think"))
+	GameRules:GetGameModeEntity():SetThink( "Think", InfinityStones, "InfinityStones", 0.1)
+	Timers:CreateTimer(1, Dynamic_Wrap(GameMode, 'KillWeightIncrease'))
 	PanoramaShop:StartItemStocks()
 	Duel:CreateGlobalTimer()
 	Weather:Init()
 	GameRules:GetGameModeEntity():SetPauseEnabled(Options:IsEquals("EnablePauses"))
 
 	Timers:CreateTimer(10, function()
+		--print("timer")
 		for playerId = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
 			if PlayerResource:IsValidPlayerID(playerId) and not PlayerResource:IsFakeClient(playerId) and GetConnectionState(playerId) == DOTA_CONNECTION_STATE_CONNECTED then
 				local heroName = HeroSelection:GetSelectedHeroName(playerId) or ""
@@ -225,6 +251,14 @@ function GameMode:GameModeThink()
 			AntiAFK:Think(i)
 		end
 	end
+	--kill weight increase
+	local dota_time = GetDOTATimeInMinutesFull()
+	if not Duel.kill_weight_increase and dota_time >= KILL_WEIGHT_START_INCREASE_MINUTE then
+		GameMode.kill_weight_per_minute = dota_time - KILL_WEIGHT_START_INCREASE_MINUTE
+		Duel.kill_weight_increase = true
+	end
+	
+	--InfinityStones:Think()
 	return CUSTOM_GOLD_TICK_TIME
 end
 
@@ -240,8 +274,9 @@ function GameMode:SetupRules()
 	gameMode:SetTopBarTeamValuesOverride(true)
 	gameMode:SetUseCustomHeroLevels(true)
 	gameMode:SetCustomXPRequiredToReachNextLevel(XP_PER_LEVEL_TABLE)
-	gameMode:SetMaximumAttackSpeed(750)
-	gameMode:SetMinimumAttackSpeed(60)
+	gameMode:SetMaximumAttackSpeed(800)
+	gameMode:SetMinimumAttackSpeed(50)
+	gameMode:SetNeutralStashEnabled(false)
 end
 
 function GameMode:BreakGame(message)

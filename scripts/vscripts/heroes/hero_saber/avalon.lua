@@ -46,6 +46,8 @@ function modifier_saber_avalon_invulnerability:CheckState()
 	return {
 		[MODIFIER_STATE_ATTACK_IMMUNE] = true,
 		[MODIFIER_STATE_MAGIC_IMMUNE] = true,
+		[MODIFIER_STATE_INVULNERABLE] = true,
+        [MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
 end
 

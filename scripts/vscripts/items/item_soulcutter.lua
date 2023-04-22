@@ -20,6 +20,7 @@ function modifier_item_soulcutter:DeclareFunctions()
 	return {
 		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
 		MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT,
+		MODIFIER_PROPERTY_TOTALDAMAGEOUTGOING_PERCENTAGE,
 		MODIFIER_EVENT_ON_ATTACK_LANDED,
 	}
 end
@@ -32,14 +33,19 @@ function modifier_item_soulcutter:GetModifierAttackSpeedBonus_Constant()
 	return self:GetAbility():GetSpecialValueFor("bonus_attack_speed")
 end
 
+function modifier_item_soulcutter:GetModifierTotalDamageOutgoing_Percentage()
+	return self:GetAbility():GetSpecialValueFor("all_damage_increase")
+end
+
 if IsServer() then
 	function modifier_item_soulcutter:OnAttackLanded(keys)
+		if self:GetParent().bonus_attack then return end
 		local attacker = keys.attacker
 		if attacker ~= self:GetParent() then return end
 		local ability = self:GetAbility()
 		local target = keys.target
 
-		if attacker:FindAllModifiersByName(self:GetName())[1] ~= self then return end
+		--[[if attacker:FindAllModifiersByName(self:GetName())[1] ~= self then return end
 
 		if IsModifierStrongest(attacker, self:GetName(), MODIFIER_PROC_PRIORITY.pure_damage) then
 			ApplyDamage({
@@ -49,18 +55,23 @@ if IsServer() then
 				damage_type = ability:GetAbilityDamageType(),
 				damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
 			})
-		end
+		end]]
 
 		if attacker:IsIllusion() then return end
 
 		ParticleManager:CreateParticle("particles/arena/items_fx/dark_flow_explosion.vpcf", PATTACH_ABSORIGIN_FOLLOW, target)
 
-		if target:IsAlive() then target:AddNewModifier(
+		if target:IsAlive() then
+			local modifier = target:AddNewModifier(
 			target,
 			ability,
 			"modifier_item_soulcutter_stack",
 			{ duration = ability:GetSpecialValueFor("duration") }
-		):IncrementStackCount() end
+			)
+			if modifier:GetStackCount() < ability:GetSpecialValueFor("max_stacks") then
+				modifier:IncrementStackCount()
+			end
+		end
 	end
 end
 
@@ -89,20 +100,20 @@ function modifier_item_soulcutter_stack:OnCreated()
 end
 
 function modifier_item_soulcutter_stack:OnIntervalThink()
-	if self:GetStackCount() > self:GetAbility():GetSpecialValueFor("max_stacks") then
+	--[[if self:GetStackCount() > self:GetAbility():GetSpecialValueFor("max_stacks") then
 		self:SetStackCount(self:GetAbility():GetSpecialValueFor("max_stacks"))
 		return
-	end
+	end]]
 	self.armorReduction = (
 		self:GetStackCount() *
 		self:GetAbility():GetSpecialValueFor("armor_per_hit_pct") *
-		(self:GetParent():GetPhysicalArmorValue(false) - (self.armorReduction or 0)) *
+		(self:GetParent()._custom_attributes.armor or self:GetParent():GetPhysicalArmorValue(false) - (self.armorReduction or 0)) *
 		0.01
 	)
 end
 
 function modifier_item_soulcutter_stack:OnTooltip()
-	return self:GetStackCount()
+	return self:GetStackCount() * self:GetAbility():GetSpecialValueFor("armor_per_hit_pct")
 end
 
 function modifier_item_soulcutter_stack:GetModifierPhysicalArmorBonus()

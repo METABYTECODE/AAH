@@ -4,8 +4,8 @@ if not Kills then
 end
 
 function Kills:GetGoldForKill(killedUnit)
-	local gold = 180 + Kills:GetKillStreakGold(killedUnit:GetPlayerID()) + (killedUnit:GetLevel() * 30) --100 + streakGold + (killedUnit:GetLevel() * 9.9)
-	return (Duel.IsFirstDuel and Duel:IsDuelOngoing()) and 0 or gold
+	local gold = math.round(100 + Kills:GetKillStreakGold(killedUnit:GetPlayerID()) + (killedUnit:GetLevel() * 50) + ((Gold:GetGold(killedUnit) or 0) * 0.025)) --100 + streakGold + (killedUnit:GetLevel() * 9.9)
+	return (Duel.IsFirstDuel and Duel:IsDuelOngoing()) and (gold / 2) or gold
 end
 
 function Kills:SetKillStreak(player, ks)
@@ -42,7 +42,7 @@ function Kills:OnEntityKilled(killedPlayer, killerPlayer)
 		end
 	end
 	local goldChange = Kills:GetGoldForKill(killedUnit)
-	Gold:ModifyGold(killedUnit, -goldChange)
+	Gold:ModifyGold(killedUnit, -(goldChange / 4))
 	local isDeny = false
 	if killerEntity and killerEntity:IsControllableByAnyPlayer() then
 		if killerEntity.GetPlayerID or killerEntity.GetPlayerOwnerID then
@@ -66,7 +66,7 @@ function Kills:OnEntityKilled(killedPlayer, killerPlayer)
 		end
 		if not isDeny then
 			local assists = FindUnitsInRadius(killerEntity:GetTeamNumber(), killedUnit:GetAbsOrigin(), nil, HERO_ASSIST_RANGE, DOTA_UNIT_TARGET_TEAM_FRIENDLY, DOTA_UNIT_TARGET_HERO, DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES, FIND_ANY_ORDER, false)
-			local assistGold = goldChange * 0.5
+			local assistGold = math.round(goldChange * 0.5)
 			local hadGold = {killerPlayerID}
 			for _,v in ipairs(assists) do
 				if v ~= killerEntity and v and v:IsMainHero() then
@@ -78,7 +78,7 @@ function Kills:OnEntityKilled(killedPlayer, killerPlayer)
 			end
 		end
 	else
-		local assistGold = goldChange * 0.6
+		local assistGold = math.round(goldChange * 0.6)
 		for playerId = 0, DOTA_MAX_TEAM_PLAYERS-1  do
 			if PlayerResource:IsValidPlayerID(playerId) and PlayerResource:GetTeam(playerId) ~= killedUnit:GetTeamNumber() then
 				local player = PlayerResource:GetPlayer(playerId)

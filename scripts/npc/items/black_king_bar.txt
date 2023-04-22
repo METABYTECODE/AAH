@@ -102,7 +102,7 @@
 			"01"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"bonus_strength"				"40"
+				"bonus_strength"				"100"
 			}
 			"02"
 			{
@@ -132,12 +132,12 @@
 			"07"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"active_bonus_strength"			"60"
+				"active_bonus_strength"			"100"
 			}
 			"08"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"active_bonus_attackspeed"		"200"
+				"active_bonus_attackspeed"		"150"
 			}
 		}
 

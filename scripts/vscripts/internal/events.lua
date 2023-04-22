@@ -18,6 +18,7 @@ end
 
 -- An NPC has spawned somewhere in game.  This includes heroes
 function GameMode:_OnNPCSpawned(keys)
+	--print("spawned")
 	if GameMode._reentrantCheck then
 		return
 	end
@@ -63,5 +64,37 @@ function GameMode:_OnConnectFull(keys)
 
 	GameMode._reentrantCheck = true
 	GameMode:OnConnectFull(keys)
+	GameMode._reentrantCheck = false
+end
+
+-----------------------------------
+
+function GameMode:_InventoryItemChange(keys)
+	if GameMode._reentrantCheck then
+		return
+	end
+
+	GameMode._reentrantCheck = true
+	GameMode:InventoryItemChange(keys)
+	GameMode._reentrantCheck = false
+end
+
+function GameMode:_InventoryItemAdded(keys)
+	if GameMode._reentrantCheck then
+		return
+	end
+
+	GameMode._reentrantCheck = true
+	GameMode:InventoryItemAdded(keys)
+	GameMode._reentrantCheck = false
+end
+
+function GameMode:_HeroGainedLevel(keys)
+	if GameMode._reentrantCheck then
+		return
+	end
+
+	GameMode._reentrantCheck = true
+	GameMode:HeroGainedLevel(keys)
 	GameMode._reentrantCheck = false
 end

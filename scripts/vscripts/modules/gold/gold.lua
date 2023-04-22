@@ -30,9 +30,9 @@ end
 
 function Gold:ModifyGold(unitvar, gold, bReliable, iReason)
 	if gold > 0 then
-		Gold:AddGold(unitvar, gold)
+		Gold:AddGold(unitvar, math.round(gold))
 	elseif gold < 0 then
-		Gold:RemoveGold(unitvar, -gold)
+		Gold:RemoveGold(unitvar, -math.round(gold))
 	end
 end
 

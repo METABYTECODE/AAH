@@ -1,8 +1,36 @@
 CUSTOM_TALENTS_DATA = {
+	talent_stats_bonus = {
+		icon = "talents/bonus_all_stats",
+		cost = 20,
+		group = 9,
+		max_level = 10,
+		special_values = {
+			bonus_all_stats = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500}
+		},
+		effect = {
+			modifiers = {
+				modifier_talent_bonus_all_stats = "bonus_all_stats",
+			},
+		}
+	},
 	talent_experience_pct1 = {
 		icon = "talents/experience",
-		cost = 1,
+		cost = 2,
 		group = 1,
+		max_level = 1,
+		special_values = {
+			experience_pct = {5}
+		},
+		effect = {
+			unit_keys = {
+				bonus_experience_percentage = "experience_pct",
+			}
+		}
+	},
+	talent_experience_pct2 = {
+		icon = "talents/experience",
+		cost = 2,
+		group = 2,
 		max_level = 1,
 		special_values = {
 			experience_pct = {10}
@@ -13,27 +41,13 @@ CUSTOM_TALENTS_DATA = {
 			}
 		}
 	},
-	talent_experience_pct2 = {
-		icon = "talents/experience",
-		cost = 1,
-		group = 2,
-		max_level = 1,
-		special_values = {
-			experience_pct = {20}
-		},
-		effect = {
-			unit_keys = {
-				bonus_experience_percentage = "experience_pct",
-			}
-		}
-	},
 	talent_experience_pct3 = {
 		icon = "talents/experience",
-		cost = 1,
+		cost = 2,
 		group = 3,
 		max_level = 1,
 		special_values = {
-			experience_pct = {30}
+			experience_pct = {15}
 		},
 		effect = {
 			unit_keys = {
@@ -43,7 +57,7 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_bonus_creep_gold = {
 		icon = "talents/gold10",
-		cost = 1,
+		cost = 2,
 		group = 1,
 		max_level = 1,
 		special_values = {
@@ -57,11 +71,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_passive_experience_income1 = {
 		icon = "talents/experience_per_minute",
-		cost = 1,
+		cost = 2,
 		group = 1,
 		max_level = 1,
 		special_values = {
-			xp_per_minute = {200}
+			xp_per_minute = {500}
 		},
 		effect = {
 			unit_keys = {
@@ -71,7 +85,7 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_passive_experience_income2 = {
 		icon = "talents/experience_per_minute",
-		cost = 1,
+		cost = 2,
 		group = 2,
 		max_level = 1,
 		special_values = {
@@ -85,11 +99,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_passive_experience_income3 = {
 		icon = "talents/experience_per_minute",
-		cost = 1,
+		cost = 2,
 		group = 3,
 		max_level = 1,
 		special_values = {
-			xp_per_minute = {2500}
+			xp_per_minute = {1500}
 		},
 		effect = {
 			unit_keys = {
@@ -99,11 +113,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_passive_gold_income1 = {
 		icon = "talents/gold_per_minute",
-		cost = 1,
+		cost = 2,
 		group = 1,
 		max_level = 1,
 		special_values = {
-			gold_per_minute = {180}
+			gold_per_minute = {150}
 		},
 		effect = {
 			unit_keys = {
@@ -113,11 +127,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_passive_gold_income2 = {
 		icon = "talents/gold_per_minute",
-		cost = 1,
+		cost = 2,
 		group = 2,
 		max_level = 1,
 		special_values = {
-			gold_per_minute = {220}
+			gold_per_minute = {300}
 		},
 		effect = {
 			unit_keys = {
@@ -127,11 +141,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_passive_gold_income3 = {
 		icon = "talents/gold_per_minute",
-		cost = 1,
+		cost = 2,
 		group = 3,
 		max_level = 1,
 		special_values = {
-			gold_per_minute = {460}
+			gold_per_minute = {450}
 		},
 		effect = {
 			unit_keys = {
@@ -143,9 +157,9 @@ CUSTOM_TALENTS_DATA = {
 		icon = "talents/spell_amplify",
 		cost = 5,
 		group = 7,
-		max_level = 7,
+		max_level = 4,
 		special_values = {
-			spell_amplify = {10, 15, 20, 25, 30, 35, 40}
+			spell_amplify = {7, 14, 21, 28}
 		},
 		effect = {
 			use_modifier_applier = true,
@@ -156,11 +170,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_respawn_time_reduction = {
 		icon = "talents/respawn_time_reduction",
-		cost = 5,
+		cost = 10,
 		group = 8,
-		max_level = 15,
+		max_level = 6,
 		special_values = {
-			respawn_time_reduction = {-10, -15, -20, -25, -30, -35, -40, -45, -50, -55, -60, -65, -70, -75, -80}
+			respawn_time_reduction = {-15, -30, -45, -60, -75, -90}
 		},
 		effect = {
 			unit_keys = {
@@ -172,9 +186,9 @@ CUSTOM_TALENTS_DATA = {
 		icon = "talents/damage",
 		cost = 5,
 		group = 7,
-		max_level = 7,
+		max_level = 4,
 		special_values = {
-			damage = {70, 140, 210, 280, 350, 420, 490}
+			damage = {100, 200, 300, 400}
 		},
 		effect = {
 			modifiers = {
@@ -185,7 +199,7 @@ CUSTOM_TALENTS_DATA = {
 	--[[talent_evasion = {
 		icon = "talents/evasion",
 		cost = 4,
-		group = 4,
+		group = 5,
 		max_level = 4,
 		special_values = {
 			evasion = {5, 10, 15, 20}
@@ -199,10 +213,10 @@ CUSTOM_TALENTS_DATA = {
 	talent_health = {
 		icon = "talents/health",
 		cost = 3,
-		group = 5,
-		max_level = 8,
+		group = 6,
+		max_level = 3,
 		special_values = {
-			health = {350, 700, 1050, 1400, 1750, 2100, 2450, 2800}
+			health = {500, 1000, 1500}
 		},
 		effect = {
 			calculate_stat_bonus = true,
@@ -213,11 +227,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_mana = {
 		icon = "talents/mana",
-		cost = 1,
+		cost = 3,
 		group = 3,
-		max_level = 5,
+		max_level = 3,
 		special_values = {
-			mana = {300, 600, 900, 1200, 1500}
+			mana = {300, 600, 900}
 		},
 		effect = {
 			calculate_stat_bonus = true,
@@ -228,11 +242,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_health_regen = {
 		icon = "talents/health_regen",
-		cost = 2,
-		group = 4,
-		max_level = 5,
+		cost = 3,
+		group = 5,
+		max_level = 3,
 		special_values = {
-			health_regen = {10, 20, 30, 40, 50}
+			health_regen = {15, 30, 45}
 		},
 		effect = {
 			modifiers = {
@@ -242,8 +256,8 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_mana_regen = {
 		icon = "talents/mana_regen",
-		cost = 1,
-		group = 2,
+		cost = 3,
+		group = 3,
 		max_level = 3,
 		special_values = {
 			mana_regen = {4, 8, 12}
@@ -254,7 +268,7 @@ CUSTOM_TALENTS_DATA = {
 			},
 		}
 	},
-	talent_lifesteal = {
+	--[[talent_lifesteal = {
 		icon = "talents/lifesteal",
 		cost = 5,
 		group = 8,
@@ -267,14 +281,14 @@ CUSTOM_TALENTS_DATA = {
 				modifier_talent_lifesteal = "lifesteal",
 			},
 		}
-	},
+	},]]
 	talent_armor = {
 		icon = "talents/armor",
 		cost = 3,
-		group = 5,
-		max_level = 7,
+		group = 6,
+		max_level = 3,
 		special_values = {
-			armor = {3, 5, 7, 9, 11, 13, 15}
+			armor = {10, 20, 30}
 		},
 		effect = {
 			modifiers = {
@@ -285,10 +299,10 @@ CUSTOM_TALENTS_DATA = {
 	talent_magic_resistance_pct = {
 		icon = "talents/magic_resistance",
 		cost = 3,
-		group = 5,
-		max_level = 6,
+		group = 6,
+		max_level = 3,
 		special_values = {
-			magic_resistance_pct = {4, 8, 12, 16, 20, 24}
+			magic_resistance_pct = {10, 15, 20}
 		},
 		effect = {
 			modifiers = {
@@ -299,7 +313,7 @@ CUSTOM_TALENTS_DATA = {
 	talent_vision_day = {
 		icon = "talents/day",
 		cost = 3,
-		group = 6,
+		group = 4,
 		max_level = 3,
 		special_values = {
 			vision_day = {100, 200, 300}
@@ -313,7 +327,7 @@ CUSTOM_TALENTS_DATA = {
 	talent_vision_night = {
 		icon = "talents/night",
 		cost = 3,
-		group = 6,
+		group = 4,
 		max_level = 3,
 		special_values = {
 			vision_night = {100, 200, 300}
@@ -326,11 +340,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_cooldown_reduction_pct = {
 		icon = "talents/cooldown_reduction",
-		cost = 2,
-		group = 4,
-		max_level = 7,
+		cost = 3,
+		group = 5,
+		max_level = 3,
 		special_values = {
-			cooldown_reduction_pct = {5, 7.5, 10, 12.5, 15, 17.5, 20}
+			cooldown_reduction_pct = {5, 10, 15}
 		},
 		effect = {
 			modifiers = {
@@ -340,11 +354,11 @@ CUSTOM_TALENTS_DATA = {
 	},
 	talent_movespeed_pct = {
 		icon = "talents/movespeed",
-		cost = 2,
+		cost = 3,
 		group = 4,
 		max_level = 3,
 		special_values = {
-			movespeed_pct = {5, 10, 15}
+			movespeed_pct = {10, 15, 20}
 		},
 		effect = {
 			modifiers = {

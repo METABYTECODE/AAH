@@ -16,9 +16,8 @@ PANORAMA_SHOP_ITEMS = {
 			"item_ward_sentry",
 			"item_bottle_arena",
 			"item_team_changer",
-			"item_tome_of_knowledge",
 			"item_metamorphosis_elixir",
-			--"__indent__",
+			"__indent__",
 			"item_shard_str_small",
 			"item_shard_agi_small",
 			"item_shard_int_small",
@@ -57,7 +56,7 @@ PANORAMA_SHOP_ITEMS = {
 			"item_claymore",
 			"item_javelin",
 			"item_mithril_hammer",
-			"__indent__",
+			"item_blink",
 			"item_shard_str_large",
 			"item_shard_agi_large",
 			"item_shard_int_large",
@@ -267,6 +266,7 @@ PANORAMA_SHOP_ITEMS = {
 			"item_phantom_cuirass",
 			"item_heavy_war_axe_of_rage_damage",
 			"item_titanium_bar",
+			"item_pipe_of_enlightenment",
 			"item_sacred_blade_mail",
 			"item_demonic_cuirass",
 		},
@@ -282,6 +282,16 @@ PANORAMA_SHOP_ITEMS = {
 			"item_splitshot_ultimate",
 			"item_ultimate_splash",
 		},
+	},
+	{
+		{
+			"item_space_stone",
+			"item_reality_stone",
+			"item_time_stone",
+			"item_mind_stone",
+			"item_power_stone",
+			"item_soul_stone"
+		}
 	}
 }
 

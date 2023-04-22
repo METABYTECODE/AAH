@@ -49,13 +49,15 @@ if IsServer() then
 								self:CreateVisibilityNode(pos, visionAoE, 2)
 							end
 							local enemies = FindUnitsInLine(caster:GetTeam(), startpoint, endpoint, nil, width, self:GetAbilityTargetTeam(), self:GetAbilityTargetType(), self:GetAbilityTargetFlags())
+
+							--self.NoDamageAmp = true
 							for _,v in ipairs(enemies) do
 								ApplyDamage({
 									victim = v,
 									attacker = caster,
 									damage = damage,
 									damage_type = self:GetAbilityDamageType(),
-									damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
+									--damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
 									ability = self
 								})
 							end

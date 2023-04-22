@@ -34,7 +34,7 @@ function RecieveMessage(data) {
 			html += "<img src='file://{images}/control_icons/chat_wheel_icon.png' class='ChatWheelIcon' />";
 			var localized = $.Localize(data.player === playerId ? '#chat_message_gold_self' : '#chat_message_gold_ally');
 			localized = localized.replace('{gold}', '<font color="gold">' + FormatGold(data.gold) + '</font>');
-			localized = localized.replace('{player}', '<font color="' + GetHEXPlayerColor(data.player) + '"">' + $.Localize(GetPlayerHeroName(data.player)) + '</font>');
+			localized = localized.replace('{player}', '<font color="' + GetHEXPlayerColor(data.player) + '"">' + $.Localize("#"+GetPlayerHeroName(data.player)) + '</font>');
 			html += localized;
 		} else if (data.ability && data.player != null && data.unit) {
 			html += '<img src="file://{images}/control_icons/chat_wheel_icon.png" class="ChatWheelIcon" />';
@@ -66,7 +66,7 @@ function RecieveMessage(data) {
 			localized = localized.replace('{ability_name}', $.Localize('#DOTA_Tooltip_ability_' + Abilities.GetAbilityName(data.ability)));
 			localized = localized.replace('{ability_cooldown}', cooldown.toFixed(0));
 			localized = localized.replace('{mana_need}', Math.round(Abilities.GetManaCost(data.ability) - Entities.GetMana(data.unit)));
-			localized = localized.replace('{player}', "<font color='" + GetHEXPlayerColor(data.player) + "'>" + $.Localize(GetPlayerHeroName(data.player)) + '</font>');
+			localized = localized.replace('{player}', "<font color='" + GetHEXPlayerColor(data.player) + "'>" + $.Localize("#"+GetPlayerHeroName(data.player)) + '</font>');
 			html += localized;
 		} else if (data.shop_item_name) {
 			html += '<img src="file://{images}/control_icons/chat_wheel_icon.png" class="ChatWheelIcon" />';
@@ -90,9 +90,10 @@ function RecieveMessage(data) {
 			localized = localized.replace('{player}', "<font color='" + (data.player === -1 ? '#FFFFFF' : GetHEXPlayerColor(data.player)) + "'>" + $.Localize(GetHeroName(data.unit)) + '</font>');
 			html += localized;
 		} else if (data.localizable) {
-			var localized = $.Localize(data.localizable);
+			var localized = $.Localize('#'+data.localizable);
+			//$.Msg(localized)
 			if (data.variables) for (var k in data.variables) {
-				localized = localized.replace(k, $.Localize(data.variables[k]));
+				localized = localized.replace(k, $.Localize(k == "%s2" ? "#"+data.variables[k] : data.variables[k]));
 			}
 			if (data.player != null) localized = localized.replace('{player}', "<font color='" + (data.player === -1 ? '#FFFFFF' : GetHEXPlayerColor(data.player)) + "'>" + $.Localize(Players.GetPlayerName(data.player)) + '</font>');
 			html += localized;

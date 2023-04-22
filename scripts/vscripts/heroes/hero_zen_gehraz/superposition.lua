@@ -20,6 +20,7 @@ function Superposition(keys)
 	})
 	if ability.LastInterruptedAbilityTime and GameRules:GetGameTime() - ability.LastInterruptedAbilityTime < 0.5 and ability.LastInterruptedAbility and ability.LastInterruptedAbilityCastTime then
 		local name = ability.LastInterruptedAbility:GetAbilityName()
+		print(name)
 		local illusion_ability = illusion:FindAbilityByName(name)
 		local channel_time = math.min(illusion_duration, illusion_ability:GetAbilitySpecial("channel_time") - (GameRules:GetGameTime() - ability.LastInterruptedAbilityCastTime))
 		if channel_time > 0 then
@@ -58,6 +59,9 @@ end
 function OnChanneledAbilityInterrupted(keys)
 	local caster = keys.caster
 	local ability = keys.ability
+	--[[for k,_ in pairs(keys) do
+		print(k)
+	end]]
 	local superposition = caster:FindAbilityByName("zen_gehraz_superposition")
 	if superposition then
 		superposition.LastInterruptedAbility = ability

@@ -5,9 +5,9 @@ CUSTOM_GOLD_REPICK_COST = 200
 
 MAX_SPAWNBOXES_SELECTED = 3
 
-HERO_SELECTION_PICK_TIME = 70
+HERO_SELECTION_PICK_TIME = 30
 HERO_SELECTION_STRATEGY_TIME = 20
-HERO_SELECTION_BANNING_TIME = 40
+HERO_SELECTION_BANNING_TIME = 20
 
 HERO_SELECTION_PHASE_NOT_STARTED = 0
 HERO_SELECTION_PHASE_BANNING = 1
@@ -132,8 +132,8 @@ function HeroSelection:GetState()
 	return HeroSelection.CurrentState
 end
 
-function HeroSelection:CreateTimer(...)
-	local t = Timers:CreateTimer(...)
+function HeroSelection:CreateTimer(d, f)
+	local t = Timers:CreateTimer(d, f)
 	table.insert(HeroSelection.GameStartTimers, t)
 	return t
 end
@@ -143,6 +143,7 @@ function HeroSelection:DismissTimers()
 		Timers:RemoveTimer(v)
 	end
 	HeroSelection.GameStartTimers = {}
+	--Timers:start()
 end
 
 function HeroSelection:HeroSelectionStart()
@@ -231,7 +232,15 @@ function HeroSelection:StartStateStrategy()
 end
 
 function HeroSelection:StartStateInGame(toPrecache)
+	--print('start')
 	HeroSelection:DismissTimers()
+	--Timers:start()
+
+	--[[local targets = Entities:FindAllByClassname("info_target")
+	for _,v in ipairs(targets) do
+		local entname = v:GetName()
+		print(entname)
+	end]]
 
 	for i = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
 		if PLAYER_DATA[i].adsClicked then
@@ -242,6 +251,7 @@ function HeroSelection:StartStateInGame(toPrecache)
 	Timers:CreateTimer({
 		useGameTime = false,
 		callback = function()
+			--print("timer")
 			local canEnd = true
 			for k,v in pairs(toPrecache) do
 				if not v then
@@ -253,7 +263,7 @@ function HeroSelection:StartStateInGame(toPrecache)
 			if canEnd then
 				--Actually enter in-game state
 				HeroSelection:SetState(HERO_SELECTION_PHASE_END)
-				for team,_v in pairs(PlayerTables:GetAllTableValues("hero_selection")) do
+				for _,_v in pairs(PlayerTables:GetAllTableValues("hero_selection")) do
 					for plyId,v in pairs(_v) do
 						if not PlayerResource:IsPlayerAbandoned(plyId) then
 							HeroSelection:SelectHero(plyId, tostring(v.hero), nil, nil, true)

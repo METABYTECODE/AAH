@@ -15,6 +15,10 @@ function LoadTalentTable(table) {
 
 function SpecialValuesArrayToString(values, level, percent) {
 	if (typeof values !== 'object') {
+		//$.Msg(values)
+		if (!Number.isInteger(Number(values))) {
+			values = Math.abs(Number(values)).toFixed(1)
+		}
 		if (level === 0)
 			return percent ? values + '%' : values;
 		else
@@ -22,6 +26,9 @@ function SpecialValuesArrayToString(values, level, percent) {
 	} else {
 		var text = '';
 		_.each(values, function(value, index) {
+			value = Number(value)
+			//value = value.toFixed(1)
+			//$.Msg(value)
 			if (index++ === level)
 				text = text + "<font color='gold'>" + (percent ? value + '%' : value) + '</font>' + '\/';
 			else
@@ -39,9 +46,10 @@ function getTalentTitle(talent) {
 	}
 
 	const rawToken = $.Localize('#DOTA_Tooltip_ability_' + talent.name, $.GetContextPanel());
+	//$.Msg($.Localize('#DOTA_Tooltip_ability_' + talent.name, $.GetContextPanel()))
 	return rawToken.replace(
 		/\[!s:(.+)\]%?/g,
-		(match, specialName) => match.endsWith('%') ? `{%${specialName}%}` : `{${specialName}}`,
+		(match, _) => match.endsWith('%') ? `{%${"value"}%}` : `{${"value"}}`
 	);
 }
 
@@ -53,11 +61,14 @@ function CreateTalent(talent, root) {
 		var description = $.Localize('#custom_talents_' + talent.name + '_description');
 		if (description === '#custom_talents_' + talent.name + '_description') description = undefined;
 		var title = getTalentTitle(talent);
+		//$.Msg(talent.special_values.value)
 		if (talent.special_values != null)
 			_.each(talent.special_values, function(values, key) {
 				if (description) description = description
 					.replace('{' + key + '}', SpecialValuesArrayToString(values, GetTalentLevel(Players.GetPlayerHeroEntityIndex(Game.GetLocalPlayerID()), talent.name)))
 					.replace('{%' + key + '%}', SpecialValuesArrayToString(values, GetTalentLevel(Players.GetPlayerHeroEntityIndex(Game.GetLocalPlayerID()), talent.name), true));
+					//$.Msg(key)
+					//$.Msg(values)
 				title = title
 					.replace('{' + key + '}', SpecialValuesArrayToString(values, GetTalentLevel(Players.GetPlayerHeroEntityIndex(Game.GetLocalPlayerID()), talent.name)))
 					.replace('{%' + key + '%}', SpecialValuesArrayToString(values, GetTalentLevel(Players.GetPlayerHeroEntityIndex(Game.GetLocalPlayerID()), talent.name), true));

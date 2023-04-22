@@ -23,6 +23,15 @@ function GameMode:ExecuteOrderFilter(filterTable)
 		return false
 	end
 
+	--[[if ability and ability.GetCaster then
+		local caster = ability:GetCaster()
+		if ability.ManaSpend and ability.ManaSpend > caster:GetMana() then
+			--print(ability.ManaSpend)
+			Containers:DisplayError(playerId, "#arena_hud_error_no_mana")
+			return false
+		end
+	end]]
+
 	local unit = EntIndexToHScript(filterTable.units["0"])
 
 	if unit and order_type == DOTA_UNIT_ORDER_SELL_ITEM and ability then
@@ -150,43 +159,34 @@ function GameMode:DamageFilter(filterTable)
 	end
 	local victim = EntIndexToHScript(filterTable.entindex_victim_const)
 
+	--[[if IsValidEntity(inflictor) and inflictor.GetAbilityName then
+		filterTable = DamageHasInflictor(inflictor, filterTable, attacker, victim, damagetype_const)
+	elseif not IsValidEntity(inflictor) and attacker and attacker.DamageMultiplier and not IsValidEntity(inflictor) then
+		local amp = attacker.DamageMultiplier
+		filterTable.damage = filterTable.damage * (amp)
+	end]]
+
 	if IsValidEntity(attacker) then
-		if IsValidEntity(inflictor) and inflictor.GetAbilityName then
-			local inflictorname = inflictor:GetAbilityName()
-			--local damage_from_current_health_pct = inflictor:GetAbilitySpecial("damage_from_current_health_pct")
-			--[[if victim and damage_from_current_health_pct then
-				if PERCENT_DAMAGE_MODIFIERS[inflictorname] then
-					damage_from_current_health_pct = damage_from_current_health_pct * PERCENT_DAMAGE_MODIFIERS[inflictorname]
-				end
-				filterTable.damage = filterTable.damage + (victim:GetHealth() * damage_from_current_health_pct * 0.01)
-			end]]
-
-			if IsValidEntity(inflictor.originalInflictor) then
-				inflictorname = inflictor.originalInflictor:GetAbilityName()
-			end
-
-			if SPELL_AMPLIFY_NOT_SCALABLE_MODIFIERS[inflictorname] and attacker:IsHero() then
-				filterTable.damage = GetNotScaledDamage(filterTable.damage, attacker)
-			end
-			if BOSS_DAMAGE_ABILITY_MODIFIERS[inflictorname] and victim:IsBoss() then
-				filterTable.damage = damage * BOSS_DAMAGE_ABILITY_MODIFIERS[inflictorname] * 0.01
-			end
-		end
-		if victim:IsBoss() and (attacker:GetAbsOrigin() - victim:GetAbsOrigin()):Length2D() > 950 then
+		--[[if victim:IsBoss() and (attacker:GetAbsOrigin() - victim:GetAbsOrigin()):Length2D() > 950 then
 			filterTable.damage = filterTable.damage / 2
 		end
+		if victim:IsBoss() and victim._waiting then
+			return false
+		end]]
 
-		local BlockedDamage = 0
-		local LifestealPercentage = 0
+		--local BlockedDamage = 0
+		--local LifestealPercentage = 0
+		--local SpellLifestealPercentage = 0
+		--local DontShowParticleAndHealNumber
 		--local CriticalStrike = 0
-		local function ProcessDamageModifier(v)
+		--[[local function ProcessDamageModifier(v)
 			local multiplier
 			if type(v) == "function" then
-				multiplier = v(attacker, victim, inflictor, damage, damagetype_const)
+				multiplier = v(attacker, victim, inflictor, filterTable.damage, damagetype_const)
 			elseif type(v) == "table" then
 				if v.multiplier then
 					if type(v.multiplier) == "function" then
-						multiplier = v.multiplier(attacker, victim, inflictor, damage, damagetype_const)
+						multiplier = v.multiplier(attacker, victim, inflictor, filterTable.damage, damagetype_const)
 					else
 						multiplier = v.multiplier
 					end
@@ -204,13 +204,21 @@ function GameMode:DamageFilter(filterTable)
 						BlockedDamage = math.max(BlockedDamage, multiplier.BlockedDamage)
 					end
 					if multiplier.LifestealPercentage then
-						LifestealPercentage = math.max(LifestealPercentage, multiplier.LifestealPercentage)
+						LifestealPercentage = LifestealPercentage + multiplier.LifestealPercentage
+					end
+					if multiplier.SpellLifestealPercentage and not multiplier.SpellLifestealStackable then
+						SpellLifestealPercentage = math.max(SpellLifestealPercentage, multiplier.SpellLifestealPercentage)
+						DontShowParticleAndHealNumber = multiplier.DontShowParticleAndHealNumber
+						
+					elseif multiplier.SpellLifestealPercentage then
+						SpellLifestealPercentage = SpellLifestealPercentage + multiplier.SpellLifestealPercentage
+						DontShowParticleAndHealNumber = multiplier.DontShowParticleAndHealNumber
 					end
 					if multiplier.damage then
 						if type(multiplier.damage) == "function" then
-							local damage = multiplier.damage(attacker, victim, inflictor, damage, damagetype_const)
-							if damage then
-								filterTable.damage = damage
+							local _damage = multiplier.damage(attacker, victim, inflictor, filterTable.damage, damagetype_const)
+							if _damage then
+								filterTable.damage = _damage
 								return true
 							end
 						else
@@ -230,43 +238,111 @@ function GameMode:DamageFilter(filterTable)
 					filterTable.damage = filterTable.damage * multiplier
 				end
 			end
-		end
+		end]]
 
-		if victim.HasModifier then
+		--[[if victim.HasModifier then
 			for k,v in pairs(ON_DAMAGE_MODIFIER_PROCS_VICTIM) do
 				if victim:HasModifier(k) then
 					ProcessDamageModifier(v)
 				end
 			end
 			for k,v in pairs(INCOMING_DAMAGE_MODIFIERS) do
-				if victim:HasModifier(k) and (type(v) ~= "table" or not v.condition or (v.condition and v.condition(attacker, victim, inflictor, damage, damagetype_const))) then
+				if victim:HasModifier(k) and (type(v) ~= "table" or not v.condition or (v.condition and v.condition(attacker, victim, inflictor, filterTable.damage, damagetype_const))) then
 					ProcessDamageModifier(v)
 				end
 			end
-		end
-		if attacker.HasModifier then
+		end]]
+
+		--[[if attacker.DamageMultiplier and victim.FindAbilityByName and victim:FindAbilityByName("spectre_dispersion") then
+			--print("has dispersion")
+			local dispersion = victim:FindAbilityByName("spectre_dispersion")
+			local min_radius = dispersion:GetSpecialValueFor("min_radius")
+			local max_radius = dispersion:GetSpecialValueFor("max_radius")
+			local reflection = dispersion:GetSpecialValueFor("damage_reflection_pct")
+			local multiplier = 0
+
+			if IsValidEntity(inflictor) and inflictor.GetAbilityName and FilterDamageSpellAmpCondition(inflictor, inflictor:GetAbilityName(), attacker) then
+				multiplier = attacker.DamageMultiplier - 1
+				--print("dispersion spell mult: "..multiplier)
+			elseif not IsValidEntity(inflictor) then
+				multiplier = attacker.DamageMultiplier - 1
+				--print("dispersion attack mult: "..multiplier)
+			end
+
+			if multiplier > 0 then local units = FindUnitsInRadius(
+				victim:GetTeamNumber(),
+				victim:GetAbsOrigin(),
+				nil,
+				max_radius,
+				DOTA_UNIT_TARGET_TEAM_ENEMY,
+				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
+				DOTA_UNIT_TARGET_FLAG_NONE,
+				FIND_ANY_ORDER,
+				false
+			)
+
+			for _,v in pairs(units) do
+				local distance = (v:GetAbsOrigin() - victim:GetAbsOrigin()):Length2D()
+				local distance_multiplier = 1
+				if distance <= min_radius then
+					distance_multiplier = 1
+				elseif max_radius >= distance then
+					max_radius = max_radius - min_radius
+					distance = distance - min_radius
+					distance_multiplier = 1 - (distance / max_radius)
+				end
+
+				local reflect_damage = damage * multiplier * reflection * distance_multiplier * 0.01
+				print("dispersion total reflect: "..reflect_damage)
+
+				ApplyDamage({
+					victim = v,
+					attacker = victim,
+					damage = reflect_damage,
+					damage_type = damagetype_const,
+					damage_flags = DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION + DOTA_DAMAGE_FLAG_REFLECTION,
+					ability = dispersion
+				})
+			end end
+		end]]
+		--[[if attacker.HasModifier then
 			for k,v in pairs(ON_DAMAGE_MODIFIER_PROCS) do
 				if attacker:HasModifier(k) then
 					ProcessDamageModifier(v)
 				end
 			end
 			for k,v in pairs(OUTGOING_DAMAGE_MODIFIERS) do
-				if attacker:HasModifier(k) and (type(v) ~= "table" or not v.condition or (v.condition and v.condition(attacker, victim, inflictor, damage, damagetype_const))) then
+				if attacker:HasModifier(k) and (type(v) ~= "table" or not v.condition or (v.condition and v.condition(attacker, victim, inflictor, filterTable.damage, damagetype_const))) then
 					ProcessDamageModifier(v)
 				end
 			end
-		end
-		if BlockedDamage > 0 then
+		end]]
+
+		--[[if BlockedDamage > 0 then
 			SendOverheadEventMessage(victim:GetPlayerOwner(), OVERHEAD_ALERT_BLOCK, victim, BlockedDamage, attacker:GetPlayerOwner())
 			SendOverheadEventMessage(attacker:GetPlayerOwner(), OVERHEAD_ALERT_BLOCK, victim, BlockedDamage, victim:GetPlayerOwner())
 
 			filterTable.damage = filterTable.damage - BlockedDamage
-		end
-		if LifestealPercentage > 0 then
+		end]]
+		--[[if LifestealPercentage > 0 then
 			local lifesteal = filterTable.damage * LifestealPercentage * 0.01
 			SafeHeal(attacker, lifesteal)
 			ParticleManager:CreateParticle("particles/generic_gameplay/generic_lifesteal.vpcf", PATTACH_ABSORIGIN_FOLLOW, attacker)
-		end
+		end]]
+		--[[if SpellLifestealPercentage > 0 then
+			local heal = filterTable.damage * SpellLifestealPercentage * 0.01
+			--print(heal)
+			if heal >= 1 then
+				if not victim:IsIllusion() then
+					attacker:Heal(heal, nil)
+				end
+				if not DontShowParticleAndHealNumber then
+					SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, attacker, heal, nil)
+					ParticleManager:CreateParticle("particles/items3_fx/octarine_core_lifesteal.vpcf", PATTACH_ABSORIGIN_FOLLOW, attacker)
+				end
+			end
+		end]]
+
 		if attacker.GetPlayerOwnerID then
 			local attackerPlayerId = attacker:GetPlayerOwnerID()
 			if attackerPlayerId > -1 then
@@ -280,6 +356,7 @@ function GameMode:DamageFilter(filterTable)
 				end
 			end
 		end
+		
 	end
 	return true
 end
@@ -309,9 +386,9 @@ function GameMode:ModifyExperienceFilter(filterTable)
 		end
 	end
 	PLAYER_DATA[filterTable.player_id_const].AntiAFKLastXP = GameRules:GetGameTime() + PLAYER_ANTI_AFK_TIME
-	if Duel.IsFirstDuel and Duel:IsDuelOngoing() then
-		filterTable.experience = filterTable.experience * 0.1
-	end
+	--if Duel.IsFirstDuel and Duel:IsDuelOngoing() then
+		--filterTable.experience = filterTable.experience * 0.1
+	--end
 	return true
 end
 

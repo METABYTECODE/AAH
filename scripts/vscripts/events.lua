@@ -10,6 +10,51 @@ function GameMode:OnGameRulesStateChange(keys)
 	end
 end
 
+--events for update new bonuses from attrubutes
+function GameMode:InventoryItemAdded(keys)
+	--print("InventoryItemAdded")
+	local hero = EntIndexToHScript(keys.inventory_parent_entindex)
+
+	if hero:IsHero() and not hero:IsWukongsSummon() then
+		Timers:NextTick(function()
+			Attributes:UpdateAll(hero)
+		end)
+	end
+end
+
+function GameMode:InventoryItemChange(keys)
+	--print("InventoryItemChange")
+	local hero = EntIndexToHScript(keys.hero_entindex)
+
+	if hero:IsHero() and not hero:IsWukongsSummon() then
+		Timers:NextTick(function()
+			Attributes:UpdateAll(hero)
+		end)
+	end
+end
+
+function GameMode:HeroGainedLevel(keys)
+	--print("HeroGainedLevel")
+	local hero = EntIndexToHScript(keys.hero_entindex)
+
+	if hero:IsHero() and not hero:IsWukongsSummon() and not hero:IsIllusion() then
+		Timers:NextTick(function()
+			Attributes:UpdateAll(hero)
+		end)
+		
+		local parent = hero
+		if parent.CustomGain_Strength then
+			parent:ModifyStrength((parent.CustomGain_Strength - parent:GetKeyValue("AttributeStrengthGain", nil, true)))
+		end
+		if parent.CustomGain_Intelligence then
+			parent:ModifyIntellect((parent.CustomGain_Intelligence - parent:GetKeyValue("AttributeIntelligenceGain", nil, true)))
+		end
+		if parent.CustomGain_Agility then
+			parent:ModifyAgility((parent.CustomGain_Agility - parent:GetKeyValue("AttributeAgilityGain", nil, true)))
+		end
+	end
+end
+
 -- An NPC has spawned somewhere in game.	This includes heroes
 function GameMode:OnNPCSpawned(keys)
 	local npc = EntIndexToHScript(keys.entindex)
@@ -50,7 +95,9 @@ function GameMode:OnNPCSpawned(keys)
 		if tempestDoubleAbility then tempestDoubleAbility:SetLevel(0) end
 	end
 
+	--print("spawned")
 	Timers:NextTick(function()
+		--print("spawned")
 		if not IsValidEntity(npc) or not npc:IsAlive() then return end
 		local illusionParent = npc:GetIllusionParent()
 		if illusionParent then Illusions:_copyEverything(illusionParent, npc) end
@@ -61,8 +108,11 @@ function GameMode:OnNPCSpawned(keys)
 			npc:SetOriginalModel(npc.ModelOverride)
 		end
 		if not npc:IsWukongsSummon() then
+			InitHero(npc)
 			npc:AddNewModifier(npc, nil, "modifier_arena_hero", nil)
+			--npc:AddNewModifier(npc, nil, "modifier_arena_util", nil)
 			npc:AddNewModifier(npc, nil, "modifier_stamina", nil)
+			--npc:AddNewModifier(npc, nil, "modifier_bat_global", nil)
 
 			if npc.ArenaHero then
 				local parent = npc
@@ -74,12 +124,21 @@ function GameMode:OnNPCSpawned(keys)
 				end
 				--print(primat)
 				if primat == DOTA_ATTRIBUTE_AGILITY then npc:AddNewModifier(npc, nil, "modifier_agility_primary_bonus", nil) end
-				if primat == DOTA_ATTRIBUTE_STRENGTH then npc:AddNewModifier(npc, nil, "modifier_strength_crit", nil) end
+				if primat == DOTA_ATTRIBUTE_STRENGTH then
+					npc:AddNewModifier(npc, nil, "modifier_strength_crit", nil)
+				end
 				if primat == DOTA_ATTRIBUTE_INTELLECT then npc:AddNewModifier(npc, nil, "modifier_intelligence_primary_bonus", nil) end
+
+				if primat == DOTA_ATTRIBUTE_ALL then npc:AddNewModifier(npc, nil, "modifier_universal_attribute", nil) end
 			else
-				if npc:GetPrimaryAttribute() == DOTA_ATTRIBUTE_STRENGTH then npc:AddNewModifier(npc, nil, "modifier_strength_crit", nil) end
+				if npc:GetPrimaryAttribute() == DOTA_ATTRIBUTE_STRENGTH then
+					npc:AddNewModifier(npc, nil, "modifier_strength_crit", nil)
+					npc:AddNewModifier(npc, nil, "modifier_strength_crit_true_strike", nil)
+				end
 				if npc:GetPrimaryAttribute() == DOTA_ATTRIBUTE_AGILITY then npc:AddNewModifier(npc, nil, "modifier_agility_primary_bonus", nil) end
 				if npc:GetPrimaryAttribute() == DOTA_ATTRIBUTE_INTELLECT then npc:AddNewModifier(npc, nil, "modifier_intelligence_primary_bonus", nil) end
+
+				if npc:GetPrimaryAttribute() == DOTA_ATTRIBUTE_ALL then npc:AddNewModifier(npc, nil, "modifier_universal_attribute", nil) end
 			end
 
 			if npc:IsTrueHero() then
@@ -91,12 +150,14 @@ function GameMode:OnNPCSpawned(keys)
 					Duel:SetUpVisitor(npc)
 				end
 			end
+			Attributes:UpdateAll(npc)
 		end
 	end)
 end
 
 -- An item was picked up off the ground
 function GameMode:OnItemPickedUp(keys)
+	--print("OnItemPickedUp")
 	local unitEntity = nil
 	if keys.UnitEntitIndex then
 		unitEntity = EntIndexToHScript(keys.UnitEntitIndex)
@@ -112,6 +173,8 @@ function GameMode:OnItemPickedUp(keys)
 		itemEntity:SetPurchaser(PlayerResource:GetSelectedHeroEntity(keys.PlayerID))
 		itemEntity.CanOverrideOwner = nil
 	end]]
+
+	InfinityStones:OnItemPickedUp(EntIndexToHScript(keys.ItemEntityIndex))
 end
 
 -- An ability was used by a player
@@ -166,7 +229,7 @@ function GameMode:KillWeightIncrease()
 		Notifications:TopToAll({text="#arena_kill_weight_increase_notifiaction", duration = 6})
 		GameMode.kill_weight_per_minute = GameMode.kill_weight_per_minute + KILL_WEIGHT_BONUS_PER_MINUTE
 	end
-	return 0.5
+	return 1
 end
 
 -- An entity died
@@ -178,6 +241,29 @@ function GameMode:OnEntityKilled(keys)
 	end
 
 	if killedUnit then
+		--[[--infinity stones drop
+		if
+		killerEntity:IsTrueHero() and
+		killedUnit:IsChampion() and
+		GetDOTATimeInMinutesFull() >= STONES_TIME_DROP and
+		DROPPED_STONES < #STONES_TABLE and
+
+		RollPercentage(CHAMPIONS_DROP_CHANCE[killerEntity:FindModifierByName("modifier_neutral_champion"):GetStackCount() * (PLAYERS_DROP_CHANCE[killerEntity:GetPlayerID()] or 1)]) then
+			local t = true
+			local stone
+			while t do
+				local i = math.random(1, #STONES_TABLE)
+				if STONES_TABLE[i][2] then
+					STONES_TABLE[i][2] = false
+					t = false
+					stone = STONES_TABLE[i][1]
+					DROPPED_STONES = DROPPED_STONES + 1
+				end
+			end
+			killedUnit:DropItemAtPositionImmediate(stone, killedUnit:GetAbsOrigin())
+			local drop_chance_mult = PLAYERS_DROP_CHANCE[killerEntity:GetPlayerID()]
+			PLAYERS_DROP_CHANCE[killerEntity:GetPlayerID()] = (drop_chance_mult or 1) / DROP_CHANCE_DECREASE
+		end]]
 		local killedTeam = killedUnit:GetTeam()
 		if killedUnit:IsHero() then
 			killedUnit:RemoveModifierByName("modifier_shard_of_true_sight") -- For some reason simple KV modifier not removes on death without this
@@ -255,6 +341,7 @@ function GameMode:OnEntityKilled(keys)
 			end
 		end
 	end
+	InfinityStones:OnEntityKilled(keys)
 end
 
 -- This function is called once when the player fully connects and becomes "Ready" during Loading

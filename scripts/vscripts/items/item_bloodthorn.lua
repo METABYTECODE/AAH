@@ -109,6 +109,8 @@ if IsServer() then
 		local damage = (self.damage or 0) * ability:GetSpecialValueFor("silence_damage_pct") * 0.01
 		ParticleManager:SetParticleControl(ParticleManager:CreateParticle("particles/items2_fx/orchid_pop.vpcf", PATTACH_ABSORIGIN_FOLLOW, parent), 1, Vector(damage))
 		if damage > 0 then
+
+			ability.NoDamageAmp = true
 			ApplyDamage({
 				attacker = self:GetCaster(),
 				victim = parent,
